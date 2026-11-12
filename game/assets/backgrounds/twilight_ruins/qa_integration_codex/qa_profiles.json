@@ -1,0 +1,25 @@
+{
+  "candidate_status": "QA only, not approved",
+  "candidate_protection": {
+    "L3": {
+      "file": "C:\\Users\\sukim\\orca\\RunVoid\\game\\assets\\backgrounds\\twilight_ruins\\candidates_v3\\candidates\\L3_candidate.png",
+      "source_rgba_equal": true,
+      "source_offset": [
+        96,
+        0
+      ],
+      "size": [
+        1896,
+        941
+      ],
+      "approved": false,
+      "note": "QA adapter retains active core/fade settings; source padding rendered separately"
+    }
+  },
+  "profiles": [
+    "before",
+    "corrected",
+    "candidate_L3_right_only_unapproved"
+  ],
+  "scene_geometry_unchanged": true
+}

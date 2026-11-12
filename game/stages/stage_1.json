@@ -4,6 +4,40 @@
   "resolution": [960, 540],
   "tile_size": 32,
   "theme": "twilight_ruins",
+  "background": {
+    "type": "parallax_images",
+    "asset_dir": "assets/backgrounds/twilight_ruins/draft_v1",
+    "layers": [
+      {"id": "L0_sky", "image": "01_sky.png", "factor": 0.0, "repeat": false},
+      {"id": "L1_far_castle", "image": "02_far_castle.png", "factor": 0.15, "repeat": true,
+       "seam": {"mode": "crossfade", "width": 96}},
+      {"id": "L2_mid_invasion", "image": "03_mid_invasion.png", "factor": 0.40, "repeat": true,
+       "seam": {"mode": "crossfade", "width": 96}}
+    ],
+    "decorations": {
+      "id": "L3_near_debris",
+      "image": "04_near_debris.png",
+      "factor": 0.75,
+      "period": 3360,
+      "sprites": {
+        "ruin_left": {"src": [0, 610, 330, 331], "fade_left": 14},
+        "stones": {"src": [330, 860, 520, 81]},
+        "grass": {"src": [860, 860, 460, 81]},
+        "ruin_right": {"src": [1240, 640, 432, 301], "anchor_src": [1330, 640, 342, 301], "fade_right": 14}
+      },
+      "placements": [
+        {"sprite": "ruin_left", "x": 330, "bottom": 470},
+        {"sprite": "stones", "x": 760, "bottom": 440},
+        {"sprite": "grass", "x": 1400, "bottom": 440},
+        {"sprite": "ruin_right", "x": 1900, "bottom": 470},
+        {"sprite": "grass", "x": 2620, "bottom": 440},
+        {"sprite": "ruin_left", "x": 3050, "bottom": 470}
+      ]
+    },
+    "ground_shade": {"top": 418, "height": 40, "color": [4, 2, 4], "max_alpha": 220},
+    "ground_connector": {"before_layer": "L1_far_castle", "top": 360, "height": 58,
+                         "color": [38, 23, 29], "max_alpha": 255}
+  },
   "spawn": {
     "x": 480,
     "y": 382

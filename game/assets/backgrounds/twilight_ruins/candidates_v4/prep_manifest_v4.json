@@ -1,0 +1,503 @@
+{
+ "schema": "runvoid.bg.candidates_v4.prep/1",
+ "adopted": false,
+ "final_candidate_geometry": "identical to v3 (canvas, source_offset, pad widths)",
+ "protection": {
+  "L1": {
+   "file": "masks/L1_protect_full_source_rect_v4.png",
+   "sha256": "183960f194c287904c82d5e0a0598c1dec361eaa159ecb078f4b6c123987e282",
+   "size": [
+    1992,
+    941
+   ],
+   "identical_to_v3_mask_pixels": true,
+   "v3_mask_sha256": "183960f194c287904c82d5e0a0598c1dec361eaa159ecb078f4b6c123987e282",
+   "canvas_size": [
+    1992,
+    941
+   ],
+   "source_offset": [
+    0,
+    0
+   ],
+   "source_size": [
+    1672,
+    941
+   ],
+   "source_file": "draft_v1/02_far_castle.png",
+   "source_sha256": "05c9805259f165fbd67182ff9cdd7b5d06b6587d0e6dae9478df9a453fdf0852",
+   "kind": "FULL original 1672x941 source rectangle incl. fully transparent pixels/openings (raw-copy restore)"
+  },
+  "L2": {
+   "file": "masks/L2_protect_full_source_rect_v4.png",
+   "sha256": "92fd79808b811dc185256d2d856981cacb10c7643a867375a60c39c35a15c3c2",
+   "size": [
+    2056,
+    941
+   ],
+   "identical_to_v3_mask_pixels": true,
+   "v3_mask_sha256": "92fd79808b811dc185256d2d856981cacb10c7643a867375a60c39c35a15c3c2",
+   "canvas_size": [
+    2056,
+    941
+   ],
+   "source_offset": [
+    0,
+    0
+   ],
+   "source_size": [
+    1672,
+    941
+   ],
+   "source_file": "draft_v1/03_mid_invasion.png",
+   "source_sha256": "02786c21828a96c25526c39d5bf03c542a5507c424932195a01674a39d2dbd84",
+   "kind": "FULL original 1672x941 source rectangle incl. fully transparent pixels/openings (raw-copy restore)"
+  },
+  "L3": {
+   "file": "masks/L3_protect_full_source_rect_v4.png",
+   "sha256": "f23a2d26af4969d84c89813ca383407acaf54b6ce9ef716b715e0edba25e32d4",
+   "size": [
+    1896,
+    941
+   ],
+   "identical_to_v3_mask_pixels": true,
+   "v3_mask_sha256": "f23a2d26af4969d84c89813ca383407acaf54b6ce9ef716b715e0edba25e32d4",
+   "canvas_size": [
+    1896,
+    941
+   ],
+   "source_offset": [
+    96,
+    0
+   ],
+   "source_size": [
+    1672,
+    941
+   ],
+   "source_file": "draft_v1/04_near_debris.png",
+   "source_sha256": "1fed9a5261de22d2a03f634e3a31c1b200c05babccebf3d0569ab0a73b90aee6",
+   "kind": "FULL original 1672x941 source rectangle incl. fully transparent pixels/openings (raw-copy restore)"
+  }
+ },
+ "jobs": {
+  "L1_fog": {
+   "layer": "L1",
+   "source_rows": [
+    300,
+    683
+   ],
+   "local_canvas_size": [
+    576,
+    384
+   ],
+   "gap_local_x": [
+    128,
+    447
+   ],
+   "candidate_gap_x": [
+    1672,
+    1991
+   ],
+   "left_ctx_source_x": [
+    1544,
+    1671
+   ],
+   "right_ctx_source_x": [
+    0,
+    127
+   ],
+   "upscale_for_generator": 2.6666666666666665,
+   "generator_input_size": [
+    1536,
+    1024
+   ],
+   "upscale_note": "LANCZOS upscale of the INPUT only (generator readability). Output is downscaled back to the local canvas; only gap pixels are used; protected source is raw-copied from draft_v1.",
+   "canvas_local": {
+    "file": "prep/L1_fog_canvas_local_rgba.png",
+    "sha256": "325311685e45d8b8abc29fbe214fe77a000d1337ebdeaea4410db34d29a10bec",
+    "size": [
+     576,
+     384
+    ]
+   },
+   "canvas_gen_input": {
+    "file": "prep/L1_fog_GENINPUT_canvas_1536x1024.png",
+    "sha256": "c891e686a1b63fd0b8f1d67140117e3df9eebece20ea6eb9705f2818d0e09621",
+    "size": [
+     1536,
+     1024
+    ]
+   },
+   "mask_local_white_generate": {
+    "file": "masks/L1_fog_generate_mask_local_white_is_generate.png",
+    "sha256": "e2b92c644721c9bb389b961e9a645a44f37cd5ce8dbf480536b46906a4a9bb0e",
+    "size": [
+     576,
+     384
+    ]
+   },
+   "mask_gen_white_generate": {
+    "file": "prep/L1_fog_GENINPUT_mask_white_is_generate.png",
+    "sha256": "37c0ca55f201f6e690f95fc418b1f777130caa26627a48b7452784812aa5a8e7",
+    "size": [
+     1536,
+     1024
+    ]
+   },
+   "mask_gen_openai_alpha0_generate": {
+    "file": "prep/L1_fog_GENINPUT_mask_alpha0_is_generate.png",
+    "sha256": "b59da342f39043848cd7810e219d30a2cbe835994eb2ca064f969df157d1818d",
+    "size": [
+     1536,
+     1024
+    ]
+   },
+   "guide_reference_only": {
+    "file": "prep/L1_fog_GENINPUT_guide_reference_only.png",
+    "sha256": "6a69976c68c9d33b167b11bae94548ee310b5f8217bedc5b665c6ca357bb0efd",
+    "size": [
+     1536,
+     1024
+    ]
+   },
+   "guides_source_coords": {
+    "top_contour": [
+     [
+      0,
+      408
+     ],
+     [
+      60,
+      430
+     ],
+     [
+      140,
+      480
+     ],
+     [
+      220,
+      545
+     ],
+     [
+      300,
+      590
+     ],
+     [
+      320,
+      598
+     ]
+    ],
+    "bottom_line": [
+     [
+      0,
+      646
+     ],
+     [
+      320,
+      642
+     ]
+    ],
+    "forbid_above": [
+     [
+      0,
+      400
+     ],
+     [
+      320,
+      590
+     ]
+    ],
+    "notes": "hill/haze mass descends and thins to translucent fog (alpha<=~40) at gap-x>=260; no ruins/stubs"
+   }
+  },
+  "L2_lowrib": {
+   "layer": "L2",
+   "source_rows": [
+    100,
+    739
+   ],
+   "local_canvas_size": [
+    640,
+    640
+   ],
+   "gap_local_x": [
+    128,
+    511
+   ],
+   "candidate_gap_x": [
+    1672,
+    2055
+   ],
+   "left_ctx_source_x": [
+    1544,
+    1671
+   ],
+   "right_ctx_source_x": [
+    0,
+    127
+   ],
+   "upscale_for_generator": 1.6,
+   "generator_input_size": [
+    1024,
+    1024
+   ],
+   "upscale_note": "LANCZOS upscale of the INPUT only (generator readability). Output is downscaled back to the local canvas; only gap pixels are used; protected source is raw-copied from draft_v1.",
+   "canvas_local": {
+    "file": "prep/L2_lowrib_canvas_local_rgba.png",
+    "sha256": "cbf96193e66e8e3ad53c008c5cb50970e260055e3ec39f36acb48592e0bf7cb9",
+    "size": [
+     640,
+     640
+    ]
+   },
+   "canvas_gen_input": {
+    "file": "prep/L2_lowrib_GENINPUT_canvas_1024x1024.png",
+    "sha256": "4d73a049cf4d015c0a174b3db21896aff3bdd1b57021ca6fe4fa8cf46f9e41b6",
+    "size": [
+     1024,
+     1024
+    ]
+   },
+   "mask_local_white_generate": {
+    "file": "masks/L2_lowrib_generate_mask_local_white_is_generate.png",
+    "sha256": "1006c49d2fdc2dd65a9b45ccaf0c0a5f829bb4c60a1ed329710caa98ddf2f478",
+    "size": [
+     640,
+     640
+    ]
+   },
+   "mask_gen_white_generate": {
+    "file": "prep/L2_lowrib_GENINPUT_mask_white_is_generate.png",
+    "sha256": "1987964067263017d4ba5d91dfa678046961887fc71a3b3e3797733a0d1de73a",
+    "size": [
+     1024,
+     1024
+    ]
+   },
+   "mask_gen_openai_alpha0_generate": {
+    "file": "prep/L2_lowrib_GENINPUT_mask_alpha0_is_generate.png",
+    "sha256": "741d6fc149d2f0d0bd9290bb8cf70c4a4b57a1da9d04619967589cdf1056f6dc",
+    "size": [
+     1024,
+     1024
+    ]
+   },
+   "guide_reference_only": {
+    "file": "prep/L2_lowrib_GENINPUT_guide_reference_only.png",
+    "sha256": "443a57b7b3ff4ecb7fe429d2ca94bdb86c0e5429ef74d0847856b3bd8bfde21e",
+    "size": [
+     1024,
+     1024
+    ]
+   },
+   "guides_source_coords": {
+    "top_contour": [
+     [
+      0,
+      517
+     ],
+     [
+      120,
+      515
+     ],
+     [
+      220,
+      505
+     ],
+     [
+      300,
+      470
+     ],
+     [
+      312,
+      440
+     ]
+    ],
+    "bottom_line": [
+     [
+      0,
+      636
+     ],
+     [
+      384,
+      640
+     ]
+    ],
+    "stub_zone": [
+     312,
+     384
+    ],
+    "stub_top": [
+     [
+      312,
+      150
+     ],
+     [
+      384,
+      174
+     ]
+    ],
+    "forbid_above": [
+     [
+      0,
+      500
+     ],
+     [
+      240,
+      495
+     ],
+     [
+      312,
+      430
+     ],
+     [
+      312,
+      140
+     ],
+     [
+      384,
+      160
+     ]
+    ],
+    "notes": "low rubble/terrain only in gap-x<312; gap-x 312..383: interrupted rib/lattice stubs continuing the cut x0 ribs leftward in tangent, broken off (no closing, no peak, no new arch)"
+   }
+  },
+  "L3L_rock": {
+   "layer": "L3",
+   "source_rows": [
+    701,
+    940
+   ],
+   "local_canvas_size": [
+    360,
+    240
+   ],
+   "gap_local_x": [
+    0,
+    95
+   ],
+   "candidate_gap_x": [
+    0,
+    95
+   ],
+   "left_ctx_source_x": null,
+   "right_ctx_source_x": [
+    0,
+    263
+   ],
+   "upscale_for_generator": 4.266666666666667,
+   "generator_input_size": [
+    1536,
+    1024
+   ],
+   "upscale_note": "LANCZOS upscale of the INPUT only (generator readability). Output is downscaled back to the local canvas; only gap pixels are used; protected source is raw-copied from draft_v1.",
+   "canvas_local": {
+    "file": "prep/L3L_rock_canvas_local_rgba.png",
+    "sha256": "d6ec8196b52ab5a1c34a4e5c02de56f7e44fe2507a0bd274f2c15abeccf8ac93",
+    "size": [
+     360,
+     240
+    ]
+   },
+   "canvas_gen_input": {
+    "file": "prep/L3L_rock_GENINPUT_canvas_1536x1024.png",
+    "sha256": "7889732c6a29b10f8b333be340846eb1b9909577538b3458baba709e441aa502",
+    "size": [
+     1536,
+     1024
+    ]
+   },
+   "mask_local_white_generate": {
+    "file": "masks/L3L_rock_generate_mask_local_white_is_generate.png",
+    "sha256": "b76b4f5a42609204c2bd40ed24fb7d8f3582f8b3c68b902f92f191a49cb6792e",
+    "size": [
+     360,
+     240
+    ]
+   },
+   "mask_gen_white_generate": {
+    "file": "prep/L3L_rock_GENINPUT_mask_white_is_generate.png",
+    "sha256": "1d64bd8bf26f0363d9b0a5f1f63dcc9a697f0038c1b994ebe949cb15b44aa94a",
+    "size": [
+     1536,
+     1024
+    ]
+   },
+   "mask_gen_openai_alpha0_generate": {
+    "file": "prep/L3L_rock_GENINPUT_mask_alpha0_is_generate.png",
+    "sha256": "f8381349de75b2966792d6466362e9be2cf09287e982ac04e614f4d1d676f4ac",
+    "size": [
+     1536,
+     1024
+    ]
+   },
+   "guide_reference_only": {
+    "file": "prep/L3L_rock_GENINPUT_guide_reference_only.png",
+    "sha256": "023324feebbe7cbec935b62784ce3e48f4703dc9d3c92c4080560f0c56a1d11f",
+    "size": [
+     1536,
+     1024
+    ]
+   },
+   "guides_source_coords": {
+    "rock_top": [
+     [
+      96,
+      864
+     ],
+     [
+      60,
+      862
+     ],
+     [
+      30,
+      868
+     ],
+     [
+      10,
+      880
+     ]
+    ],
+    "rock_bottom": [
+     [
+      96,
+      918
+     ],
+     [
+      10,
+      918
+     ]
+    ],
+    "forbid_above": [
+     [
+      0,
+      840
+     ],
+     [
+      60,
+      760
+     ],
+     [
+      96,
+      732
+     ]
+    ],
+    "notes": "continue the SAME boulder (same top height/face/lit edge) and close its left end; grass tips; no separate low rock, no new tree"
+   }
+  }
+ },
+ "acceptance_gates_predeclared": {
+  "G1_protected_exact": "candidate[0:941, ox:ox+1672] == draft_v1 RGBA bytes after PNG save+reload; 0 changed pixels (HARD)",
+  "G2_registration": "integer shift search limited to +-3 canvas px (v3 used +-16) on a 16px context ring at each join; if per-side best shifts disagree by >2px the attempt is REJECTED (no compromise shift)",
+  "G3_join_contour": "per join: |top of alpha>=128 run| and |bottom of alpha>=8| between source edge column and adjacent pad column <= 4 original px (for the mass touching the join)",
+  "G4_join_value": "per join: mean |premultiplied RGB| between source edge 2-col strip and pad 2-col strip over rows with alpha>0, divided by the source natural baseline (diff between its own cols e and e-/+2) <= 2.5",
+  "G5_forbidden_zone": "all new pixels in the red-hatched forbid region have alpha <= 8 (no new architecture/landmark)",
+  "G6_visual": "1x and original-pixel zoom inspection over dark/black/white/bg-colour; any visible cut/step/halo = FAIL",
+  "policy": "Any gate FAIL -> join FAIL. No blur/feather/clone/average to hide a failure. Failed attempts are kept and labelled."
+ },
+ "L3_right": {
+  "status": "HELD partial candidate (not regenerated, not adopted)",
+  "provenance": "candidates_v3/candidates/L3_candidate.png x1768..1895 rows 0..940, raw copy",
+  "v3_candidate_sha256": "8f6958f3b191372c57465e25979386e85194faec84cdd184649d2c521a6b1fc9"
+ }
+}

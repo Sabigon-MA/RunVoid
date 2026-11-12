@@ -1,0 +1,14 @@
+LOCAL masked inpaint of a SMALL CROP of one parallax background layer of a hand-painted, painterly 2D side-scroller (dusk ruins; burnt orange / dusty burgundy / plum palette, restrained teal only on alien machinery; warm rim light from the left).
+Image 1 = the crop to edit. Its non-gap parts are final approved pixels that will be overwritten byte-for-byte with the originals afterwards: do NOT move, rescale, recolour or restyle them (any change there is discarded and becomes a visible cut).
+Paint ONLY inside the magenta-framed gap rectangle (white in image 2, the mask).
+Image 3 = GUIDE, reference only, never paint it: red hatching = must stay fully transparent; green line = top silhouette of the new material; blue line = bottom edge of the new material; yellow = special zone.
+Return exactly the same framing/size/aspect as image 1. Real transparency (alpha 0) everywhere outside painted matter: no backing colour, checkerboard, frame, border, text or watermark.
+At BOTH gap borders the first new column must continue the adjacent existing column exactly: same silhouette height, same brightness/value, same alpha softness, same brush texture and pixel density. Minimum additions; nothing new that is not described below.
+
+L2 MID INVASION — low rubble + interrupted rib stubs. Image 1 = prep/L2_lowrib_GENINPUT_canvas_1024x1024.png (local 640x640 crop upscaled x1.6; source rows 100..739). Gap = local x128..511 (1024-scale x205..818). Yellow line = local x440 (1024-scale x704).
+Left border: low rubble / ruined-city ground mass (opaque rows ~517..636); the tower above already ends inside the context.
+Right border: the cut LEFT END of a large organic alien rib-lattice arch (bony ribs with oval openings, faint teal glints) running down-right; at the border it fills rows ~174..640: lattice on top, crumbling Gothic wall below.
+(a) Left of the yellow line: ONLY low rubble / collapsed masonry ground; top follows the green line, bottom on the blue line (flat, rows 636->640: no step, no notch, no overhang).
+(b) Right of the yellow line (last 72 source px): continue the cut ribs only a short way LEFT along their existing direction and thickness, then end them as broken, snapped-off rib tips; beneath them the lattice and wall crumble down into the same rubble mound.
+Do NOT complete or close the arch, no peak, spire, second arch or any new landmark. Red-hatched area stays transparent.
+

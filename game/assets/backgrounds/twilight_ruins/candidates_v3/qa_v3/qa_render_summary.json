@@ -1,0 +1,32 @@
+{
+  "L1": {
+    "candidate": {
+      "protected_changed_pixels": 0,
+      "added_nonzero_alpha_pixels": 77449
+    },
+    "candidate_unshifted_alt": {
+      "protected_changed_pixels": 0,
+      "added_nonzero_alpha_pixels": 77627
+    }
+  },
+  "L2": {
+    "candidate": {
+      "protected_changed_pixels": 0,
+      "added_nonzero_alpha_pixels": 119919
+    },
+    "candidate_unshifted_alt": {
+      "protected_changed_pixels": 0,
+      "added_nonzero_alpha_pixels": 120962
+    }
+  },
+  "L3": {
+    "candidate": {
+      "protected_changed_pixels": 0,
+      "added_nonzero_alpha_pixels": 21247
+    },
+    "candidate_unshifted_alt": {
+      "protected_changed_pixels": 0,
+      "added_nonzero_alpha_pixels": 21134
+    }
+  }
+}

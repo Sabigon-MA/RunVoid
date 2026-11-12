@@ -1,0 +1,641 @@
+{
+ "schema": "runvoid.bg.candidates_v4/1",
+ "adopted": false,
+ "connected_to_game_config": false,
+ "overall": "NOT ACCEPTED. Protected-source exactness PASS (0 changed pixels, all layers). All newly generated joins FAIL predeclared gates; L3-left is the closest (correct boulder height) but has a grass-density cut. The attempted L2 low-rubble/short-rib guide failed; feasibility of other permitted local extensions remains unverified. L3-right remains HELD v3 partial candidate.",
+ "scale_rule": "game scale 960/1672 x, 540/941 y on the whole candidate; never squeezed to 960 width; offsets/ground level as v3/original",
+ "geometry_change_vs_v3": "none (same canvas sizes/offsets/pad widths; v4 masks pixel-identical to v3 masks)",
+ "strategy_change_vs_v3": [
+  "local crops: 128px context instead of 546px full-height; row band only",
+  "explicit guides (contour/forbid/stub zone) only on new pixels, reference-only",
+  "L1 fog-only job (v3 prompt had wrongly described a cut window); L2 low rubble + <=72px rib stubs; L3 same-boulder",
+  "registration limited to +-3px and only if both sides agree; predeclared numeric gates; no blending"
+ ],
+ "acceptance_gates_predeclared": {
+  "G1_protected_exact": "candidate[0:941, ox:ox+1672] == draft_v1 RGBA bytes after PNG save+reload; 0 changed pixels (HARD)",
+  "G2_registration": "integer shift search limited to +-3 canvas px (v3 used +-16) on a 16px context ring at each join; if per-side best shifts disagree by >2px the attempt is REJECTED (no compromise shift)",
+  "G3_join_contour": "per join: |top of alpha>=128 run| and |bottom of alpha>=8| between source edge column and adjacent pad column <= 4 original px (for the mass touching the join)",
+  "G4_join_value": "per join: mean |premultiplied RGB| between source edge 2-col strip and pad 2-col strip over rows with alpha>0, divided by the source natural baseline (diff between its own cols e and e-/+2) <= 2.5",
+  "G5_forbidden_zone": "all new pixels in the red-hatched forbid region have alpha <= 8 (no new architecture/landmark)",
+  "G6_visual": "1x and original-pixel zoom inspection over dark/black/white/bg-colour; any visible cut/step/halo = FAIL",
+  "policy": "Any gate FAIL -> join FAIL. No blur/feather/clone/average to hide a failure. Failed attempts are kept and labelled."
+ },
+ "tool_limits": "built-in image_gen (coordinator-run, one call per job): no enforced mask, no size parameter (L2 returned 1254x1254); context regenerated in all jobs (L1 dropped the cathedral from context: left-side registration error 99)",
+ "layers": {
+  "L1": {
+   "candidate_file": "candidates/L1_v4_candidate.png",
+   "candidate_sha256": "0a30433e70b09812f41e70abd7bb8a3d8ae2f24775aa19a6176a6cc90a824b1f",
+   "status": "REJECTED_JOIN_FAIL",
+   "canvas_size": [
+    1992,
+    941
+   ],
+   "source_offset": [
+    0,
+    0
+   ],
+   "source_size": [
+    1672,
+    941
+   ],
+   "source_file": "draft_v1/02_far_castle.png",
+   "source_sha256": "05c9805259f165fbd67182ff9cdd7b5d06b6587d0e6dae9478df9a453fdf0852",
+   "source_sha256_after": "05c9805259f165fbd67182ff9cdd7b5d06b6587d0e6dae9478df9a453fdf0852",
+   "protection_mask": "masks/L1_protect_full_source_rect_v4.png",
+   "protection_mask_sha256_predeclared": "183960f194c287904c82d5e0a0598c1dec361eaa159ecb078f4b6c123987e282",
+   "protection_mask_sha256_after": "183960f194c287904c82d5e0a0598c1dec361eaa159ecb078f4b6c123987e282",
+   "protection_mask_identical_to_v3": true,
+   "v3_mask_sha256": "183960f194c287904c82d5e0a0598c1dec361eaa159ecb078f4b6c123987e282",
+   "protection_equality_proof": {
+    "method": "PNG save -> reload -> np.array_equal(candidate[0:941, ox:ox+1672], draft_v1 RGBA) + per-pixel count",
+    "identical": true,
+    "protected_pixels": 1573352,
+    "changed_protected_pixels": 0,
+    "source_sha256_after": "05c9805259f165fbd67182ff9cdd7b5d06b6587d0e6dae9478df9a453fdf0852"
+   },
+   "generation": {
+    "L1_fog": {
+     "raw_file": "imagegen_raw/L1_fog.png",
+     "raw_sha256": "1bf598b6e13f0ad370c93013240288f98916a19299287bd4882a1269cc3834ab",
+     "raw_size": [
+      1536,
+      1024
+     ],
+     "scale_raw_to_local": [
+      0.375,
+      0.375
+     ],
+     "aspect_mismatch_pct": 0.0,
+     "registration": {
+      "left_of_gap": {
+       "best_shift": [
+        -3,
+        -3
+       ],
+       "err": 99.19,
+       "err_at_0_0": 115.91
+      },
+      "right_of_gap": {
+       "best_shift": [
+        0,
+        2
+       ],
+       "err": 10.29,
+       "err_at_0_0": 10.31
+      }
+     },
+     "G2_sides_agree": false,
+     "applied_shift_local_px": [
+      0,
+      0
+     ],
+     "placed_rows": [
+      300,
+      683
+     ],
+     "placed_cols": [
+      1672,
+      1991
+     ],
+     "rows_outside_band_in_gap": "alpha 0 (declared, not generated)"
+    }
+   },
+   "G5_forbidden_zone": {
+    "L1_fog": {
+     "forbid_pixels": 158560,
+     "violations_alpha_gt8": 392,
+     "max_alpha_in_forbid": 251,
+     "pass": false
+    }
+   },
+   "joins": {
+    "inner_x1672": {
+     "G3_contour": "FAIL",
+     "G4_value": "FAIL",
+     "G4_ratio": 9.15,
+     "detail": {
+      "G3_contour": {
+       "pass": false,
+       "a8": {
+        "src": [
+         387,
+         646
+        ],
+        "pad": [
+         409,
+         625
+        ],
+        "top_delta": 22,
+        "bottom_delta": 21
+       },
+       "a128": {
+        "src": [
+         408,
+         623
+        ],
+        "pad": [
+         411,
+         612
+        ],
+        "top_delta": 3,
+        "bottom_delta": 11
+       }
+      },
+      "G4_value": {
+       "pass": false,
+       "join_mae": 14.59,
+       "source_baseline_mae": 1.59,
+       "ratio": 9.15
+      }
+     },
+     "visual": "FAIL (visual): haze bottom ends ~row 625 vs source fade to 646 -> dark notch; luminous haze value step; vertical cut visible at 1x/4x",
+     "verdict": "FAIL"
+    },
+    "outer_wrap": {
+     "G3_contour": "FAIL",
+     "G4_value": "FAIL",
+     "G4_ratio": 6.43,
+     "detail": {
+      "G3_contour": {
+       "pass": false,
+       "a8": {
+        "src": [
+         600,
+         642
+        ],
+        "pad": [
+         591,
+         624
+        ],
+        "top_delta": 9,
+        "bottom_delta": 18
+       },
+       "a128": "both empty"
+      },
+      "G4_value": {
+       "pass": false,
+       "join_mae": 10.16,
+       "source_baseline_mae": 1.58,
+       "ratio": 6.43
+      }
+     },
+     "visual": "FAIL (visual): generated band ends as a pointed opaque-ish wedge (a>=8 rows 591..624) against source faint fog (rows 600..642, alpha<=39); hard step",
+     "verdict": "FAIL"
+    }
+   },
+   "composition": "IMPROVED vs v3: no ruin stubs/architecture added; only hill/haze. Cathedral/towers/bridge exact bytes.",
+   "alpha_stats": {
+    "new_pixels_alpha_gt0": 55589,
+    "new_low_alpha_1_32_frac": 0.311,
+    "source_low_alpha_1_32_frac": 0.122,
+    "changed_protected_pixels": 0
+   },
+   "v3_to_v4_delta": {
+    "v3_candidate_sha256": "6cfd522c874f2dd91ce3bc8c44577432aac4a6a63e4ff44d2e54fcaffb5c7ebd",
+    "v3_status": "REJECTED_JOIN_FAIL",
+    "geometry": "unchanged",
+    "protected_region": "identical bytes in both"
+   },
+   "qa_files": [
+    "qa_v4/L1_join_inner_x1672_1x_orig_v3_v4.png",
+    "qa_v4/L1_join_inner_x1672_4x_orig_v3_v4.png",
+    "qa_v4/L1_join_outer_wrap_1x_orig_v3_v4.png",
+    "qa_v4/L1_join_outer_wrap_4x_orig_v3_v4.png",
+    "qa_v4/L1_v4_2tile_cyan.png",
+    "qa_v4/L1_v4_2tile_dark.png",
+    "qa_v4/L1_v4_3tile_cyan.png",
+    "qa_v4/L1_v4_3tile_dark.png",
+    "qa_v4/L1_v4_alpha_check_bg4.png",
+    "qa_v4/L1_v4_diff_source_coords.png",
+    "qa_v4/L1_v4_edit_scope.png"
+   ]
+  },
+  "L2": {
+   "candidate_file": "candidates/L2_v4_candidate.png",
+   "candidate_sha256": "d73aafc6f622ee89848a5230b31eb44263b22bf7209020e56b6728c467581d04",
+   "status": "REJECTED_JOIN_FAIL",
+   "canvas_size": [
+    2056,
+    941
+   ],
+   "source_offset": [
+    0,
+    0
+   ],
+   "source_size": [
+    1672,
+    941
+   ],
+   "source_file": "draft_v1/03_mid_invasion.png",
+   "source_sha256": "02786c21828a96c25526c39d5bf03c542a5507c424932195a01674a39d2dbd84",
+   "source_sha256_after": "02786c21828a96c25526c39d5bf03c542a5507c424932195a01674a39d2dbd84",
+   "protection_mask": "masks/L2_protect_full_source_rect_v4.png",
+   "protection_mask_sha256_predeclared": "92fd79808b811dc185256d2d856981cacb10c7643a867375a60c39c35a15c3c2",
+   "protection_mask_sha256_after": "92fd79808b811dc185256d2d856981cacb10c7643a867375a60c39c35a15c3c2",
+   "protection_mask_identical_to_v3": true,
+   "v3_mask_sha256": "92fd79808b811dc185256d2d856981cacb10c7643a867375a60c39c35a15c3c2",
+   "protection_equality_proof": {
+    "method": "PNG save -> reload -> np.array_equal(candidate[0:941, ox:ox+1672], draft_v1 RGBA) + per-pixel count",
+    "identical": true,
+    "protected_pixels": 1573352,
+    "changed_protected_pixels": 0,
+    "source_sha256_after": "02786c21828a96c25526c39d5bf03c542a5507c424932195a01674a39d2dbd84"
+   },
+   "generation": {
+    "L2_lowrib": {
+     "raw_file": "imagegen_raw/L2_lowrib.png",
+     "raw_sha256": "c62e116d917c6442fa153a6ee31fdfa222876cedaf15cacf5df0bbb672ade3be",
+     "raw_size": [
+      1254,
+      1254
+     ],
+     "scale_raw_to_local": [
+      0.510367,
+      0.510367
+     ],
+     "aspect_mismatch_pct": 0.0,
+     "registration": {
+      "left_of_gap": {
+       "best_shift": [
+        -1,
+        -3
+       ],
+       "err": 29.54,
+       "err_at_0_0": 31.24
+      },
+      "right_of_gap": {
+       "best_shift": [
+        0,
+        0
+       ],
+       "err": 14.12,
+       "err_at_0_0": 14.12
+      }
+     },
+     "G2_sides_agree": false,
+     "applied_shift_local_px": [
+      0,
+      0
+     ],
+     "placed_rows": [
+      100,
+      739
+     ],
+     "placed_cols": [
+      1672,
+      2055
+     ],
+     "rows_outside_band_in_gap": "alpha 0 (declared, not generated)"
+    }
+   },
+   "G5_forbidden_zone": {
+    "L2_lowrib": {
+     "forbid_pixels": 164052,
+     "violations_alpha_gt8": 0,
+     "max_alpha_in_forbid": 1,
+     "pass": true
+    }
+   },
+   "joins": {
+    "inner_x1672": {
+     "G3_contour": "FAIL",
+     "G4_value": "FAIL",
+     "G4_ratio": 4.7,
+     "detail": {
+      "G3_contour": {
+       "pass": false,
+       "a8": {
+        "src": [
+         517,
+         636
+        ],
+        "pad": [
+         525,
+         675
+        ],
+        "top_delta": 8,
+        "bottom_delta": 39
+       },
+       "a128": {
+        "src": [
+         526,
+         635
+        ],
+        "pad": [
+         533,
+         675
+        ],
+        "top_delta": 7,
+        "bottom_delta": 40
+       }
+      },
+      "G4_value": {
+       "pass": false,
+       "join_mae": 27.58,
+       "source_baseline_mae": 5.87,
+       "ratio": 4.7
+      }
+     },
+     "visual": "FAIL (visual): rectangular pad block, flat bottom ~row 675 (source 636) -> 40px step; L0 red sky visible below in cam1200; new small ruins (arched wall, pillars) drawn despite instruction",
+     "verdict": "FAIL"
+    },
+    "outer_wrap": {
+     "G3_contour": "FAIL",
+     "G4_value": "FAIL",
+     "G4_ratio": 4.49,
+     "detail": {
+      "G3_contour": {
+       "pass": false,
+       "a8": {
+        "src": [
+         174,
+         645
+        ],
+        "pad": [
+         173,
+         675
+        ],
+        "top_delta": 1,
+        "bottom_delta": 30
+       },
+       "a128": {
+        "src": [
+         175,
+         639
+        ],
+        "pad": [
+         390,
+         675
+        ],
+        "top_delta": 215,
+        "bottom_delta": 36
+       }
+      },
+      "G4_value": {
+       "pass": false,
+       "join_mae": 30.31,
+       "source_baseline_mae": 6.76,
+       "ratio": 4.49
+      }
+     },
+     "visual": "FAIL: rib lattice cut vertically at the seam (pad a>=128 starts row 390 vs source 175). Source x0 carries a ~480px-tall cut rib cross-section that the attempted low-rubble/short-rib guide did not connect. Extending existing ribs while preserving their contour, thickness and direction is permitted and is distinct from adding new architecture. This trial does not establish that all permitted local extensions are impossible; their feasibility remains unverified.",
+     "verdict": "FAIL"
+    }
+   },
+   "composition": "Partly improved vs v3 (no new peaked arch) but new small ruin forms -> violates no-new-architecture",
+   "alpha_stats": {
+    "new_pixels_alpha_gt0": 73735,
+    "new_low_alpha_1_32_frac": 0.124,
+    "source_low_alpha_1_32_frac": 0.143,
+    "changed_protected_pixels": 0
+   },
+   "v3_to_v4_delta": {
+    "v3_candidate_sha256": "5fae68c4b0ef29107a6d8c55d8187841992134362e803d397349aadbc836c3ba",
+    "v3_status": "REJECTED_JOIN_FAIL",
+    "geometry": "unchanged",
+    "protected_region": "identical bytes in both"
+   },
+   "qa_files": [
+    "qa_v4/L2_join_inner_x1672_1x_orig_v3_v4.png",
+    "qa_v4/L2_join_inner_x1672_4x_orig_v3_v4.png",
+    "qa_v4/L2_join_outer_wrap_lower_1x_orig_v3_v4.png",
+    "qa_v4/L2_join_outer_wrap_lower_4x_orig_v3_v4.png",
+    "qa_v4/L2_join_outer_wrap_upper_1x_orig_v3_v4.png",
+    "qa_v4/L2_join_outer_wrap_upper_4x_orig_v3_v4.png",
+    "qa_v4/L2_v4_2tile_cyan.png",
+    "qa_v4/L2_v4_2tile_dark.png",
+    "qa_v4/L2_v4_3tile_cyan.png",
+    "qa_v4/L2_v4_3tile_dark.png",
+    "qa_v4/L2_v4_alpha_check_bg4.png",
+    "qa_v4/L2_v4_diff_source_coords.png",
+    "qa_v4/L2_v4_edit_scope.png"
+   ]
+  },
+  "L3": {
+   "candidate_file": "candidates/L3_v4_candidate.png",
+   "candidate_sha256": "59a0d11d2fda814b0027aabff65775273090ccc8ba314f2310ba2ff9f17e979c",
+   "status": "REJECTED left pad (FAIL); right pad HELD v3 partial",
+   "canvas_size": [
+    1896,
+    941
+   ],
+   "source_offset": [
+    96,
+    0
+   ],
+   "source_size": [
+    1672,
+    941
+   ],
+   "source_file": "draft_v1/04_near_debris.png",
+   "source_sha256": "1fed9a5261de22d2a03f634e3a31c1b200c05babccebf3d0569ab0a73b90aee6",
+   "source_sha256_after": "1fed9a5261de22d2a03f634e3a31c1b200c05babccebf3d0569ab0a73b90aee6",
+   "protection_mask": "masks/L3_protect_full_source_rect_v4.png",
+   "protection_mask_sha256_predeclared": "f23a2d26af4969d84c89813ca383407acaf54b6ce9ef716b715e0edba25e32d4",
+   "protection_mask_sha256_after": "f23a2d26af4969d84c89813ca383407acaf54b6ce9ef716b715e0edba25e32d4",
+   "protection_mask_identical_to_v3": true,
+   "v3_mask_sha256": "f23a2d26af4969d84c89813ca383407acaf54b6ce9ef716b715e0edba25e32d4",
+   "protection_equality_proof": {
+    "method": "PNG save -> reload -> np.array_equal(candidate[0:941, ox:ox+1672], draft_v1 RGBA) + per-pixel count",
+    "identical": true,
+    "protected_pixels": 1573352,
+    "changed_protected_pixels": 0,
+    "source_sha256_after": "1fed9a5261de22d2a03f634e3a31c1b200c05babccebf3d0569ab0a73b90aee6"
+   },
+   "generation": {
+    "L3L_rock": {
+     "raw_file": "imagegen_raw/L3L_rock.png",
+     "raw_sha256": "6f28cda21c99eeca68b8991449d515d22d217fda2ca26da860460e8807b19fbe",
+     "raw_size": [
+      1536,
+      1024
+     ],
+     "scale_raw_to_local": [
+      0.234375,
+      0.234375
+     ],
+     "aspect_mismatch_pct": 0.0,
+     "registration": {
+      "right_of_gap": {
+       "best_shift": [
+        0,
+        0
+       ],
+       "err": 10.26,
+       "err_at_0_0": 10.26
+      }
+     },
+     "G2_sides_agree": true,
+     "applied_shift_local_px": [
+      0,
+      0
+     ],
+     "placed_rows": [
+      701,
+      940
+     ],
+     "placed_cols": [
+      0,
+      95
+     ],
+     "rows_outside_band_in_gap": "alpha 0 (declared, not generated)"
+    }
+   },
+   "G5_forbidden_zone": {
+    "L3L_rock": {
+     "forbid_pixels": 75002,
+     "violations_alpha_gt8": 0,
+     "max_alpha_in_forbid": 2,
+     "pass": true
+    }
+   },
+   "joins": {
+    "left_inner_x96": {
+     "G3_contour": "FAIL",
+     "G4_value": "PASS",
+     "G4_ratio": 1.79,
+     "detail": {
+      "G3_contour": {
+       "pass": false,
+       "a8": {
+        "src": [
+         732,
+         940
+        ],
+        "pad": [
+         776,
+         940
+        ],
+        "top_delta": 44,
+        "bottom_delta": 0
+       },
+       "a128": {
+        "src": [
+         791,
+         940
+        ],
+        "pad": [
+         783,
+         940
+        ],
+        "top_delta": 8,
+        "bottom_delta": 0
+       }
+      },
+      "G4_value": {
+       "pass": true,
+       "join_mae": 10.08,
+       "source_baseline_mae": 5.62,
+       "ratio": 1.79
+      }
+     },
+     "visual": "FAIL (gates G3; visual partial): SAME boulder now continues at source contact height (big improvement vs v3 ~40px lower separate rock) and closes at the far left; but dense dry-grass clump ends vertically at the join, generated grass is sparse -> visible density step at 1x/4x; lit top edge slightly flatter/brighter",
+     "verdict": "FAIL"
+    },
+    "right_inner_x1768_HELD_v3": {
+     "G3_contour": "FAIL",
+     "G4_value": "PASS",
+     "G4_ratio": 1.39,
+     "detail": {
+      "G3_contour": {
+       "pass": false,
+       "a8": {
+        "src": [
+         773,
+         940
+        ],
+        "pad": [
+         794,
+         940
+        ],
+        "top_delta": 21,
+        "bottom_delta": 0
+       },
+       "a128": {
+        "src": [
+         794,
+         940
+        ],
+        "pad": [
+         795,
+         940
+        ],
+        "top_delta": 1,
+        "bottom_delta": 0
+       }
+      },
+      "G4_value": {
+       "pass": true,
+       "join_mae": 8.6,
+       "source_baseline_mae": 6.17,
+       "ratio": 1.39
+      }
+     },
+     "visual": "HELD (unchanged v3 pixels, provenance raw copy). Visual PASS as in v3; note predeclared a8 contour gate flags grass tips (21px) — gate is strict on sparse grass",
+     "verdict": "HELD (v3)"
+    }
+   },
+   "composition": "Source rocks/grass/tree exact bytes; pads only; not visible in game without src-rect change (not done)",
+   "alpha_stats": {
+    "new_pixels_alpha_gt0": 19006,
+    "new_low_alpha_1_32_frac": 0.122,
+    "source_low_alpha_1_32_frac": 0.337,
+    "changed_protected_pixels": 0
+   },
+   "v3_to_v4_delta": {
+    "v3_candidate_sha256": "8f6958f3b191372c57465e25979386e85194faec84cdd184649d2c521a6b1fc9",
+    "v3_status": "PARTIAL: right pad usable candidate, left pad REJECTED",
+    "geometry": "unchanged",
+    "protected_region": "identical bytes in both"
+   },
+   "qa_files": [
+    "qa_v4/L3_join_left_inner_x96_1x_orig_v3_v4.png",
+    "qa_v4/L3_join_left_inner_x96_4x_orig_v3_v4.png",
+    "qa_v4/L3_join_right_inner_x1768_HELDv3_1x_orig_v3_v4.png",
+    "qa_v4/L3_join_right_inner_x1768_HELDv3_4x_orig_v3_v4.png",
+    "qa_v4/L3_v4_alpha_check_bg4.png",
+    "qa_v4/L3_v4_diff_source_coords.png",
+    "qa_v4/L3_v4_edit_scope.png",
+    "qa_v4/L3_v4_gamescale_cyan.png",
+    "qa_v4/L3_v4_gamescale_dark.png"
+   ],
+   "L3_right_held": {
+    "provenance": "raw copy candidates_v3/candidates/L3_candidate.png x1768..1895 all rows",
+    "v3_sha256": "8f6958f3b191372c57465e25979386e85194faec84cdd184649d2c521a6b1fc9"
+   }
+  }
+ },
+ "integration_qa": {
+  "adapter": "scripts/integration_v4.py (imports Codex render_integration.candidate_profile read-only, writes qa_v4/integration only)",
+  "profiles": [
+   "current_draft_v1",
+   "v3_all_unapproved",
+   "v4_all_REJECTED_unapproved"
+  ],
+  "cameras": [
+   0,
+   600,
+   1200,
+   1600,
+   2240
+  ],
+  "wrap_frames": "L1/L2 period boundary +0/-60, inner join centred",
+  "observed": "cam1200: L2 pad block with flat bottom exposes L0 red sky band; L1 pad haze notch; protagonist/enemies/HUD readable in stills"
+ },
+ "verification_scope": {
+  "visually_inspected": [
+   "raw outputs",
+   "L1/L2/L3 joins 1x+4x original/v3/v4",
+   "L1/L2 2-tile",
+   "L3 alpha check 4 bgs",
+   "v4 cam1200 integration"
+  ],
+  "generated_not_individually_viewed": "remaining tile/alpha/cam images were generated deterministically for coordinator QA",
+  "untested": [
+   "native window",
+   "DPI 100/125/150%",
+   "real 60FPS",
+   "human dynamic play"
+  ]
+ }
+}

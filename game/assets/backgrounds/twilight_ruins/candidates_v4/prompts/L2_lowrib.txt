@@ -1,0 +1,6 @@
+L2 MID INVASION — low rubble + interrupted rib stubs. Image 1 = prep/L2_lowrib_GENINPUT_canvas_1024x1024.png (local 640x640 crop upscaled x1.6; source rows 100..739). Gap = local x128..511 (1024-scale x205..818). Yellow line = local x440 (1024-scale x704).
+Left border: low rubble / ruined-city ground mass (opaque rows ~517..636); the tower above already ends inside the context.
+Right border: the cut LEFT END of a large organic alien rib-lattice arch (bony ribs with oval openings, faint teal glints) running down-right; at the border it fills rows ~174..640: lattice on top, crumbling Gothic wall below.
+(a) Left of the yellow line: ONLY low rubble / collapsed masonry ground; top follows the green line, bottom on the blue line (flat, rows 636->640: no step, no notch, no overhang).
+(b) Right of the yellow line (last 72 source px): continue the cut ribs only a short way LEFT along their existing direction and thickness, then end them as broken, snapped-off rib tips; beneath them the lattice and wall crumble down into the same rubble mound.
+Do NOT complete or close the arch, no peak, spire, second arch or any new landmark. Red-hatched area stays transparent.

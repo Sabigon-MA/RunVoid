@@ -1,0 +1,53 @@
+{
+  "candidate_status": "QA only, not approved",
+  "candidate_protection": {
+    "L1": {
+      "file": "C:\\Users\\sukim\\orca\\RunVoid\\game\\assets\\backgrounds\\twilight_ruins\\candidates_v3\\candidates\\L1_candidate.png",
+      "source_rgba_equal": true,
+      "source_offset": [
+        0,
+        0
+      ],
+      "size": [
+        1992,
+        941
+      ],
+      "approved": false,
+      "qa_period": 1144
+    },
+    "L2": {
+      "file": "C:\\Users\\sukim\\orca\\RunVoid\\game\\assets\\backgrounds\\twilight_ruins\\candidates_v3\\candidates\\L2_candidate.png",
+      "source_rgba_equal": true,
+      "source_offset": [
+        0,
+        0
+      ],
+      "size": [
+        2056,
+        941
+      ],
+      "approved": false,
+      "qa_period": 1180
+    },
+    "L3": {
+      "file": "C:\\Users\\sukim\\orca\\RunVoid\\game\\assets\\backgrounds\\twilight_ruins\\candidates_v3\\candidates\\L3_candidate.png",
+      "source_rgba_equal": true,
+      "source_offset": [
+        96,
+        0
+      ],
+      "size": [
+        1896,
+        941
+      ],
+      "approved": false,
+      "note": "QA adapter retains active core/fade settings; source padding rendered separately"
+    }
+  },
+  "profiles": [
+    "before",
+    "corrected",
+    "candidate_unapproved"
+  ],
+  "scene_geometry_unchanged": true
+}

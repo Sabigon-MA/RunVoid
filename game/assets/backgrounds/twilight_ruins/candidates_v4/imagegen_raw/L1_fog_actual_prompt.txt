@@ -1,0 +1,12 @@
+LOCAL masked inpaint of a SMALL CROP of one parallax background layer of a hand-painted, painterly 2D side-scroller (dusk ruins; burnt orange / dusty burgundy / plum palette, restrained teal only on alien machinery; warm rim light from the left).
+Image 1 = the crop to edit. Its non-gap parts are final approved pixels that will be overwritten byte-for-byte with the originals afterwards: do NOT move, rescale, recolour or restyle them (any change there is discarded and becomes a visible cut).
+Paint ONLY inside the magenta-framed gap rectangle (white in image 2, the mask).
+Image 3 = GUIDE, reference only, never paint it: red hatching = must stay fully transparent; green line = top silhouette of the new material; blue line = bottom edge of the new material; yellow = special zone.
+Return exactly the same framing/size/aspect as image 1. Real transparency (alpha 0) everywhere outside painted matter: no backing colour, checkerboard, frame, border, text or watermark.
+At BOTH gap borders the first new column must continue the adjacent existing column exactly: same silhouette height, same brightness/value, same alpha softness, same brush texture and pixel density. Minimum additions; nothing new that is not described below.
+
+L1 FAR CASTLE — fog/low-terrain bridge. Image 1 = prep/L1_fog_GENINPUT_canvas_1536x1024.png (local 576x384 crop upscaled x2.667; source rows 300..683). Gap = local x128..447 (1536-scale x341..1194).
+Left border: layered dusky hills and luminous pink haze cut vertically (opaque from source row 408 down to ~623, soft lower fade to ~646). The cathedral wall above has ALREADY ENDED inside the left context — do not continue any wall.
+Right border: only a faint translucent pink fog wisp (rows ~600..642, opacity <= ~40/255). The small stubs further right in the context are existing and must NOT be repeated.
+Paint ONLY layered hazy hills and fog: continue the hill silhouettes from the left border at the same heights and value, then let them descend and dissolve into haze along the green line, becoming the thin translucent fog band that matches the right border's height, colour and very low opacity. NO ruins, walls, stubs, towers, arches, rocks or trees. Low-contrast far distance. Red-hatched area and below the blue line stay transparent.
+

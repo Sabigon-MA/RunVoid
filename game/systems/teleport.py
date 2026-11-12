@@ -107,6 +107,9 @@ class TeleportSystem:
         fx, fy = foot
         for dx, dy in self._offsets:
             rect = entity.rect_at_foot(fx + dx, fy + dy)
+            # ?????????????????????????
+            if getattr(entity, "is_boss", False) and not world.terrain.ground_state(rect)[0]:
+                continue
             if not self.is_safe(world, rect):
                 continue
             if not self.path_clear(world.terrain, anchor, rect.center):

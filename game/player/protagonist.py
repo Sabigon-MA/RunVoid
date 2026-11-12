@@ -35,6 +35,8 @@ class Protagonist(Player):
         self.device_flash = 0.3
         # 交換先での接地状態を即座に反映（次フレームの移動を待たない）
         grounded, one_way = world.terrain.ground_state(self.rect)
+        # ???????????????????????????????
+        self.teleport_grounded = grounded and (not self.on_ground or self.teleport_grounded)
         self.on_ground = grounded
         self.on_one_way = one_way
 

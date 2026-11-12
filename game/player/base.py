@@ -33,6 +33,8 @@ class Player:
         self.move_dir = 0
         self.on_ground = False
         self.on_one_way = False
+        # ?????????????????????????????
+        self.teleport_grounded = False
         self.hp = self.stats["max_hp"]
         self.alive = True
         self.invuln = 0.0
@@ -142,13 +144,13 @@ class Player:
     def try_dash(self) -> bool:
         if self.dash_cooldown > 0 or self.dash_timer > 0:
             return False
-        if not self.on_ground and self.air_dashes_remaining <= 0:
+        if (not self.on_ground or self.teleport_grounded) and self.air_dashes_remaining <= 0:
             return False
         self.dash_dir = self.move_dir or self.facing
         self.facing = self.dash_dir
         self.dash_timer = self.stats["dash_duration"]
         self.dash_cooldown = self.stats["dash_cooldown"]
-        if not self.on_ground:
+        if not self.on_ground or self.teleport_grounded:
             self.air_dashes_remaining -= 1
         self.jumping = False
         self.vy = 0.0
@@ -186,7 +188,9 @@ class Player:
 
         # ジャンプ（押した瞬間のみ。長押しで自動的に二段目は出ない）
         if self.jump_buffer > 0:
-            if self.on_ground or self.coyote > 0:
+            ground_jump = ((self.on_ground or self.coyote > 0)
+                           and (not self.teleport_grounded or self.jumps_used == 0))
+            if ground_jump:
                 # 地上ジャンプ（コヨーテタイム中も地上扱い）= 1回目
                 self._start_jump(self.stats["jump_speed"])
                 self.jumps_used = 1
@@ -226,15 +230,17 @@ class Player:
         grounded, one_way = world.terrain.ground_state(self.rect, ignore_one_way=self.drop_timer > 0)
         if grounded and self.vy >= 0:
             # 着地でジャンプ回数と空中ダッシュ使用権を回復
-            self.jumps_used = 0
-            self.air_dashes_remaining = self.max_air_dashes
+            if not self.teleport_grounded:
+                self.jumps_used = 0
+                self.air_dashes_remaining = self.max_air_dashes
             if not self.on_ground:
                 self.on_landed()
             self.on_ground = True
             self.on_one_way = one_way
-            self.coyote = config.PHYSICS["coyote_time"]
+            self.coyote = 0.0 if self.teleport_grounded else config.PHYSICS["coyote_time"]
             self.vy = 0.0
         else:
+            self.teleport_grounded = False
             self.on_ground = False
             self.on_one_way = False
 

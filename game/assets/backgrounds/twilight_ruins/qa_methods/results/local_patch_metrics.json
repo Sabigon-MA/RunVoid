@@ -1,0 +1,18 @@
+{
+  "L1": {
+    "internal_edge_band": 115,
+    "central_rgba_exact": true,
+    "boundary_rgba_mae": 3.915277777777778,
+    "left_patch_internal_cut_mae": 4.586111111111111,
+    "right_patch_internal_cut_mae": 11.603240740740741,
+    "status": "experimental rejected-candidate edges only; NOT active or accepted"
+  },
+  "L2": {
+    "internal_edge_band": 126,
+    "central_rgba_exact": true,
+    "boundary_rgba_mae": 1.9550925925925926,
+    "left_patch_internal_cut_mae": 12.744907407407407,
+    "right_patch_internal_cut_mae": 1.8476851851851852,
+    "status": "experimental rejected-candidate edges only; NOT active or accepted"
+  }
+}

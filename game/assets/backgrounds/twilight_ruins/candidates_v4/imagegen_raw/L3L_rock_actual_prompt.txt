@@ -1,0 +1,12 @@
+LOCAL masked inpaint of a SMALL CROP of one parallax background layer of a hand-painted, painterly 2D side-scroller (dusk ruins; burnt orange / dusty burgundy / plum palette, restrained teal only on alien machinery; warm rim light from the left).
+Image 1 = the crop to edit. Its non-gap parts are final approved pixels that will be overwritten byte-for-byte with the originals afterwards: do NOT move, rescale, recolour or restyle them (any change there is discarded and becomes a visible cut).
+Paint ONLY inside the magenta-framed gap rectangle (white in image 2, the mask).
+Image 3 = GUIDE, reference only, never paint it: red hatching = must stay fully transparent; green line = top silhouette of the new material; blue line = bottom edge of the new material; yellow = special zone.
+Return exactly the same framing/size/aspect as image 1. Real transparency (alpha 0) everywhere outside painted matter: no backing colour, checkerboard, frame, border, text or watermark.
+At BOTH gap borders the first new column must continue the adjacent existing column exactly: same silhouette height, same brightness/value, same alpha softness, same brush texture and pixel density. Minimum additions; nothing new that is not described below.
+
+L3 NEAR DEBRIS — outer LEFT end of the cut boulder. Image 1 = prep/L3L_rock_GENINPUT_canvas_1536x1024.png (local 360x240 crop upscaled x4.267; source rows 701..940). Gap = local x0..95 (1536-scale x0..409); this is the far-left outer end of the layer.
+Right border: a large dark charcoal-brown boulder cut vertically: lit top edge at source row ~863..866, dark cracked face down to ~916, dry straw grass above it (up to ~row 732), ground rubble/grass below.
+Paint the LEFT END OF THAT SAME BOULDER: top edge at the same height (green line, rounding down only in the last ~30 source px), same face colour, crack texture and warm rim light, closing with a rounded left corner by local x~8. Grass tufts above continue and end in natural tips; thin ground rubble along the bottom (blue line).
+Do NOT make a separate smaller/lower rock, no new tree, no bright outline or halo. Red-hatched area stays transparent.
+

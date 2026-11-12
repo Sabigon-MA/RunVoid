@@ -1,0 +1,6 @@
+LOCAL masked inpaint of a SMALL CROP of one parallax background layer of a hand-painted, painterly 2D side-scroller (dusk ruins; burnt orange / dusty burgundy / plum palette, restrained teal only on alien machinery; warm rim light from the left).
+Image 1 = the crop to edit. Its non-gap parts are final approved pixels that will be overwritten byte-for-byte with the originals afterwards: do NOT move, rescale, recolour or restyle them (any change there is discarded and becomes a visible cut).
+Paint ONLY inside the magenta-framed gap rectangle (white in image 2, the mask).
+Image 3 = GUIDE, reference only, never paint it: red hatching = must stay fully transparent; green line = top silhouette of the new material; blue line = bottom edge of the new material; yellow = special zone.
+Return exactly the same framing/size/aspect as image 1. Real transparency (alpha 0) everywhere outside painted matter: no backing colour, checkerboard, frame, border, text or watermark.
+At BOTH gap borders the first new column must continue the adjacent existing column exactly: same silhouette height, same brightness/value, same alpha softness, same brush texture and pixel density. Minimum additions; nothing new that is not described below.

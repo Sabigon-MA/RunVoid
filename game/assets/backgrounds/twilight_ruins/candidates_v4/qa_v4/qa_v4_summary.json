@@ -1,0 +1,20 @@
+{
+ "L1": {
+  "new_pixels_alpha_gt0": 55589,
+  "new_low_alpha_1_32_frac": 0.311,
+  "source_low_alpha_1_32_frac": 0.122,
+  "changed_protected_pixels": 0
+ },
+ "L2": {
+  "new_pixels_alpha_gt0": 73735,
+  "new_low_alpha_1_32_frac": 0.124,
+  "source_low_alpha_1_32_frac": 0.143,
+  "changed_protected_pixels": 0
+ },
+ "L3": {
+  "new_pixels_alpha_gt0": 19006,
+  "new_low_alpha_1_32_frac": 0.122,
+  "source_low_alpha_1_32_frac": 0.337,
+  "changed_protected_pixels": 0
+ }
+}
