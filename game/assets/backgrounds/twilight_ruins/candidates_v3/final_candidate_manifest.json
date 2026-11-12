@@ -1,0 +1,321 @@
+{
+  "schema": "runvoid.bg.candidates_v3/1",
+  "adopted": false,
+  "connected_to_game_config": false,
+  "scale_rule": "game scale 960/1672 x, 540/941 y applied to the whole candidate; never squeezed to 960 width",
+  "layers": {
+    "L1": {
+      "candidate_file": "candidates/L1_candidate.png",
+      "candidate_sha256": "6cfd522c874f2dd91ce3bc8c44577432aac4a6a63e4ff44d2e54fcaffb5c7ebd",
+      "alt_unshifted_file": "candidates/L1_candidate_unshifted_alt.png",
+      "alt_unshifted_sha256": "2414186e6256f3cd0d2efc87bcd8912aebbb82b49d74ebf510bbd01a5140bb2e",
+      "canvas_size": [
+        1992,
+        941
+      ],
+      "source_offset": [
+        0,
+        0
+      ],
+      "source_size": [
+        1672,
+        941
+      ],
+      "source_file": "draft_v1/02_far_castle.png",
+      "source_sha256": "05c9805259f165fbd67182ff9cdd7b5d06b6587d0e6dae9478df9a453fdf0852",
+      "source_sha256_after": "05c9805259f165fbd67182ff9cdd7b5d06b6587d0e6dae9478df9a453fdf0852",
+      "protection_mask": "masks/L1_protect_full_source_rect.png",
+      "protection_mask_sha256_predeclared": "183960f194c287904c82d5e0a0598c1dec361eaa159ecb078f4b6c123987e282",
+      "protection_mask_sha256_after": "183960f194c287904c82d5e0a0598c1dec361eaa159ecb078f4b6c123987e282",
+      "protection_mask_kind": "FULL original source rectangle (strongest; not semantic)",
+      "protection_equality_proof": {
+        "method": "np.array_equal(candidate[oy:oy+941, ox:ox+1672], draft_v1 RGBA) after PNG save+reload; plus per-pixel diff count",
+        "registered_identical": true,
+        "unshifted_identical": true,
+        "protected_pixels": 1573352,
+        "changed_protected_pixels": 0
+      },
+      "tile_period_original_px": 1992,
+      "tile_period_game_px": 1143.73,
+      "generation": {
+        "bridge": {
+          "raw_file": "imagegen_raw/L1_bridge.png",
+          "raw_sha256": "8d89d940d38eae5709f9c9c4e4bcee633f6770763a967e53fbb6d1dca5e6dd71",
+          "raw_size": [
+            1536,
+            1024
+          ],
+          "scale_to_canvas": [
+            0.919271,
+            0.918945
+          ],
+          "aspect_mismatch_pct": 0.035,
+          "applied_shift_canvas_px": [
+            -1,
+            -13
+          ],
+          "applied_shift_original_px": [
+            -1,
+            -13
+          ],
+          "band_err_applied": {
+            "left_of_gap": 19.11,
+            "right_of_gap": 115.86
+          },
+          "per_side": {
+            "left_of_gap": {
+              "best_shift": [
+                0,
+                -3
+              ],
+              "err": 18.42,
+              "err_at_0_0": 19.17
+            },
+            "right_of_gap": {
+              "best_shift": [
+                -16,
+                -16
+              ],
+              "err": 114.42,
+              "err_at_0_0": 117.72
+            }
+          },
+          "whole_context_mean_abs_premul_after_shift": 25.07,
+          "gap_canvas_x": [
+            546,
+            866
+          ],
+          "gap_to_candidate_dx": 1126,
+          "gap_to_candidate_dy": 0
+        }
+      },
+      "acceptance": {
+        "status": "REJECTED_JOIN_FAIL",
+        "protected_exact": true,
+        "inner_boundary": "FAIL: visible vertical cut at x=1672. Generated hill/haze value and ridge height do not continue the source; registered variant (applied shift dx-1,dy-13, driven by the failing right side) lifts the haze bottom (step); unshifted variant has a lower fog bottom than source and the same value step.",
+        "outer_seam": "FAIL: pad right edge is a tall hill block (alpha rows 528..654) abutting source x=0 thin fog tip (rows 600..640) -> hard cliff. Generator redrew the fog tip as hills; per-side registration error 114 (unrecoverable by shifting).",
+        "composition": "Source cathedral/towers/hills unchanged (exact bytes). Added pad adds low broken ruin stubs + hills only, no new castle."
+      }
+    },
+    "L2": {
+      "candidate_file": "candidates/L2_candidate.png",
+      "candidate_sha256": "5fae68c4b0ef29107a6d8c55d8187841992134362e803d397349aadbc836c3ba",
+      "alt_unshifted_file": "candidates/L2_candidate_unshifted_alt.png",
+      "alt_unshifted_sha256": "acb906c7de9c540f5c67f48410c9c5fd833d107375f98899a7790337d9e31319",
+      "canvas_size": [
+        2056,
+        941
+      ],
+      "source_offset": [
+        0,
+        0
+      ],
+      "source_size": [
+        1672,
+        941
+      ],
+      "source_file": "draft_v1/03_mid_invasion.png",
+      "source_sha256": "02786c21828a96c25526c39d5bf03c542a5507c424932195a01674a39d2dbd84",
+      "source_sha256_after": "02786c21828a96c25526c39d5bf03c542a5507c424932195a01674a39d2dbd84",
+      "protection_mask": "masks/L2_protect_full_source_rect.png",
+      "protection_mask_sha256_predeclared": "92fd79808b811dc185256d2d856981cacb10c7643a867375a60c39c35a15c3c2",
+      "protection_mask_sha256_after": "92fd79808b811dc185256d2d856981cacb10c7643a867375a60c39c35a15c3c2",
+      "protection_mask_kind": "FULL original source rectangle (strongest; not semantic)",
+      "protection_equality_proof": {
+        "method": "np.array_equal(candidate[oy:oy+941, ox:ox+1672], draft_v1 RGBA) after PNG save+reload; plus per-pixel diff count",
+        "registered_identical": true,
+        "unshifted_identical": true,
+        "protected_pixels": 1573352,
+        "changed_protected_pixels": 0
+      },
+      "tile_period_original_px": 2056,
+      "tile_period_game_px": 1180.48,
+      "generation": {
+        "bridge": {
+          "raw_file": "imagegen_raw/L2_bridge.png",
+          "raw_sha256": "bdb47f8677cc979dc82f5c63ca0f48e2f1300304bc1834777105f5f122c1da75",
+          "raw_size": [
+            1536,
+            1024
+          ],
+          "scale_to_canvas": [
+            0.919271,
+            0.918945
+          ],
+          "aspect_mismatch_pct": 0.035,
+          "applied_shift_canvas_px": [
+            5,
+            1
+          ],
+          "applied_shift_original_px": [
+            5,
+            1
+          ],
+          "band_err_applied": {
+            "left_of_gap": 25.18,
+            "right_of_gap": 17.8
+          },
+          "per_side": {
+            "left_of_gap": {
+              "best_shift": [
+                3,
+                2
+              ],
+              "err": 23.58,
+              "err_at_0_0": 27.96
+            },
+            "right_of_gap": {
+              "best_shift": [
+                6,
+                2
+              ],
+              "err": 17.5,
+              "err_at_0_0": 23.91
+            }
+          },
+          "whole_context_mean_abs_premul_after_shift": 20.45,
+          "gap_canvas_x": [
+            514,
+            898
+          ],
+          "gap_to_candidate_dx": 1158,
+          "gap_to_candidate_dy": 0
+        }
+      },
+      "acceptance": {
+        "status": "REJECTED_JOIN_FAIL",
+        "protected_exact": true,
+        "inner_boundary": "FAIL: generated rubble/arch rib feet start abruptly at x=1672 next to source low terrain; ground bottom step and notch (source ends ~y636 vs pad ~y690) exposes L0 red sky in 960 viewport.",
+        "outer_seam": "PARTIAL/FAIL: rib arch upper silhouette roughly meets source x=0 (rows 170..687 vs 174..644) but lower ground band steps by ~43px and textures/rib layout differ at the seam (vertical line visible at 1x).",
+        "composition": "Scene-level silhouette changes: pad completes the alien arch into a tall peaked structure that reads as a new landmark next to the source arch. Source pixels unchanged."
+      }
+    },
+    "L3": {
+      "candidate_file": "candidates/L3_candidate.png",
+      "candidate_sha256": "8f6958f3b191372c57465e25979386e85194faec84cdd184649d2c521a6b1fc9",
+      "alt_unshifted_file": "candidates/L3_candidate_unshifted_alt.png",
+      "alt_unshifted_sha256": "a0b801dc69124a7e7673f42a89debba39265431fe61d8cc7f50e5ed0e22b62d0",
+      "canvas_size": [
+        1896,
+        941
+      ],
+      "source_offset": [
+        96,
+        0
+      ],
+      "source_size": [
+        1672,
+        941
+      ],
+      "source_file": "draft_v1/04_near_debris.png",
+      "source_sha256": "1fed9a5261de22d2a03f634e3a31c1b200c05babccebf3d0569ab0a73b90aee6",
+      "source_sha256_after": "1fed9a5261de22d2a03f634e3a31c1b200c05babccebf3d0569ab0a73b90aee6",
+      "protection_mask": "masks/L3_protect_full_source_rect.png",
+      "protection_mask_sha256_predeclared": "f23a2d26af4969d84c89813ca383407acaf54b6ce9ef716b715e0edba25e32d4",
+      "protection_mask_sha256_after": "f23a2d26af4969d84c89813ca383407acaf54b6ce9ef716b715e0edba25e32d4",
+      "protection_mask_kind": "FULL original source rectangle (strongest; not semantic)",
+      "protection_equality_proof": {
+        "method": "np.array_equal(candidate[oy:oy+941, ox:ox+1672], draft_v1 RGBA) after PNG save+reload; plus per-pixel diff count",
+        "registered_identical": true,
+        "unshifted_identical": true,
+        "protected_pixels": 1573352,
+        "changed_protected_pixels": 0
+      },
+      "tile_period_original_px": null,
+      "tile_period_game_px": null,
+      "generation": {
+        "outer_left": {
+          "raw_file": "imagegen_raw/L3_outer_left.png",
+          "raw_sha256": "3350beb69b625166d4dc61c40086bab3635af6713b192cc873ac275cb6c22ee4",
+          "raw_size": [
+            1535,
+            1024
+          ],
+          "scale_to_canvas": [
+            0.459935,
+            0.459961
+          ],
+          "aspect_mismatch_pct": 0.006,
+          "applied_shift_canvas_px": [
+            -1,
+            0
+          ],
+          "applied_shift_original_px": [
+            -1,
+            0
+          ],
+          "band_err_applied": {
+            "right_of_gap": 20.52
+          },
+          "per_side": {
+            "right_of_gap": {
+              "best_shift": [
+                -1,
+                0
+              ],
+              "err": 20.52,
+              "err_at_0_0": 20.77
+            }
+          },
+          "whole_context_mean_abs_premul_after_shift": 18.4,
+          "gap_canvas_x": [
+            0,
+            96
+          ],
+          "gap_to_candidate_dx": 0,
+          "gap_to_candidate_dy": 470
+        },
+        "outer_right": {
+          "raw_file": "imagegen_raw/L3_outer_right.png",
+          "raw_sha256": "0cfbec37561b6c92bb3dd86c682addcabb115f890c379da445fc0ce16aaac475",
+          "raw_size": [
+            1536,
+            1024
+          ],
+          "scale_to_canvas": [
+            0.459635,
+            0.459961
+          ],
+          "aspect_mismatch_pct": 0.071,
+          "applied_shift_canvas_px": [
+            0,
+            0
+          ],
+          "applied_shift_original_px": [
+            0,
+            0
+          ],
+          "band_err_applied": {
+            "left_of_gap": 10.32
+          },
+          "per_side": {
+            "left_of_gap": {
+              "best_shift": [
+                0,
+                0
+              ],
+              "err": 10.32,
+              "err_at_0_0": 10.32
+            }
+          },
+          "whole_context_mean_abs_premul_after_shift": 15.54,
+          "gap_canvas_x": [
+            578,
+            706
+          ],
+          "gap_to_candidate_dx": 1190,
+          "gap_to_candidate_dy": 470
+        }
+      },
+      "acceptance": {
+        "status": "PARTIAL: right pad usable candidate, left pad REJECTED",
+        "protected_exact": true,
+        "inner_boundary_left": "FAIL: big rock at source x=0 continues as a differently shaped lower rock (top edge ~40px off, visual estimate); grass density/brightness step -> visible vertical line.",
+        "inner_boundary_right": "PASS (visual, 1x/3x, dark+cyan): masonry blocks close with plausible right ends, grass tips natural, no orange halo or outline style change observed.",
+        "outer_edges": "New outer edges still carry thin ground rubble rows 899..940 (left) / 915..940 (right); expected to sit below the ground line in-game but not verified in-game.",
+        "composition": "Source rocks/grass unchanged; pads only. Not visible in game until src rects are offset +96 and widened (config change, not done). ruin_right x=1330 grass cut is inside the source and cannot be fixed under full-rect protection."
+      }
+    }
+  },
+  "overall": "NOT ACCEPTED: protected-pixel invariance PASS for all; seamless join FAIL for L1, L2, L3-left; L3-right is the only usable local completion."
+}

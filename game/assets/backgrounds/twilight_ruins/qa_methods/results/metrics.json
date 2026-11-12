@@ -1,0 +1,241 @@
+{
+  "scope": "QA only; all official assets/config/game code unchanged",
+  "layers": {
+    "L1": {
+      "source_size": [
+        1672,
+        941
+      ],
+      "source_edge_rows_alpha_gt8": {
+        "left": [
+          600,
+          640
+        ],
+        "right": [
+          392,
+          646
+        ]
+      },
+      "sparse_cut_internal_x": 54,
+      "phase_preserves_pixel_bytes": true,
+      "variants": {
+        "raw": {
+          "period": 960,
+          "boundary_rgba_mae": 36.3444,
+          "relocated_original_cut_rgba_mae": null,
+          "rgb_mae_vs_baseline_by_camera": {
+            "0": 1.2986,
+            "600": 0.868,
+            "1200": 1.2774,
+            "2240": 1.85
+          },
+          "temporal_rgb_mae_mean": 1.3918,
+          "temporal_rgb_mae_max": 1.5574
+        },
+        "baseline_crossfade": {
+          "period": 864,
+          "boundary_rgba_mae": 2.5227,
+          "relocated_original_cut_rgba_mae": null,
+          "rgb_mae_vs_baseline_by_camera": {
+            "0": 0.0,
+            "600": 0.0,
+            "1200": 0.0,
+            "2240": 0.0
+          },
+          "temporal_rgb_mae_mean": 1.3967,
+          "temporal_rgb_mae_max": 1.5646
+        },
+        "A_alpha_only": {
+          "period": 960,
+          "boundary_rgba_mae": 0.0,
+          "relocated_original_cut_rgba_mae": null,
+          "rgb_mae_vs_baseline_by_camera": {
+            "0": 0.9755,
+            "600": 0.5565,
+            "1200": 0.8755,
+            "2240": 1.3836
+          },
+          "temporal_rgb_mae_mean": 1.3121,
+          "temporal_rgb_mae_max": 1.4683
+        },
+        "B_phase_shift": {
+          "period": 960,
+          "boundary_rgba_mae": 0.1616,
+          "relocated_original_cut_rgba_mae": 36.34444444444444,
+          "rgb_mae_vs_baseline_by_camera": {
+            "0": 6.0904,
+            "600": 5.4268,
+            "1200": 5.3897,
+            "2240": 5.2465
+          },
+          "temporal_rgb_mae_mean": 1.3943,
+          "temporal_rgb_mae_max": 1.5622
+        },
+        "C_single_owner": {
+          "period": 864,
+          "boundary_rgba_mae": 2.4009,
+          "relocated_original_cut_rgba_mae": null,
+          "rgb_mae_vs_baseline_by_camera": {
+            "0": 1.1746,
+            "600": 0.6442,
+            "1200": 0.6927,
+            "2240": 0.7754
+          },
+          "temporal_rgb_mae_mean": 1.4787,
+          "temporal_rgb_mae_max": 1.6569
+        }
+      }
+    },
+    "L2": {
+      "source_size": [
+        1672,
+        941
+      ],
+      "source_edge_rows_alpha_gt8": {
+        "left": [
+          174,
+          644
+        ],
+        "right": [
+          519,
+          636
+        ]
+      },
+      "sparse_cut_internal_x": 212,
+      "phase_preserves_pixel_bytes": true,
+      "variants": {
+        "raw": {
+          "period": 960,
+          "boundary_rgba_mae": 38.8593,
+          "relocated_original_cut_rgba_mae": null,
+          "rgb_mae_vs_baseline_by_camera": {
+            "0": 1.152,
+            "600": 3.2084,
+            "1200": 4.6481,
+            "2240": 7.554
+          },
+          "temporal_rgb_mae_mean": 3.9123,
+          "temporal_rgb_mae_max": 4.1001
+        },
+        "baseline_crossfade": {
+          "period": 864,
+          "boundary_rgba_mae": 1.938,
+          "relocated_original_cut_rgba_mae": null,
+          "rgb_mae_vs_baseline_by_camera": {
+            "0": 0.0,
+            "600": 0.0,
+            "1200": 0.0,
+            "2240": 0.0
+          },
+          "temporal_rgb_mae_mean": 3.4223,
+          "temporal_rgb_mae_max": 3.5883
+        },
+        "A_alpha_only": {
+          "period": 960,
+          "boundary_rgba_mae": 0.0,
+          "relocated_original_cut_rgba_mae": null,
+          "rgb_mae_vs_baseline_by_camera": {
+            "0": 0.9777,
+            "600": 3.0733,
+            "1200": 4.7666,
+            "2240": 7.3685
+          },
+          "temporal_rgb_mae_mean": 3.3654,
+          "temporal_rgb_mae_max": 3.5294
+        },
+        "B_phase_shift": {
+          "period": 960,
+          "boundary_rgba_mae": 1.9764,
+          "relocated_original_cut_rgba_mae": 38.85925925925926,
+          "rgb_mae_vs_baseline_by_camera": {
+            "0": 8.7758,
+            "600": 8.6089,
+            "1200": 8.0659,
+            "2240": 7.9551
+          },
+          "temporal_rgb_mae_mean": 3.7695,
+          "temporal_rgb_mae_max": 3.9562
+        },
+        "C_single_owner": {
+          "period": 864,
+          "boundary_rgba_mae": 30.4963,
+          "relocated_original_cut_rgba_mae": null,
+          "rgb_mae_vs_baseline_by_camera": {
+            "0": 1.0784,
+            "600": 0.6717,
+            "1200": 0.5884,
+            "2240": 0.8811
+          },
+          "temporal_rgb_mae_mean": 3.6857,
+          "temporal_rgb_mae_max": 3.8635
+        }
+      }
+    }
+  },
+  "L3": {
+    "canvas_size": [
+      1672,
+      941
+    ],
+    "source_cut_rows": {
+      "outer_left": [
+        737,
+        940
+      ],
+      "outer_right": [
+        774,
+        940
+      ],
+      "crop_left_x1330": [
+        841,
+        940
+      ],
+      "expanded_left_x1240": [
+        875,
+        940
+      ]
+    },
+    "local_alpha_changed_pixels": 3757,
+    "rgb_invariant_alpha_trial": true
+  },
+  "alpha": {
+    "L1": {
+      "alpha0": 1065595,
+      "alpha1_32": 62056,
+      "alpha33_246": 119571,
+      "alpha247_254": 325766,
+      "alpha255": 364,
+      "extreme_red_diagnostic_pixels": 0
+    },
+    "L2": {
+      "alpha0": 1126274,
+      "alpha1_32": 64092,
+      "alpha33_246": 55014,
+      "alpha247_254": 327816,
+      "alpha255": 156,
+      "extreme_red_diagnostic_pixels": 0
+    },
+    "L3": {
+      "alpha0": 1419595,
+      "alpha1_32": 51813,
+      "alpha33_246": 33933,
+      "alpha247_254": 67962,
+      "alpha255": 49,
+      "extreme_red_diagnostic_pixels": 0
+    }
+  },
+  "ground": {
+    "L2_bottom_internal_range_alpha_gt8": [
+      393,
+      436
+    ],
+    "terrain_top": 422,
+    "existing_shade_top": 418
+  },
+  "source_hashes": {
+    "01_sky.png": "15376d295fb9342bc2f94837912d232f1b14d0adad4b897f554dbe095f1a4fec",
+    "02_far_castle.png": "05c9805259f165fbd67182ff9cdd7b5d06b6587d0e6dae9478df9a453fdf0852",
+    "03_mid_invasion.png": "02786c21828a96c25526c39d5bf03c542a5507c424932195a01674a39d2dbd84",
+    "04_near_debris.png": "1fed9a5261de22d2a03f634e3a31c1b200c05babccebf3d0569ab0a73b90aee6"
+  }
+}

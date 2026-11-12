@@ -44,6 +44,7 @@ class World:
         self.mouse_world = self.player.rect.center
         self.hover_target = None
         self.contact_grace = 0.0      # テレポート直後の本体接触ダメージ無効時間
+        self.required_bosses = {e for e in self.enemies if getattr(e, "is_boss", False)}
         self.active_boss = None
         self.wall_halted = False      # 最終ボス撃破で True（以後は二度と動かない）
         self.elapsed = 0.0
@@ -52,7 +53,8 @@ class World:
         self.death_cause: str | None = None
         # ヒットストップ: 残りフレーム数。0 より大きい間は物理更新を丸ごと止める
         self.hitstop_frames = 0
-        self.background = make_background(stage.theme, view_w, view_h) if with_graphics else None
+        self.background = (make_background(stage.theme, view_w, view_h, stage.background)
+                           if with_graphics else None)
         self.terrain_renderer = TerrainRenderer(stage) if with_graphics else None
 
     # ------------------------------------------------------------------
@@ -95,6 +97,7 @@ class World:
             self.hitstop_frames -= 1
             self._update_mouse(inp)
             return False
+        self.required_bosses.update(e for e in self.enemies if getattr(e, "is_boss", False))
         self._update_mouse(inp)
         self.elapsed += dt
         self.teleport.update(dt)
@@ -152,7 +155,9 @@ class World:
         if player.rect.top > self.stage.kill_y:
             self._kill_player("fall")
             return True
-        if player.rect.right >= self.stage.goal_x:
+        bosses_defeated = bool(self.required_bosses) and all(
+            b.death_processed and b.death_cause == "attack" for b in self.required_bosses)
+        if bosses_defeated or (not self.required_bosses and player.rect.right >= self.stage.goal_x):
             self.state = CLEAR
             player.vx = 0
             return True
@@ -225,7 +230,7 @@ class World:
         else:
             self.effects.burst(cx, cy, (40, 20, 50), 18, 200, 0.6)
             self.effects.burst(cx, cy, (190, 90, 255), 10, 140, 0.5)
-        if getattr(enemy, "is_boss", False):
+        if getattr(enemy, "is_boss", False) and cause == "attack":
             self._on_boss_defeated(enemy)
 
     def _kill_player(self, cause: str) -> None:

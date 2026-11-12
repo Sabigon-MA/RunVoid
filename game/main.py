@@ -30,6 +30,7 @@ TITLE, PLAY, PAUSED, DEAD_SCREEN, CLEAR_SCREEN = ("title", "play", "paused", "de
 
 class Game:
     def __init__(self, stage_file: str = config.DEFAULT_STAGE):
+        os.environ["SDL_RENDER_SCALE_QUALITY"] = "nearest"
         pygame.init()
         pygame.display.set_caption(config.WINDOW_TITLE)
         size = (config.SCREEN_WIDTH, config.SCREEN_HEIGHT)
@@ -43,7 +44,7 @@ class Game:
         self.stage = load_stage(stage_file)
         self.input = InputState()
         self.hud = HUD()
-        self.menu_background = make_background(self.stage.theme, *size)
+        self.menu_background = make_background(self.stage.theme, *size, self.stage.background)
         self.world: World | None = None
         self.overlay = None
         self.state = TITLE

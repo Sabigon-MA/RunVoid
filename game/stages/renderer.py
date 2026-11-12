@@ -5,12 +5,14 @@
 """
 from __future__ import annotations
 
+import logging
 import math
 import random
 
 import pygame
 
 import config
+from stages.background import BackgroundAssetError, BackgroundConfig, build_background
 
 
 def _vertical_gradient(w: int, h: int, stops: list[tuple[float, tuple[int, int, int]]]) -> pygame.Surface:
@@ -155,7 +157,14 @@ class TwilightRuinsBackground:
 BACKGROUNDS = {"twilight_ruins": TwilightRuinsBackground}
 
 
-def make_background(theme: str, view_w: int, view_h: int):
+def make_background(theme: str, view_w: int, view_h: int, background: BackgroundConfig | None = None):
+    """背景を作る。画像背景の設定があればそれを使い、画像の欠落・破損時だけ手続き背景へ戻す。"""
+    if background is not None:
+        try:
+            return build_background(background, view_w, view_h)
+        except BackgroundAssetError as exc:
+            logging.getLogger("runvoid.background").warning(
+                "%s -> 手続き背景 '%s' で続行します", exc, theme)
     cls = BACKGROUNDS.get(theme, TwilightRuinsBackground)
     return cls(view_w, view_h)
 

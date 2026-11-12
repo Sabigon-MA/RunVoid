@@ -41,10 +41,12 @@ class InputState:
                 if not self._held_keys[action]:
                     self._release(action)
         elif event.type == pygame.MOUSEBUTTONDOWN:
+            self.mouse_pos = getattr(event, "pos", self.mouse_pos)
             action = self._button_to_action.get(event.button)
             if action:
                 self._press(action)
         elif event.type == pygame.MOUSEBUTTONUP:
+            self.mouse_pos = getattr(event, "pos", self.mouse_pos)
             action = self._button_to_action.get(event.button)
             if action:
                 self._release(action)

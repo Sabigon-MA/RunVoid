@@ -1,0 +1,235 @@
+{
+  "stage_id": 1,
+  "name": "黄昏の廃王国",
+  "resolution": [
+    960,
+    540
+  ],
+  "tile_size": 32,
+  "theme": "twilight_ruins",
+  "background": {
+    "type": "parallax_images",
+    "asset_dir": "assets/backgrounds/twilight_ruins/draft_v1",
+    "layers": [
+      {
+        "id": "L0_sky",
+        "image": "01_sky.png",
+        "factor": 0.0,
+        "repeat": false
+      },
+      {
+        "id": "L1_far_castle",
+        "image": "02_far_castle.png",
+        "factor": 0.15,
+        "repeat": true,
+        "seam": {
+          "mode": "crossfade",
+          "width": 96
+        }
+      },
+      {
+        "id": "L2_mid_invasion",
+        "image": "03_mid_invasion.png",
+        "factor": 0.4,
+        "repeat": true,
+        "seam": {
+          "mode": "crossfade",
+          "width": 96
+        }
+      }
+    ],
+    "decorations": {
+      "id": "L3_near_debris",
+      "image": "04_near_debris.png",
+      "factor": 0.75,
+      "period": 3360,
+      "sprites": {
+        "ruin_left": {
+          "src": [
+            0,
+            610,
+            330,
+            331
+          ],
+          "fade_left": 14
+        },
+        "stones": {
+          "src": [
+            330,
+            860,
+            520,
+            81
+          ]
+        },
+        "grass": {
+          "src": [
+            860,
+            860,
+            460,
+            81
+          ]
+        },
+        "ruin_right": {
+          "src": [
+            1330,
+            640,
+            342,
+            301
+          ],
+          "fade_right": 14
+        }
+      },
+      "placements": [
+        {
+          "sprite": "ruin_left",
+          "x": 330,
+          "bottom": 470
+        },
+        {
+          "sprite": "stones",
+          "x": 760,
+          "bottom": 440
+        },
+        {
+          "sprite": "grass",
+          "x": 1400,
+          "bottom": 440
+        },
+        {
+          "sprite": "ruin_right",
+          "x": 1900,
+          "bottom": 470
+        },
+        {
+          "sprite": "grass",
+          "x": 2620,
+          "bottom": 440
+        },
+        {
+          "sprite": "ruin_left",
+          "x": 3050,
+          "bottom": 470
+        }
+      ]
+    },
+    "ground_shade": {
+      "top": 418,
+      "height": 40,
+      "color": [
+        4,
+        2,
+        4
+      ],
+      "max_alpha": 220
+    }
+  },
+  "spawn": {
+    "x": 480,
+    "y": 382
+  },
+  "wall": {
+    "start_x": 80,
+    "speed": 300,
+    "thickness": 32
+  },
+  "platforms": [
+    {
+      "id": "G01",
+      "x": 0,
+      "y": 422,
+      "w": 1040,
+      "h": 118
+    },
+    {
+      "id": "G02",
+      "x": 1150,
+      "y": 422,
+      "w": 410,
+      "h": 118
+    },
+    {
+      "id": "B01",
+      "x": 1560,
+      "y": 70,
+      "w": 80,
+      "h": 470
+    },
+    {
+      "id": "G03",
+      "x": 1640,
+      "y": 422,
+      "w": 660,
+      "h": 118
+    },
+    {
+      "id": "G04",
+      "x": 2420,
+      "y": 422,
+      "w": 340,
+      "h": 118
+    },
+    {
+      "id": "B02",
+      "x": 2760,
+      "y": 90,
+      "w": 70,
+      "h": 450
+    },
+    {
+      "id": "G05",
+      "x": 2830,
+      "y": 422,
+      "w": 370,
+      "h": 118
+    }
+  ],
+  "one_way_platforms": [
+    {
+      "id": "P01",
+      "x": 1400,
+      "y": 300,
+      "w": 140,
+      "h": 16
+    },
+    {
+      "id": "P02",
+      "x": 2600,
+      "y": 310,
+      "w": 140,
+      "h": 16
+    }
+  ],
+  "enemies": [
+    {
+      "id": "E01",
+      "type": "shadow_crawler",
+      "x": 960,
+      "foot_y": 422
+    },
+    {
+      "id": "E02",
+      "type": "shadow_crawler",
+      "x": 1300,
+      "foot_y": 422
+    },
+    {
+      "id": "E03",
+      "type": "shadow_crawler",
+      "x": 1950,
+      "foot_y": 422
+    },
+    {
+      "id": "E04",
+      "type": "shadow_crawler",
+      "x": 2220,
+      "foot_y": 422
+    },
+    {
+      "id": "E05",
+      "type": "shadow_crawler",
+      "x": 3000,
+      "foot_y": 422
+    }
+  ],
+  "goal_x": 3200
+}

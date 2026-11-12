@@ -1,0 +1,194 @@
+{
+  "source_dir": "draft_v1",
+  "source_size": [
+    1672,
+    941
+  ],
+  "layers": {
+    "L1": {
+      "source_file": "draft_v1/02_far_castle.png",
+      "source_sha256_file": "05c9805259f165fbd67182ff9cdd7b5d06b6587d0e6dae9478df9a453fdf0852",
+      "source_sha256_rgba_bytes": "f1bc0f06f45200a7d00afd2c5fe4d803476ef364e6eba40570953a2d8e9f6284",
+      "tile_period_px_original_scale": 1992,
+      "candidate_canvas_size": [
+        1992,
+        941
+      ],
+      "source_offset_in_candidate": [
+        0,
+        0
+      ],
+      "protection_mask": "masks/L1_protect_full_source_rect.png",
+      "protection_mask_sha256": "183960f194c287904c82d5e0a0598c1dec361eaa159ecb078f4b6c123987e282",
+      "protection_mask_kind": "FULL original source rectangle (strongest; not semantic)",
+      "protected_pixel_count": 1573352,
+      "jobs": {
+        "bridge": {
+          "input_canvas": "prep/L1_bridge_canvas_rgba.png",
+          "input_canvas_sha256": "3411ddf8750dac6c3e9a2007ded1684294fc5456b1eaffe1bc07d9ea11a8aef1",
+          "edit_mask": "prep/L1_bridge_editmask_white_is_generate.png",
+          "edit_mask_sha256": "e13c171eeadeb2e779e4de8f42db376843a6d7aace6d023541b327fb4e587b6f",
+          "edit_mask_alpha_style": "prep/L1_bridge_editmask_openai_alpha0_is_generate.png",
+          "preview": "prep/L1_bridge_preview_gap_magenta.png",
+          "canvas_size": [
+            1412,
+            941
+          ],
+          "gap_canvas_x": [
+            546,
+            866
+          ],
+          "gap_canvas_y": [
+            0,
+            941
+          ],
+          "gap_to_candidate_dx": 1126,
+          "gap_to_candidate_dy": 0,
+          "left_context_source_x": [
+            1126,
+            1672
+          ],
+          "right_context_source_x": [
+            0,
+            546
+          ],
+          "edit_mask_alpha_style_sha256": "38c477385158c2351c376d8013b6f06c34cc04eb31cbdf21ac24697d1110577d"
+        }
+      }
+    },
+    "L2": {
+      "source_file": "draft_v1/03_mid_invasion.png",
+      "source_sha256_file": "02786c21828a96c25526c39d5bf03c542a5507c424932195a01674a39d2dbd84",
+      "source_sha256_rgba_bytes": "0e65dbde70b6eda6c4b0ed96d250ca024b08088e42fe04b1a88267fd751f1e5d",
+      "tile_period_px_original_scale": 2056,
+      "candidate_canvas_size": [
+        2056,
+        941
+      ],
+      "source_offset_in_candidate": [
+        0,
+        0
+      ],
+      "protection_mask": "masks/L2_protect_full_source_rect.png",
+      "protection_mask_sha256": "92fd79808b811dc185256d2d856981cacb10c7643a867375a60c39c35a15c3c2",
+      "protection_mask_kind": "FULL original source rectangle (strongest; not semantic)",
+      "protected_pixel_count": 1573352,
+      "jobs": {
+        "bridge": {
+          "input_canvas": "prep/L2_bridge_canvas_rgba.png",
+          "input_canvas_sha256": "2fe8cd9df0223fd53cf686340bd0c036748b3823c86687bcd842af14d04384fe",
+          "edit_mask": "prep/L2_bridge_editmask_white_is_generate.png",
+          "edit_mask_sha256": "0c0c2877050a9bc87933a7b8da06bf95fdf316fdb27c98026957a00ded00a538",
+          "edit_mask_alpha_style": "prep/L2_bridge_editmask_openai_alpha0_is_generate.png",
+          "preview": "prep/L2_bridge_preview_gap_magenta.png",
+          "canvas_size": [
+            1412,
+            941
+          ],
+          "gap_canvas_x": [
+            514,
+            898
+          ],
+          "gap_canvas_y": [
+            0,
+            941
+          ],
+          "gap_to_candidate_dx": 1158,
+          "gap_to_candidate_dy": 0,
+          "left_context_source_x": [
+            1158,
+            1672
+          ],
+          "right_context_source_x": [
+            0,
+            514
+          ],
+          "edit_mask_alpha_style_sha256": "1ba5663f1c7339865d30c0b5d7226ee09d68b31780df5f4cf7cd6751889c5577"
+        }
+      }
+    },
+    "L3": {
+      "source_file": "draft_v1/04_near_debris.png",
+      "source_sha256_file": "1fed9a5261de22d2a03f634e3a31c1b200c05babccebf3d0569ab0a73b90aee6",
+      "source_sha256_rgba_bytes": "fcb5139c69f93c69bbb8dd58b872cfb115695a51673a8899e3022f29961a3004",
+      "note_rows_above_y0": "candidate pad rows 0..469 stay fully transparent: no source content touches the outer edges above y=470 (edge content starts at y>=720)",
+      "candidate_canvas_size": [
+        1896,
+        941
+      ],
+      "source_offset_in_candidate": [
+        96,
+        0
+      ],
+      "protection_mask": "masks/L3_protect_full_source_rect.png",
+      "protection_mask_sha256": "f23a2d26af4969d84c89813ca383407acaf54b6ce9ef716b715e0edba25e32d4",
+      "protection_mask_kind": "FULL original source rectangle (strongest; not semantic)",
+      "protected_pixel_count": 1573352,
+      "jobs": {
+        "outer_left": {
+          "input_canvas": "prep/L3_outer_left_canvas_rgba.png",
+          "input_canvas_sha256": "3f956795b1a8630a61d7392202955b500c4ee1261babd37e555658e738989c0a",
+          "edit_mask": "prep/L3_outer_left_editmask_white_is_generate.png",
+          "edit_mask_sha256": "7dc43286a9f146cac9e651c49576ef6fcc32c456777fc5939423f49e18024877",
+          "edit_mask_alpha_style": "prep/L3_outer_left_editmask_openai_alpha0_is_generate.png",
+          "preview": "prep/L3_outer_left_preview_gap_magenta.png",
+          "canvas_size": [
+            706,
+            471
+          ],
+          "gap_canvas_x": [
+            0,
+            96
+          ],
+          "gap_canvas_y": [
+            0,
+            471
+          ],
+          "gap_to_candidate_dx": 0,
+          "gap_to_candidate_dy": 470,
+          "context_source_x": [
+            0,
+            610
+          ],
+          "context_source_y": [
+            470,
+            941
+          ],
+          "edit_mask_alpha_style_sha256": "be38e35d545cbcb5c2a34664bd8fc1862d7438fc9eb42423b7960781c5a568a1"
+        },
+        "outer_right": {
+          "input_canvas": "prep/L3_outer_right_canvas_rgba.png",
+          "input_canvas_sha256": "2dfe55ef6924f5dbba06641afa2568c15080d9f738cc9364a2ef21cfc8f258c1",
+          "edit_mask": "prep/L3_outer_right_editmask_white_is_generate.png",
+          "edit_mask_sha256": "ae9d3c3524ce8baa7ca54de0c675d615ddedb741cc0b66af58d9486186b347b6",
+          "edit_mask_alpha_style": "prep/L3_outer_right_editmask_openai_alpha0_is_generate.png",
+          "preview": "prep/L3_outer_right_preview_gap_magenta.png",
+          "canvas_size": [
+            706,
+            471
+          ],
+          "gap_canvas_x": [
+            578,
+            706
+          ],
+          "gap_canvas_y": [
+            0,
+            471
+          ],
+          "gap_to_candidate_dx": 1190,
+          "gap_to_candidate_dy": 470,
+          "context_source_x": [
+            1094,
+            1672
+          ],
+          "context_source_y": [
+            470,
+            941
+          ],
+          "edit_mask_alpha_style_sha256": "02ac96f2ac3faf303e3441a9bf2bd326f9ddc4bd9212df316003db05ef6c59e8"
+        }
+      }
+    }
+  },
+  "protection_policy": "Protection mask = the full original 1672x941 source rectangle at its offset in the candidate canvas; every RGBA byte inside it (including alpha 0/1 transparent holes and semitransparent edges) must equal draft_v1 exactly. Not an alpha threshold and not a semantic building mask. Declared before any generation."
+}

@@ -22,6 +22,7 @@ from bosses import Boss  # noqa: E402
 from enemies import CrawlerState, ShadowCrawler  # noqa: E402
 from stages import parse_stage  # noqa: E402
 from systems.teleport import FAIL_BLOCKED, FAIL_COOLDOWN  # noqa: E402
+from systems.targeting import find_target  # noqa: E402
 from systems.world import CLEAR, DEAD, PLAYING, World  # noqa: E402
 
 GROUND = 422.0
@@ -539,7 +540,7 @@ class Stage1BalanceTests(unittest.TestCase):
     ROUTE = [(980, GROUND, False), (1200, GROUND, False), (1405, 300, True),
              (2270, GROUND, False), (2400, GROUND, False), (2605, 310, True)]
 
-    def _run(self, use_teleport, min_gain=250, first_after=0.0, max_teleports=99):
+    def _run(self, use_teleport, min_gain=250, first_after=0.0, max_teleports=99, target_id=None, trace=None):
         w = World(STAGE_1, with_graphics=False)
         inp = InputState()
         inp.simulate_press("right")
@@ -572,12 +573,19 @@ class Stage1BalanceTests(unittest.TestCase):
             if (use_teleport and w.teleport.ready and w.elapsed >= first_after
                     and w.teleport.count < max_teleports):
                 ahead = [e for e in w.enemies if w.camera.view_rect.contains(e.hurtbox)
-                         and e.x - p.rect.centerx > min_gain]
+                         and e.x - p.rect.centerx > min_gain
+                         and (target_id is None or e.enemy_id == target_id)]
                 if ahead:
                     aim(w, inp, max(ahead, key=lambda e: e.x))
                     inp.simulate_press("teleport")
+            before_count = w.teleport.count
+            before_rect = p.rect.copy()
+            selected = w.camera.to_world(*inp.mouse_pos)
+            selected_enemy = find_target(w.enemies, w.camera, selected)
             if w.update(DT, inp):
                 inp.clear_edges()
+            if trace is not None and w.teleport.count > before_count:
+                trace.append((before_rect, p.rect.copy(), selected, selected_enemy.enemy_id))
             inp.simulate_release("teleport")
             if w.state != PLAYING:
                 break
@@ -594,8 +602,22 @@ class Stage1BalanceTests(unittest.TestCase):
 
     def test_single_well_timed_teleport_over_rampart(self):
         # 城壁（B01）の手前で、城壁の向こうの敵と1回だけ交換するルート
-        w = self._run(True, first_after=1.0)
+        trace = []
+        w = self._run(True, first_after=1.0, max_teleports=1, target_id="E03", trace=trace)
         self.assertEqual(w.state, CLEAR, f"{w.death_cause} at x={w.max_x:.0f}")
+        self.assertEqual(w.teleport.count, 1)
+        self.assertEqual(len(trace), 1)
+        wall = next(r for r in STAGE_1.platforms if r.id == "B01")
+        before, after, selected, target_id = trace[0]
+        self.assertEqual(target_id, "E03")
+        self.assertLessEqual(before.right, wall.x)
+        self.assertGreaterEqual(after.left, wall.x + wall.w)
+        self.assertGreater(selected[0], wall.x + wall.w)
+
+    def test_two_teleports_can_escape(self):
+        w = self._run(True, first_after=1.5, max_teleports=2)
+        self.assertEqual(w.state, CLEAR)
+        self.assertEqual(w.teleport.count, 2)
 
     def test_teleport_clears_faster_than_running(self):
         running = self._run(False)

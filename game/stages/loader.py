@@ -8,6 +8,7 @@ from pathlib import Path
 import pygame
 
 import config
+from stages.background import BackgroundConfig, BackgroundConfigError, parse_background
 
 STAGE_DIR = Path(__file__).resolve().parent
 
@@ -58,6 +59,8 @@ class StageData:
     goal_x: float
     world_width: float
     kill_y: float
+    # 画像パララックス背景の設定。None は従来の手続き背景（既存ステージ・テスト用データとの互換）
+    background: BackgroundConfig | None = None
 
 
 def _require(data: dict, key: str, where: str):
@@ -92,10 +95,16 @@ def parse_stage(data: dict) -> StageData:
         for i, e in enumerate(data.get("enemies", []))
     )
     resolution = tuple(data.get("resolution", [config.SCREEN_WIDTH, config.SCREEN_HEIGHT]))
+    if resolution != (960, 540):
+        raise StageFormatError("resolution: v2.2 requires 960x540")
     goal_x = float(_require(data, "goal_x", "stage"))
     terrain_right = max((p.x + p.w for p in platforms), default=goal_x)
     world_width = float(data.get("world_width", max(goal_x, terrain_right)))
     kill_y = float(data.get("kill_y", resolution[1] + config.FALL_DEATH_MARGIN))
+    try:
+        background = parse_background(data.get("background"))
+    except BackgroundConfigError as exc:
+        raise StageFormatError(str(exc)) from exc
     return StageData(
         stage_id=int(data.get("stage_id", 0)),
         name=str(data.get("name", "")),
@@ -111,6 +120,7 @@ def parse_stage(data: dict) -> StageData:
         goal_x=goal_x,
         world_width=world_width,
         kill_y=kill_y,
+        background=background,
     )
 
 
