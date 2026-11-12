@@ -10,7 +10,7 @@
   },
   "wall": {
     "start_x": 80,
-    "speed": 480,
+    "speed": 300,
     "thickness": 32
   },
   "platforms": [

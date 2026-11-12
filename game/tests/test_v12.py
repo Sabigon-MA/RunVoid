@@ -244,7 +244,8 @@ class InvulnerabilityTests(unittest.TestCase):
         self.assertEqual(p.hp, hp - 1)
 
     def test_lunge_and_contact_same_frame(self):
-        w, inp, e = setup(gap=85)
+        # v2.1: 飛びかかり距離が 60→48px に縮んだため、本体接触まで届く距離に置く（85→75）
+        w, inp, e = setup(gap=75)
         p = w.player
         log = [p.hp]
         for _ in range(90):

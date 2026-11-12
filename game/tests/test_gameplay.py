@@ -84,7 +84,7 @@ class StageTests(unittest.TestCase):
     def test_stage_1_loaded(self):
         self.assertEqual(STAGE_1.name, "黄昏の廃王国")
         self.assertEqual(STAGE_1.goal_x, 3200.0)
-        self.assertEqual(STAGE_1.wall.speed, 480.0)
+        self.assertEqual(STAGE_1.wall.speed, 300.0)
         self.assertGreaterEqual(len(STAGE_1.enemies), 3)
 
 
@@ -105,7 +105,7 @@ class MovementTests(unittest.TestCase):
         step(self.w, self.inp, 30)
         x0 = self.w.player.rect.x
         step(self.w, self.inp, 6)
-        self.assertAlmostEqual((self.w.player.rect.x - x0) / (6 * DT), 420.0, delta=1.0)
+        self.assertAlmostEqual((self.w.player.rect.x - x0) / (6 * DT), 336.0, delta=1.0)
 
     def _jump_height(self, hold_frames):
         settle(self.w, self.inp)
@@ -222,10 +222,11 @@ class WallTests(unittest.TestCase):
         # 480px / 480px/s = 1秒
         self.assertAlmostEqual(w.elapsed, 480 / 480, delta=0.05)
 
-    def test_wall_faster_than_walking_slower_than_dash(self):
+    def test_wall_slightly_slower_than_walking(self):
+        # v2.1: 壁は主人公の通常移動より少し遅い（約9割）
         stats = config.PROTAGONIST["stats"]
-        self.assertGreater(STAGE_1.wall.speed, stats["move_speed"])
-        self.assertLess(STAGE_1.wall.speed, stats["dash_speed"])
+        self.assertLess(STAGE_1.wall.speed, stats["move_speed"])
+        self.assertGreaterEqual(STAGE_1.wall.speed, stats["move_speed"] * 0.85)
 
     def test_wall_ignores_invulnerability(self):
         w = make_world(enemies=False)

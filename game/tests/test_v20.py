@@ -1,4 +1,5 @@
-"""v2.0 変更（主人公1人・テレポート・追跡壁480px/s・ボス拡張の土台）の動作確認。
+"""v2.0 変更（主人公1人・テレポート・追跡壁・ボス拡張の土台）の動作確認。
+v2.1: 横方向の速度を 0.8 倍、追跡壁を 300px/s（通常移動 336px/s より少し遅い）に変更。
 
     cd game
     python -m unittest discover -s tests -v
@@ -98,7 +99,7 @@ class CharacterTests(unittest.TestCase):
 
     def test_movement_params(self):
         s = config.PROTAGONIST["stats"]
-        self.assertEqual((s["move_speed"], s["jump_speed"], s["dash_speed"]), (420.0, 520.0, 850.0))
+        self.assertEqual((s["move_speed"], s["jump_speed"], s["dash_speed"]), (336.0, 520.0, 680.0))
         self.assertEqual((s["dash_cooldown"], s["max_jumps"], s["invuln_time"]), (0.8, 2, 0.3))
         self.assertEqual(config.PHYSICS["gravity"], 1400.0)
         self.assertEqual(config.PHYSICS["coyote_time"], 0.1)
@@ -156,7 +157,7 @@ class TeleportBasicTests(unittest.TestCase):
         click(w, inp, e)
         self.assertEqual(w.teleport.count, 2)
 
-    def test_cooldown_5s_and_failure_does_not_consume(self):
+    def test_cooldown_and_failure_does_not_consume(self):
         w, inp, e = teleport_world()
         click(w, inp, e)
         self.assertEqual(w.teleport.count, 1)
@@ -167,14 +168,14 @@ class TeleportBasicTests(unittest.TestCase):
         self.assertEqual(w.teleport.last_result.reason, FAIL_COOLDOWN)
         self.assertEqual((w.player.rect.x, e.x), pos)
         self.assertAlmostEqual(w.teleport.cooldown_remaining, remaining - DT, delta=1e-6)   # 時間経過分のみ減る
-        # 成功から 5 秒（300フレーム）で再使用できる
+        # 成功からクールダウン（2 秒 = 120フレーム）で再使用できる
         while not w.teleport.ready:
             step(w, inp)
         click(w, inp, e)
         self.assertEqual(w.teleport.count, 2)
 
     def test_cooldown_frames(self):
-        """成功したフレームから 300 フレーム（5.0 秒）後のフレームで再使用できる。"""
+        """成功したフレームから 120 フレーム（2.0 秒）後のフレームで再使用できる。"""
         w, inp, e = teleport_world()
         click(w, inp, e)
         frames = 0
@@ -529,7 +530,8 @@ class BossTests(unittest.TestCase):
 
 # ---------------------------------------------------------------------------
 class Stage1BalanceTests(unittest.TestCase):
-    """本番ステージ: 壁は通常移動より速く、テレポートを使わないと逃げ切れない。
+    """本番ステージ: v2.1 で壁は通常移動より少し遅くなり、走るだけでも逃げ切れる。
+    テレポートはクリア時間の短縮になる。
 
     ボットは右入力を押し続け、地上ではダッシュを使い、決められた位置でジャンプする。
     """
@@ -581,10 +583,9 @@ class Stage1BalanceTests(unittest.TestCase):
                 break
         return w
 
-    def test_without_teleport_wall_catches_up(self):
+    def test_without_teleport_can_escape_by_running(self):
         w = self._run(False)
-        self.assertEqual(w.state, DEAD)
-        self.assertEqual(w.death_cause, "wall")
+        self.assertEqual(w.state, CLEAR, f"{w.death_cause} at x={w.max_x:.0f}")
 
     def test_with_teleport_can_escape(self):
         w = self._run(True)
@@ -596,12 +597,11 @@ class Stage1BalanceTests(unittest.TestCase):
         w = self._run(True, first_after=1.0)
         self.assertEqual(w.state, CLEAR, f"{w.death_cause} at x={w.max_x:.0f}")
 
-    def test_wasted_teleport_is_not_enough(self):
-        # 開始直後に1回使い、以降は使わない → 2つ目の城壁で捕まる
-        w = self._run(True, max_teleports=1)
-        self.assertEqual(w.teleport.count, 1)
-        self.assertEqual(w.state, DEAD)
-        self.assertEqual(w.death_cause, "wall")
+    def test_teleport_clears_faster_than_running(self):
+        running = self._run(False)
+        teleporting = self._run(True)
+        self.assertEqual((running.state, teleporting.state), (CLEAR, CLEAR))
+        self.assertLess(teleporting.elapsed, running.elapsed)
 
 
 if __name__ == "__main__":

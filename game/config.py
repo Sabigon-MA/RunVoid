@@ -67,10 +67,10 @@ PROTAGONIST = {
     "name": "主人公",
     "stats": {
         "max_hp": 5,
-        "move_speed": 420.0,
+        "move_speed": 336.0,     # v2.1: 横方向の速度を全体で 0.8 倍 (420→336)
         "jump_speed": 520.0,
         "double_jump_speed": 520.0,
-        "dash_speed": 850.0,
+        "dash_speed": 680.0,     # v2.1: 850→680
         "dash_duration": 0.15,
         "dash_cooldown": 0.8,
         "invuln_time": 0.3,     # 被弾した瞬間から開始
@@ -89,7 +89,7 @@ def protagonist_config() -> dict:
 # テレポート（敵と位置を交換する）
 # ---------------------------------------------------------------------------
 TELEPORT = {
-    "cooldown": 5.0,            # 成功時のみ消費。ゲーム内時間で進む（ポーズ中は止まる）
+    "cooldown": 2.0,            # v2.1: 5.0→2.0。成功時のみ消費。ゲーム内時間で進む（ポーズ中は止まる）
     "safe_search_radius": 48.0, # 交換先が地形と重なるときに安全位置を探す範囲
     "safe_search_step": 4.0,    # 安全位置探索の格子間隔
     "pick_margin": 6.0,         # カーソル判定を当たり判定より広げる量（片側）
@@ -103,7 +103,7 @@ TELEPORT = {
 ENEMIES = {
     "shadow_crawler": {
         "hp": 20,
-        "speed": 80.0,
+        "speed": 64.0,           # v2.1: 80→64
         "contact_damage": 1,
         "detect_range": 250.0,
         "body_w": 36,
@@ -114,13 +114,13 @@ ENEMIES = {
         "attack_vertical_range": 48.0,  # 攻撃を始める上下方向の距離（中心間）
         "windup_time": 0.4,
         "lunge_time": 0.2,
-        "lunge_speed": 300.0,
+        "lunge_speed": 240.0,    # v2.1: 300→240
         "lunge_damage": 1,
         "lunge_hitbox_extend": 8.0,     # 飛びかかり判定を本体より前方へ伸ばす量
         "recovery_time": 0.6,
         "cooldown_time": 0.3,
         # v1.1: 被弾時のノックバック
-        "knockback_speed": 220.0,
+        "knockback_speed": 176.0,  # v2.1: 220→176
         "knockback_time": 0.12,
         # v1.2: 怯み（攻撃側の stagger_duration × (1 - stagger_resistance)。immunity=True で怯まない）
         "stagger_resistance": 0.0,
@@ -139,7 +139,7 @@ BOSS_DEFAULTS = {
     "max_fall_speed": 900.0,
     "projectile_damage": 1,          # 主人公への被弾ダメージ（HP単位）
     "projectile_self_damage": 20,    # 自傷時にボスが受けるダメージ（HP 100 基準）
-    "projectile_speed": 360.0,
+    "projectile_speed": 288.0,   # v2.1: 360→288
     "projectile_range": 1400.0,
     "projectile_width": 16,
     "projectile_self_harm": True,    # 位置交換後に自分の弾が当たるか
@@ -152,7 +152,7 @@ ENEMY_UPDATE_MARGIN = 400
 # ---------------------------------------------------------------------------
 # 追跡壁（ステージJSONに値があればそちらを優先）
 # ---------------------------------------------------------------------------
-WALL_DEFAULTS = {"start_x": 0.0, "speed": 480.0, "thickness": 32.0}   # v2.0: 主人公の通常移動より速い
+WALL_DEFAULTS = {"start_x": 0.0, "speed": 300.0, "thickness": 32.0}   # v2.1: 主人公の通常移動(336)より少し遅い
 WALL_WARNING_DISTANCE = 240.0   # 警告表示を出す距離
 WALL_DANGER_DISTANCE = 120.0    # 強い警告を出す距離
 

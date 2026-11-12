@@ -198,13 +198,13 @@ class CrawlerAITests(unittest.TestCase):
             frames += 1
         self.assertEqual(frames, round(0.4 / DT))
         self.assertEqual(e.state, CrawlerState.LUNGE)
-        # LUNGE: 0.2秒、300px/s で前方へ
+        # LUNGE: 0.2秒、240px/s で前方へ
         frames = 0
         while e.state == CrawlerState.LUNGE:
             step(w, inp)
             frames += 1
         self.assertEqual(frames, round(0.2 / DT))
-        self.assertAlmostEqual(x - e.x, 300 * 0.2, delta=6)
+        self.assertAlmostEqual(x - e.x, 240 * 0.2, delta=6)
         # RECOVERY: 0.6秒間水平移動しない
         x = e.x
         frames = 0
