@@ -1,0 +1,33 @@
+{
+  "stage_id": 1,
+  "name": "黄昏の廃王国",
+  "resolution": [960, 540],
+  "tile_size": 32,
+  "theme": "twilight_ruins",
+  "spawn": {
+    "x": 480,
+    "y": 382
+  },
+  "wall": {
+    "start_x": 0,
+    "speed": 480,
+    "thickness": 32
+  },
+  "platforms": [
+    {"id": "G01", "x": 0, "y": 422, "w": 800, "h": 118},
+    {"id": "G02", "x": 896, "y": 422, "w": 544, "h": 118},
+    {"id": "G03", "x": 1440, "y": 390, "w": 384, "h": 150},
+    {"id": "G04", "x": 1920, "y": 422, "w": 544, "h": 118},
+    {"id": "G05", "x": 2560, "y": 422, "w": 640, "h": 118}
+  ],
+  "one_way_platforms": [
+    {"id": "P01", "x": 1200, "y": 326, "w": 160, "h": 16},
+    {"id": "P02", "x": 2200, "y": 342, "w": 192, "h": 16}
+  ],
+  "enemies": [
+    {"id": "E01", "type": "shadow_crawler", "x": 1100, "foot_y": 422},
+    {"id": "E02", "type": "shadow_crawler", "x": 1700, "foot_y": 390},
+    {"id": "E03", "type": "shadow_crawler", "x": 2750, "foot_y": 422}
+  ],
+  "goal_x": 3200
+}
