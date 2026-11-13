@@ -169,18 +169,62 @@ def make_background(theme: str, view_w: int, view_h: int, background: Background
     return cls(view_w, view_h)
 
 
+def find_pits(rects, world_width: float, view_h: int) -> list[tuple[int, int, int]]:
+    """画面下端まで届く固体地形の切れ目（= 穴）を (左x, 右x, 上端y) で返す。描画専用。
+
+    上端は両隣の地面の上面のうち高い方（小さい y）。ステージ両端の外側は穴として扱わない。
+    """
+    floor = sorted((r for r in rects if r.bottom >= view_h), key=lambda r: r.left)
+    pits = []
+    covered = 0
+    prev = None
+    for r in floor:
+        if r.left > covered and prev is not None:
+            pits.append((int(covered), int(r.left), int(min(prev.top, r.top))))
+        if r.right > covered:
+            covered, prev = r.right, r
+    return [p for p in pits if 0 < p[0] < p[1] < world_width]
+
+
 class TerrainRenderer:
     """地形・一方通行足場・ゴールの描画。各地形は初期化時にサーフェス化する。"""
 
     def __init__(self, stage, seed: int = 3):
         rng = random.Random(seed)
-        self.solids = [(r.to_rect(), self._bake_ground(r, rng)) for r in stage.platforms]
+        rects = [r.to_rect() for r in stage.platforms]
+        self.pits = find_pits(rects, stage.world_width, stage.resolution[1])
+        lefts = {x1 for _, x1, _ in self.pits}     # 穴の右端 = 右側の地面の左面
+        rights = {x0 for x0, _, _ in self.pits}    # 穴の左端 = 左側の地面の右面
+        self.solids = [(rect, self._bake_ground(r, rng, rect.left in lefts, rect.right in rights))
+                       for r, rect in zip(stage.platforms, rects)]
         self.one_ways = [(r.to_rect(), self._bake_one_way(r, rng)) for r in stage.one_way_platforms]
+        self.pit_images = [(x0, top, self._bake_pit(x1 - x0, stage.resolution[1] - top))
+                           for x0, x1, top in self.pits]
         self.goal_x = stage.goal_x
         self.time = 0.0
 
     @staticmethod
-    def _bake_ground(r, rng) -> pygame.Surface:
+    def _bake_pit(w: int, h: int) -> pygame.Surface:
+        """v2.3: 穴の内部。上は黒く、底に向かって赤く光る（地面の暗灰色と色相で区別する）。描画のみ。"""
+        surf = pygame.Surface((max(1, int(w)), max(1, int(h))))
+        base = (5, 2, 5)
+        glow = config.COLORS["pit_glow"]
+        a_max = config.VISIBILITY["pit_glow_alpha"] / 255
+        for y in range(surf.get_height()):
+            k = y / max(1, surf.get_height() - 1)
+            g = a_max * max(0.0, (k - 0.25) / 0.75) ** 1.6
+            surf.fill(tuple(int(base[i] + (glow[i] - base[i]) * g) for i in range(3)), (0, y, w, 1))
+        # 両側の壁面の影（奥行き）
+        for i in range(6):
+            shade = (0, 0, 0, int(150 * (1 - i / 6)))
+            layer = pygame.Surface((1, surf.get_height()), pygame.SRCALPHA)
+            layer.fill(shade)
+            surf.blit(layer, (i, 0))
+            surf.blit(layer, (surf.get_width() - 1 - i, 0))
+        return surf
+
+    @staticmethod
+    def _bake_ground(r, rng, left_edge: bool = False, right_edge: bool = False) -> pygame.Surface:
         w, h = int(r.w), int(r.h)
         surf = pygame.Surface((w, h + 24), pygame.SRCALPHA)
         top = 24
@@ -201,6 +245,21 @@ class TerrainRenderer:
         # 側面の縁取り
         pygame.draw.line(surf, (20, 14, 16), (0, top), (0, top + h), 2)
         pygame.draw.line(surf, (20, 14, 16), (w - 1, top), (w - 1, top + h), 2)
+        # v2.3: 穴に面した側面は明るい石の縁にする（上ほど明るく、下へ地面の色に溶ける）。描画のみ
+        ew = config.VISIBILITY["ground_edge_width"]
+        if ew > 0:
+            edge, ground = config.COLORS["ground_edge"], config.COLORS["ground"]
+            for side, on in ((0, left_edge), (1, right_edge)):
+                if not on:
+                    continue
+                for y in range(h):
+                    k = max(0.0, 1.0 - y / 70) if y > 6 else 1.0
+                    col = tuple(int(ground[i] + (edge[i] - ground[i]) * k) for i in range(3))
+                    x0 = 0 if side == 0 else w - ew
+                    pygame.draw.line(surf, col, (x0, top + y), (x0 + ew - 1, top + y))
+                # 角の欠けた石（縁の位置を上面でも示す）
+                cx = 0 if side == 0 else w - 10
+                pygame.draw.rect(surf, edge, (cx, top - 2, 10, 4))
         return surf
 
     @staticmethod
@@ -225,6 +284,9 @@ class TerrainRenderer:
 
     def draw(self, surface: pygame.Surface, camera) -> None:
         view = camera.view_rect.inflate(64, 64)
+        for x0, top, img in self.pit_images:
+            if view.colliderect(pygame.Rect(x0, top, img.get_width(), img.get_height())):
+                surface.blit(img, (x0 - camera.x, top - camera.y))
         for rect, img in self.solids:
             if view.colliderect(rect):
                 surface.blit(img, (rect.x - camera.x, rect.y - 24 - camera.y))

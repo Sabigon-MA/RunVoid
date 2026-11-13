@@ -15,7 +15,7 @@ import unittest
 
 from test_gameplay import DT, STAGE_1, InputState  # noqa: F401  (SDL dummy 設定を含む)
 
-import config  # noqa: F401
+import config
 import settings as settings_mod
 from systems import display
 from systems.world import PLAYING, World
@@ -140,6 +140,94 @@ class FontPreloadTests(unittest.TestCase):
             self.assertIn(spec, fonts._cache)
             self.assertIs(fonts.get_font(*spec), fonts._cache[spec])
             self.assertEqual(fonts.get_font(*spec).get_bold(), spec[1])
+
+
+class VisibilityTests(unittest.TestCase):
+    """作業D: 敵・穴の視認性（描画のみ。判定・位置・背景素材は変えない）。"""
+
+    def _world(self):
+        import pygame
+        pygame.display.set_mode((960, 540))
+        return World(STAGE_1)
+
+    def test_pits_are_the_gaps_in_the_floor_only(self):
+        from stages.renderer import find_pits
+        rects = [p.to_rect() for p in STAGE_1.platforms]
+        self.assertEqual(find_pits(rects, STAGE_1.world_width, 540), [(1040, 1150, 422), (2300, 2420, 422)])
+        # 城壁 B01/B02 は地面と接しているので穴ではない
+        self.assertNotIn(1560, [x for p in find_pits(rects, STAGE_1.world_width, 540) for x in p[:2]])
+
+    def test_pit_interior_turns_red_toward_the_bottom_and_edges_are_lighter(self):
+        import pygame
+        w = self._world()
+        w.camera.x = 400.0
+        s = pygame.Surface((960, 540))
+        w.terrain_renderer.draw(s, w.camera)
+        cx = 1095 - 400
+        top, bottom = s.get_at((cx, 430)), s.get_at((cx, 536))
+        self.assertGreater(bottom.r, top.r + 40)            # 底が赤く光る
+        self.assertGreater(bottom.r, bottom.g * 3)
+        ground = s.get_at((1040 - 400 - 40, 470))           # 地面の内側
+        edge = s.get_at((1040 - 400 - 2, 430))              # 穴に面した縁
+        self.assertGreater(sum(edge[:3]), sum(ground[:3]) + 60)
+        # 地形の当たり判定（collision.Terrain）は描画と無関係で、穴は固体ではない
+        self.assertFalse(w.terrain.point_in_solid(1095, 500))
+
+    def test_enemy_rim_and_targets_are_drawn_without_changing_hitboxes(self):
+        import pygame
+        from systems.targeting import pick_rect
+        w = self._world()
+        e = w.enemies[0]
+        before = (e.body_rect.copy(), e.hurtbox.copy(), pick_rect(e).copy())
+        s = pygame.Surface((960, 540))
+        w.draw(s)
+        rim = tuple(config.COLORS["enemy_rim"])
+        sx, sy = w.camera.to_screen(e.x, e.foot_y)
+        found = any(tuple(s.get_at((x, y))[:3]) == rim
+                    for x in range(int(sx) - 26, int(sx) + 26) for y in range(int(sy) - 24, int(sy)))
+        self.assertTrue(found, "敵の縁取りが描かれていない")
+        self.assertEqual(before, (e.body_rect, e.hurtbox, pick_rect(e)))
+
+    def test_target_marker_follows_targetability_and_cooldown(self):
+        import pygame
+        from systems.targeting import is_targetable
+        w = self._world()
+        tele, dim = tuple(config.COLORS["teleport"]), tuple(config.COLORS["teleport_dim"])
+
+        def marker_color(enemy):
+            s = pygame.Surface((960, 540))
+            s.fill((0, 0, 0))
+            w._draw_target_markers(s)
+            x = round(enemy.hurtbox.centerx - w.camera.x)
+            y = round(enemy.hurtbox.top - w.camera.y) - 12
+            return tuple(s.get_at((x, y))[:3]) if 0 <= x < 960 else None
+
+        visible = [e for e in w.enemies if is_targetable(e, w.camera)]
+        hidden = [e for e in w.enemies if not is_targetable(e, w.camera)]
+        self.assertTrue(visible and hidden)
+        for e in visible:
+            self.assertEqual(marker_color(e), tele)
+        w.teleport.cooldown_remaining = 1.0
+        for e in visible:
+            self.assertEqual(marker_color(e), dim)
+        # 画面外の敵には描かない（描画先の範囲外）
+        for e in hidden:
+            self.assertIsNone(marker_color(e))
+
+    def test_visibility_can_be_disabled(self):
+        import pygame
+        saved = dict(config.VISIBILITY)
+        try:
+            config.VISIBILITY.update(enemy_halo_alpha=0, enemy_rim_width=0, target_marker=False)
+            w = self._world()
+            s = pygame.Surface((960, 540))
+            w.draw(s)
+            rim = tuple(config.COLORS["enemy_rim"])
+            self.assertFalse(any(tuple(s.get_at((x, y))[:3]) == rim
+                                 for x in range(0, 960, 2) for y in range(380, 440)))
+        finally:
+            config.VISIBILITY.clear()
+            config.VISIBILITY.update(saved)
 
 
 class DisplayLayoutTests(unittest.TestCase):

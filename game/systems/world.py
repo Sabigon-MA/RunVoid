@@ -10,6 +10,8 @@
 """
 from __future__ import annotations
 
+import pygame
+
 import config
 from enemies import create_enemy
 from player import create_protagonist
@@ -19,7 +21,7 @@ from systems.chasing_wall import ChasingWall
 from systems.collision import Terrain
 from systems.combat import CombatSystem
 from systems.effects import Effects, draw_outline
-from systems.targeting import find_target
+from systems.targeting import find_target, is_targetable
 from systems.teleport import TeleportSystem
 
 PLAYING, DEAD, CLEAR = "playing", "dead", "clear"
@@ -241,6 +243,24 @@ class World:
                            (170, 20, 28), 30, 260, 0.9)
 
     # ------------------------------------------------------------------
+    def _draw_target_markers(self, surface) -> None:
+        """v2.3: テレポートで交換できる敵の頭上に小さな印を描く（判定は targeting と同じ）。
+
+        使用可能なときは明るく、クールダウン中は暗く表示する。見た目のみ。
+        """
+        cam = self.camera
+        ready = self.teleport.ready
+        col = config.COLORS["teleport"] if ready else config.COLORS["teleport_dim"]
+        for enemy in self.enemies:
+            if not is_targetable(enemy, cam):
+                continue
+            box = enemy.hurtbox
+            x = round(box.centerx - cam.x)
+            y = round(box.top - cam.y) - 9
+            pts = [(x - 5, y - 6), (x + 5, y - 6), (x, y)]
+            pygame.draw.polygon(surface, (10, 4, 12), [(px, py + 1) for px, py in pts])   # 影
+            pygame.draw.polygon(surface, col, pts)
+
     def draw(self, surface) -> None:
         cam = self.camera
         if self.background:
@@ -250,6 +270,8 @@ class World:
         for enemy in self.enemies:
             if cam.is_visible(enemy.body_rect, 40):
                 enemy.draw(surface, cam)
+        if config.VISIBILITY["target_marker"] and self.state == PLAYING:
+            self._draw_target_markers(surface)
         # テレポート対象の輪郭発光（クールダウン中は弱く）
         target = self.hover_target
         if target is not None and target.alive and self.state == PLAYING:
