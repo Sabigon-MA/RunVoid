@@ -182,6 +182,11 @@ class World:
         before_player, before_target = before
         self.effects.teleport_arrive(before_player, before_target, self.player, target,
                                      config.COLORS["teleport"])
+        # v2.3: カメラがこれから動く量に応じた流線と、到着位置へのロケーター（描画のみ）
+        cam = self.camera
+        shift = min(max(cam.target_for(self.player.rect), 0.0), cam.max_x) - cam.x
+        self.effects.teleport_camera_cue(shift, cam.view_w, cam.view_h)
+        self.effects.locator(self.player, config.COLORS["teleport"])
         # 大きく移動しても主人公が画面外に消えないよう、カメラを速やかに追従させる
         # （画面端の margin 内へは即座に寄せ、残りは高速スムーズ追従）
         self.camera.boost()
@@ -267,6 +272,7 @@ class World:
             self.background.draw(surface, cam.x)
         if self.terrain_renderer:
             self.terrain_renderer.draw(surface, cam)
+        self.effects.draw_screen_cues(surface)
         for enemy in self.enemies:
             if cam.is_visible(enemy.body_rect, 40):
                 enemy.draw(surface, cam)

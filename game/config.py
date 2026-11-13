@@ -202,6 +202,15 @@ COLORS = {
     "ground_edge": (122, 102, 80),     # 穴に面した地面の縁
 }
 
+# v2.3 テレポート直後の画面演出（見た目のみ。カメラの動き・照準・判定は変えない）
+TELEPORT_FX = {
+    "streaks": True,            # カメラの高速移動中に背景の手前へ流線を出す
+    "streak_min_shift": 60.0,   # カメラの移動予定量がこれ未満なら流線を出さない（px）
+    "streak_life": 0.16,        # 流線の寿命（秒）
+    "locator": True,            # 到着した主人公の周りで縮むリング
+    "locator_life": 0.35,
+}
+
 # v2.3 視認性の強さ（0 で無効）
 VISIBILITY = {
     "enemy_halo_alpha": 40,            # 背後の光の最大不透明度

@@ -1,8 +1,9 @@
 """v2.3: 実機QA反映（フォント先読み・表示モード・視認性・テレポート時カメラ）の回帰テスト。
 
 物理トレース:
-    tests/fixtures/physics_trace_v22.json は v2.2（表示改善前）のコードで記録した、ステージ1の
-    自動プレイ3通りの毎ステップの状態。v2.3 の変更はすべて見た目・表示だけなので完全一致すること。
+    tests/fixtures/physics_trace_v22.json は v2.2（コミット 1ffc37e）のコードで記録した、ステージ1の
+    自動プレイ3通りの毎ステップの状態（主人公の位置・速度・接地・HP、追跡壁、カメラX、交換回数、敵の位置）。
+    v2.3 の変更はすべて見た目・表示だけなので完全一致すること（カメラの動きも変えていない）。
     再生成（ゲームルールを意図的に変えたときのみ）:
         set RUNVOID_REGEN_TRACE=1 && python -m unittest tests.test_v23
 """
@@ -71,7 +72,7 @@ def run_trace(use_teleport: bool, target_id: str | None = None, with_graphics: b
         if w.update(DT, inp):
             inp.clear_edges()
         inp.simulate_release("teleport")
-        rows.append([round(v, 4) for v in (p.rect.x, p.rect.y, p.vx, p.vy, w.wall.front_x)]
+        rows.append([round(v, 4) for v in (p.rect.x, p.rect.y, p.vx, p.vy, w.wall.front_x, w.camera.x)]
                     + [int(p.on_ground), p.hp, w.teleport.count]
                     + [[e.enemy_id, round(e.x, 4), round(e.foot_y, 4)] for e in w.enemies])
         if w.state != PLAYING:
@@ -228,6 +229,53 @@ class VisibilityTests(unittest.TestCase):
         finally:
             config.VISIBILITY.clear()
             config.VISIBILITY.update(saved)
+
+
+class TeleportCueTests(unittest.TestCase):
+    """作業E: テレポート直後の画面演出（流線・ロケーター）。カメラの動きは変えない（トレースで保証）。"""
+
+    def _teleport(self, enemy_x):
+        """平地で主人公（x=100）と enemy_x の敵を交換する。カメラは x=0（左端に寄った状態）。"""
+        import pygame
+        from test_v20 import custom_world
+        pygame.display.set_mode((960, 540))
+        w = custom_world([(0, 422, 3000, 118)], enemies=[(enemy_x, 422)])
+        e = w.enemies[0]
+        cam_before = w.camera.x
+        self.assertTrue(w.teleport.try_teleport(w, e).ok)
+        return w, cam_before
+
+    def test_large_camera_move_gets_streaks_and_locator(self):
+        w, cam_before = self._teleport(900)          # 画面右寄りの敵 → カメラが大きく右へ動く
+        self.assertTrue(w.effects.streaks)
+        self.assertEqual(len(w.effects.locators), 1)
+        self.assertIs(w.effects.locators[0][0], w.player)
+        # 背景は右へ動くカメラと逆（左）へ流れる
+        self.assertTrue(all(s[3] < 0 for s in w.effects.streaks))
+
+    def test_small_camera_move_has_locator_only(self):
+        w, _ = self._teleport(170)                   # カメラは左端のまま（移動量 0）
+        self.assertEqual(w.effects.streaks, [])
+        self.assertEqual(len(w.effects.locators), 1)
+
+    def test_cues_expire_and_draw(self):
+        import pygame
+        w, _ = self._teleport(900)
+        s = pygame.Surface((960, 540))
+        for _ in range(int(0.4 / DT) + 2):
+            w.draw(s)
+            w.effects.update(DT)
+        self.assertEqual((w.effects.streaks, w.effects.locators), ([], []))
+
+    def test_cues_can_be_disabled(self):
+        saved = dict(config.TELEPORT_FX)
+        try:
+            config.TELEPORT_FX.update(streaks=False, locator=False)
+            w, _ = self._teleport(900)
+            self.assertEqual((w.effects.streaks, w.effects.locators), ([], []))
+        finally:
+            config.TELEPORT_FX.clear()
+            config.TELEPORT_FX.update(saved)
 
 
 class DisplayLayoutTests(unittest.TestCase):
