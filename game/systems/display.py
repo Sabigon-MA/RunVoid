@@ -51,6 +51,16 @@ def window_to_internal(pos, window_size, logical_size, mode: str):
     return (pos[0] - x) / scale, (pos[1] - y) / scale
 
 
+#: ウィンドウの大きさ・位置・状態が変わったことを示すイベント。
+#: Windows ではドラッグでのリサイズ・移動中はメインループが止まる（OS のモーダルループ）ため、
+#: これらを受けたフレームは経過時間を 1 ステップ分に切り詰め、復帰直後の追いつき（最大 250 ms 分の
+#: 物理更新の一括実行）を起こさない。
+WINDOW_CHANGE_EVENTS = frozenset({
+    pygame.VIDEORESIZE, pygame.WINDOWRESIZED, pygame.WINDOWSIZECHANGED, pygame.WINDOWMOVED,
+    pygame.WINDOWMAXIMIZED, pygame.WINDOWRESTORED, pygame.WINDOWMINIMIZED,
+})
+
+
 def enable_high_dpi() -> None:
     """pygame.init() より前に呼ぶ。Windows 以外では何もしない（SDL のヒントは無視される）。"""
     if sys.platform == "win32":
@@ -103,6 +113,21 @@ class DisplayScaler:
             return self.mode
         self.mode = mode
         return self.mode
+
+    def sync(self) -> bool:
+        """選択中のモードを SDL レンダラーに再適用する（冪等）。設定がずれていて直した場合 True。
+
+        pygame-ce は SCALED ウィンドウの最大化で整数倍を OFF、元に戻す（最小化からの復帰を含む）で
+        ON に書き換える（pygame 内部のイベントウォッチ）。Fit 中に元に戻すと整数倍に戻ってしまうため、
+        ウィンドウイベントを受けたフレームで描画前にこれを呼ぶ。
+        Pixel Perfect の最大化時の挙動（pygame が非整数にする）は従来どおり変えない。
+        """
+        if not self.supported or self.mode != FIT:
+            return False
+        if self._sdl.SDL_RenderGetIntegerScale(self._renderer):
+            self._sdl.SDL_RenderSetIntegerScale(self._renderer, 0)
+            return True
+        return False
 
     def integer_scale_enabled(self) -> bool | None:
         if not self.supported:

@@ -70,6 +70,7 @@ class Game:
         self.scene = TitleScreen(self.menu_background)
         self.running = True
         self.accumulator = 0.0
+        self._window_settle_frames = 0   # ウィンドウ変更後、経過時間を切り詰める残りフレーム数
 
     # ------------------------------------------------------------------
     # 表示モード
@@ -215,8 +216,21 @@ class Game:
 
     def step_frame(self, frame_time: float):
         """1描画フレーム分の処理。固定タイムステップで物理を進める。"""
+        window_changed = False
         for event in pygame.event.get():
+            if event.type in display.WINDOW_CHANGE_EVENTS:
+                window_changed = True
             self.handle_event(event)
+        if window_changed:
+            # pygame が最大化/復帰で書き換えた整数倍設定を、このフレームの描画前に選択中のモードへ戻す
+            self.display.sync()
+            # リサイズ・移動のドラッグ中は OS が event.get() の中でループを止める。止まっていた時間は
+            # 次フレームの clock.tick に現れるので、このフレームと次のフレームの経過時間を
+            # 1 ステップ分に切り詰め、復帰直後に物理更新を一括で追いつかせない
+            self._window_settle_frames = 2
+        if self._window_settle_frames > 0:
+            self._window_settle_frames -= 1
+            frame_time = min(frame_time, config.FIXED_DT)
         self.accumulator += min(frame_time, config.MAX_FRAME_TIME)
         while self.accumulator >= config.FIXED_DT and self.running:
             self.fixed_update(config.FIXED_DT)
