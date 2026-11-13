@@ -21,6 +21,7 @@ from stages import load_stage  # noqa: E402
 from stages.renderer import make_background  # noqa: E402
 from systems.input import InputState  # noqa: E402
 from systems.world import CLEAR, DEAD, World  # noqa: E402
+from ui import fonts  # noqa: E402
 from ui.hud import HUD  # noqa: E402
 from ui.screens import (TitleScreen, make_clear_screen, make_death_screen,  # noqa: E402
                         make_pause_screen)
@@ -41,6 +42,7 @@ class Game:
             self.window = pygame.display.set_mode(size)
         self.screen = pygame.Surface(size)
         self.clock = pygame.time.Clock()
+        fonts.preload()   # 初回描画でのフォント検索・生成によるフレーム落ちを防ぐ
         self.stage = load_stage(stage_file)
         self.input = InputState()
         self.hud = HUD()

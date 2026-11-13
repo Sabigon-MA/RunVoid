@@ -13,6 +13,14 @@ JP_FONT_CANDIDATES = [
     "notosanscjkjp", "notosansjp", "notosanscjk", "ipagothic", "takaogothic",  # Linux
 ]
 
+# UI で使う (サイズ, 太字) の組み合わせ。起動時に先読みし、初回描画でのフレーム落ちを防ぐ
+# （v2.3: 日本語フォントの検索に約17ms、サイズごとの生成に約1ms かかり、
+#   タイトル初回フレームやプレイ開始・テレポート直後の初回描画で 25〜38ms のフレームになっていた）
+UI_FONT_SPECS: tuple[tuple[int, bool], ...] = (
+    (72, True), (64, True), (24, False), (20, False), (20, True), (18, False), (18, True),
+    (16, False), (16, True), (15, False), (14, False), (13, False),
+)
+
 _cache: dict[tuple[int, bool], pygame.font.Font] = {}
 _resolved_path: str | None | bool = False
 
@@ -42,3 +50,9 @@ def get_font(size: int, bold: bool = False) -> pygame.font.Font:
         font.set_bold(bold)
         _cache[key] = font
     return _cache[key]
+
+
+def preload(specs=UI_FONT_SPECS) -> None:
+    """フォントの検索と生成を先に済ませる（描画結果は変わらない）。"""
+    for size, bold in specs:
+        get_font(size, bold)
