@@ -17,7 +17,9 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import pygame  # noqa: E402
 
 import config  # noqa: E402
+import settings as settings_mod  # noqa: E402
 from stages import load_stage  # noqa: E402
+from systems import display  # noqa: E402
 from stages.renderer import make_background  # noqa: E402
 from systems.input import InputState  # noqa: E402
 from systems.world import CLEAR, DEAD, World  # noqa: E402
@@ -30,7 +32,17 @@ TITLE, PLAY, PAUSED, DEAD_SCREEN, CLEAR_SCREEN = ("title", "play", "paused", "de
 
 
 class Game:
-    def __init__(self, stage_file: str = config.DEFAULT_STAGE):
+    def __init__(self, stage_file: str = config.DEFAULT_STAGE, display_mode: str | None = None,
+                 high_dpi: bool | None = None, settings_path: str | None = None):
+        # settings_path が None のときは設定ファイルを読み書きしない（テスト・診断用）
+        self.settings_path = settings_path
+        self.settings = settings_mod.load(settings_path)
+        if display_mode is not None:
+            self.settings.display_mode = display_mode
+        if high_dpi is not None:
+            self.settings.high_dpi = high_dpi
+        if self.settings.high_dpi:
+            display.enable_high_dpi()   # pygame.init() より前に指定する必要がある
         os.environ["SDL_RENDER_SCALE_QUALITY"] = "nearest"
         pygame.init()
         pygame.display.set_caption(config.WINDOW_TITLE)
@@ -40,6 +52,11 @@ class Game:
             self.window = pygame.display.set_mode(size, pygame.SCALED | pygame.RESIZABLE)
         except pygame.error:
             self.window = pygame.display.set_mode(size)
+        # 表示モード（整数倍 / ウィンドウに合わせる）。SDL のレンダラーが無い環境では整数倍のまま
+        self.display = display.DisplayScaler()
+        self.display.apply(self.settings.display_mode)
+        if self.settings.high_dpi and self.display.mode == display.FIT:
+            self._match_os_scale()
         self.screen = pygame.Surface(size)
         self.clock = pygame.time.Clock()
         fonts.preload()   # 初回描画でのフォント検索・生成によるフレーム落ちを防ぐ
@@ -53,6 +70,33 @@ class Game:
         self.scene = TitleScreen(self.menu_background)
         self.running = True
         self.accumulator = 0.0
+
+    # ------------------------------------------------------------------
+    # 表示モード
+    # ------------------------------------------------------------------
+    def _match_os_scale(self) -> None:
+        """高DPI有効かつ Fit のとき、初期ウィンドウを OS の表示倍率ぶん大きくする（見かけの大きさを従来と揃える）。"""
+        if sys.platform != "win32":
+            return
+        try:
+            import ctypes
+            from pygame._sdl2.video import Window
+            hwnd = pygame.display.get_wm_info()["window"]
+            dpi = ctypes.windll.user32.GetDpiForWindow(hwnd)
+            if dpi > 96:
+                Window.from_display_module().size = (round(config.SCREEN_WIDTH * dpi / 96),
+                                                     round(config.SCREEN_HEIGHT * dpi / 96))
+        except Exception:
+            pass
+
+    def toggle_display_mode(self) -> str:
+        """Pixel Perfect ⇔ Fit to Window。設定ファイルがあれば保存する。"""
+        mode = self.display.toggle()
+        self.settings.display_mode = mode
+        settings_mod.save(self.settings, self.settings_path)
+        if self.state == PAUSED:
+            self.overlay = make_pause_screen(self.display.mode)
+        return mode
 
     # ------------------------------------------------------------------
     # 画面遷移
@@ -89,6 +133,9 @@ class Game:
         if event.type == pygame.QUIT:
             self.running = False
             return
+        if event.type == pygame.KEYDOWN and event.key in config.KEY_BINDINGS["display_mode"]:
+            self.toggle_display_mode()
+            return
         if self.state == TITLE:
             action = self.scene.handle_event(event)
             if action == "start":
@@ -98,7 +145,7 @@ class Game:
         elif self.state == PLAY:
             if event.type == pygame.KEYDOWN and event.key in config.KEY_BINDINGS["pause"]:
                 self.state = PAUSED
-                self.overlay = make_pause_screen()
+                self.overlay = make_pause_screen(self.display.mode)
                 self.input.reset()
                 self._update_cursor()
                 return
@@ -111,6 +158,8 @@ class Game:
             action = self.overlay.handle_event(event)
             if action == "resume":
                 self._resume()
+            elif action == "display":
+                self.toggle_display_mode()
             elif action == "retry":
                 self.start_play()
             elif action == "title":
@@ -190,8 +239,18 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description="終焉を背に - Prototype")
     parser.add_argument("--stage", default=config.DEFAULT_STAGE, help="ステージJSONファイル")
     parser.add_argument("--frames", type=int, default=None, help="指定フレーム数で自動終了（動作確認用）")
+    parser.add_argument("--display", choices=display.MODES, default=None,
+                        help="表示モード（既定: settings.json、無ければ pixel_perfect）。指定値は保存される")
+    parser.add_argument("--high-dpi", dest="high_dpi", action="store_true", default=None,
+                        help="Windows で高DPI対応にする（OS の拡大によるぼやけを避ける）。指定値は保存される")
+    parser.add_argument("--no-high-dpi", dest="high_dpi", action="store_false",
+                        help="高DPI対応を無効にする（既定）")
     args = parser.parse_args(argv)
-    Game(args.stage).run(max_frames=args.frames)
+    game = Game(args.stage, display_mode=args.display, high_dpi=args.high_dpi,
+                settings_path=settings_mod.DEFAULT_PATH)
+    if args.display is not None or args.high_dpi is not None:
+        settings_mod.save(game.settings, game.settings_path)
+    game.run(max_frames=args.frames)
 
 
 if __name__ == "__main__":

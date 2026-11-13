@@ -31,6 +31,7 @@ KEY_BINDINGS = {
     "jump": [pygame.K_SPACE],
     "dash": [pygame.K_LSHIFT, pygame.K_RSHIFT],
     "pause": [pygame.K_ESCAPE],
+    "display_mode": [pygame.K_F8],   # v2.3: Pixel Perfect ⇔ Fit to Window（どの画面でも有効）
 }
 MOUSE_BINDINGS = {
     "teleport": 1,   # 左クリック（右クリックは現段階では未割り当て）

@@ -10,6 +10,7 @@ import math
 import pygame
 
 import config
+from systems.display import MODE_LABELS, PIXEL_PERFECT
 from ui.hud import format_time
 from ui.widgets import Menu, draw_panel, draw_text, vertical_buttons
 
@@ -20,6 +21,7 @@ CONTROLS_TEXT = [
     ("S + Space", "一方通行足場から降下"),
     ("左クリック", "敵と位置を入れ替える"),
     ("Esc", "ポーズ"),
+    ("F8", "表示切替（整数倍 / 全体）"),
 ]
 
 
@@ -109,8 +111,12 @@ class OverlayScreen:
 DEATH_CAUSES = {"wall": "追跡壁に飲み込まれた", "hp": "力尽きた", "fall": "奈落へ落ちた"}
 
 
-def make_pause_screen() -> OverlayScreen:
-    return OverlayScreen("PAUSE", [], [("再開", "resume"), ("リトライ", "retry"), ("タイトルへ戻る", "title")])
+def make_pause_screen(display_mode: str = PIXEL_PERFECT) -> OverlayScreen:
+    label = f"表示: {MODE_LABELS.get(display_mode, display_mode)}"
+    screen = OverlayScreen("PAUSE", ["F8 でも表示を切り替えられます"],
+                           [("再開", "resume"), (label, "display"), ("リトライ", "retry"),
+                            ("タイトルへ戻る", "title")])
+    return screen
 
 
 def make_death_screen(world) -> OverlayScreen:

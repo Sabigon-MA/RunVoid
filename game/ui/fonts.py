@@ -53,6 +53,11 @@ def get_font(size: int, bold: bool = False) -> pygame.font.Font:
 
 
 def preload(specs=UI_FONT_SPECS) -> None:
-    """フォントの検索と生成を先に済ませる（描画結果は変わらない）。"""
+    """フォントの検索と生成を先に済ませる（描画結果は変わらない）。
+
+    pygame.quit() 後に作り直された Game でも古い Font を使わないよう、キャッシュを作り直す
+    （フォントのパス検索結果は OS 依存で変わらないため保持する）。
+    """
+    _cache.clear()
     for size, bold in specs:
         get_font(size, bold)
