@@ -28,18 +28,21 @@ PLAYING, DEAD, CLEAR = "playing", "dead", "clear"
 
 
 class World:
-    def __init__(self, stage, with_graphics: bool = True):
+    def __init__(self, stage, with_graphics: bool = True, from_checkpoint: bool = False):
         self.stage = stage
         self.with_graphics = with_graphics
+        # チェックポイントから始めるか（出現位置と追跡壁の開始位置だけが変わる。それ以外は最初の状態）
+        self.from_checkpoint = from_checkpoint and getattr(stage, "checkpoint", None) is not None
+        spawn, wall = stage.start(self.from_checkpoint) if hasattr(stage, "start") else (stage.spawn, stage.wall)
         view_w, view_h = stage.resolution
         self.terrain = Terrain([r.to_rect() for r in stage.platforms],
                                [r.to_rect() for r in stage.one_way_platforms])
         self.combat = CombatSystem()
         self.effects = Effects()
         self.teleport = TeleportSystem()
-        self.player = create_protagonist(*stage.spawn)
+        self.player = create_protagonist(*spawn)
         self.enemies = [create_enemy(e) for e in stage.enemies]
-        self.wall = ChasingWall(stage.wall.start_x, stage.wall.speed, stage.wall.thickness)
+        self.wall = ChasingWall(wall.start_x, wall.speed, wall.thickness)
         self.camera = Camera(view_w, view_h, stage.world_width, view_h)
         self.camera.snap_to(self.player.rect)
         self.mouse_screen = (0.0, 0.0)
@@ -58,11 +61,22 @@ class World:
         self.background = (make_background(stage.theme, view_w, view_h, stage.background)
                            if with_graphics else None)
         self.terrain_renderer = TerrainRenderer(stage) if with_graphics else None
+        # v2.5: チェックポイントの目印が起動済みか（= このプレイでチェックポイントを越えた）。
+        # チェックポイントから始めたときは最初から起動済み（起動の演出なし）
+        self.checkpoint_lit = self.passed_checkpoint
+        if self.checkpoint_lit and self.terrain_renderer:
+            self.terrain_renderer.set_checkpoint_lit(flash=False)
 
     # ------------------------------------------------------------------
     @property
     def wall_distance(self) -> float:
         return self.wall.distance_to(self.player.rect)
+
+    @property
+    def passed_checkpoint(self) -> bool:
+        """このプレイでチェックポイントの位置を越えたか（越えてから死ぬと、次からチェックポイントで再開）。"""
+        cp = getattr(self.stage, "checkpoint", None)
+        return cp is not None and self.max_x >= cp.x
 
     @property
     def wall_on_screen(self) -> bool:
@@ -115,6 +129,11 @@ class World:
         prev_rect = player.rect.copy()
         player.update(dt, inp, self)
         self.max_x = max(self.max_x, player.rect.x)
+        if not self.checkpoint_lit and self.passed_checkpoint:
+            # 描画状態だけを変える（演出は TerrainRenderer の中で完結し、乱数・エフェクトを使わない）
+            self.checkpoint_lit = True
+            if self.terrain_renderer:
+                self.terrain_renderer.set_checkpoint_lit(flash=True)
 
         for enemy in self.enemies:
             if enemy.alive and self._active_enemy(enemy):

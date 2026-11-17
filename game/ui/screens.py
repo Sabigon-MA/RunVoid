@@ -111,28 +111,33 @@ class OverlayScreen:
 DEATH_CAUSES = {"wall": "追跡壁に飲み込まれた", "hp": "力尽きた", "fall": "奈落へ落ちた"}
 
 
-def make_pause_screen(display_mode: str = PIXEL_PERFECT) -> OverlayScreen:
+def make_pause_screen(display_mode: str = PIXEL_PERFECT, checkpoint_ready: bool = False) -> OverlayScreen:
     label = f"表示: {MODE_LABELS.get(display_mode, display_mode)}"
+    retry = "リトライ（チェックポイント）" if checkpoint_ready else "リトライ"
     screen = OverlayScreen("PAUSE", ["F8 でも表示を切り替えられます"],
-                           [("再開", "resume"), (label, "display"), ("リトライ", "retry"),
+                           [("再開", "resume"), (label, "display"), (retry, "retry"),
                             ("タイトルへ戻る", "title")])
     return screen
 
 
-def make_death_screen(world) -> OverlayScreen:
+def make_death_screen(world, checkpoint_ready: bool = False) -> OverlayScreen:
+    """checkpoint_ready: 次のリトライをチェックポイントから始められるか（main.Game が判断する）。"""
     lines = [
         DEATH_CAUSES.get(world.death_cause, ""),
         f"到達距離  {int(world.max_x)} / {int(world.stage.goal_x)} px",
-        f"生存時間  {format_time(world.elapsed)}",
+        f"生存時間  {format_time(world.elapsed)}" + ("（チェックポイントから）" if world.from_checkpoint else ""),
         f"テレポート  {world.teleport.count} 回",
     ]
-    return OverlayScreen("YOU DIED", lines, [("リトライ", "retry"), ("タイトルへ戻る", "title")],
-                         title_color=(200, 30, 36), shade=170, delay=0.6)
+    if checkpoint_ready:
+        buttons = [("チェックポイントから", "retry"), ("最初から", "restart"), ("タイトルへ戻る", "title")]
+    else:
+        buttons = [("リトライ", "retry"), ("タイトルへ戻る", "title")]
+    return OverlayScreen("YOU DIED", lines, buttons, title_color=(200, 30, 36), shade=170, delay=0.6)
 
 
 def make_clear_screen(world) -> OverlayScreen:
     lines = [
-        f"クリア時間  {format_time(world.elapsed)}",
+        f"クリア時間  {format_time(world.elapsed)}" + ("（チェックポイントから）" if world.from_checkpoint else ""),
         f"テレポート  {world.teleport.count} 回",
     ]
     return OverlayScreen("PROTOTYPE CLEAR", lines, [("もう一度プレイ", "retry"), ("タイトルへ戻る", "title")],

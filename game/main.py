@@ -57,6 +57,8 @@ class Game:
         self.display.apply(self.settings.display_mode)
         if self.settings.high_dpi and self.display.mode == display.FIT:
             self._match_os_scale()
+        # v2.4: ウィンドウイベントを SDL が受けた瞬間に表示モードを再適用し、最後のフレームを出し直す
+        self.display.install_watch(present=pygame.display.flip)
         self.screen = pygame.Surface(size)
         self.clock = pygame.time.Clock()
         fonts.preload()   # 初回描画でのフォント検索・生成によるフレーム落ちを防ぐ
@@ -65,6 +67,9 @@ class Game:
         self.hud = HUD()
         self.menu_background = make_background(self.stage.theme, *size, self.stage.background)
         self.world: World | None = None
+        # v2.5: このプレイ（タイトルから始めた一連の挑戦）でチェックポイントを越えて死んだら True。
+        # 以後のリトライはチェックポイントから。タイトルへ戻る・クリア後にもう一度・「最初から」で解除
+        self.checkpoint_ready = False
         self.overlay = None
         self.state = TITLE
         self.scene = TitleScreen(self.menu_background)
@@ -96,7 +101,7 @@ class Game:
         self.settings.display_mode = mode
         settings_mod.save(self.settings, self.settings_path)
         if self.state == PAUSED:
-            self.overlay = make_pause_screen(self.display.mode)
+            self.overlay = make_pause_screen(self.display.mode, self.checkpoint_ready)
         return mode
 
     # ------------------------------------------------------------------
@@ -105,14 +110,18 @@ class Game:
     def go_title(self):
         self.state = TITLE
         self.world = None
+        self.checkpoint_ready = False
         self.overlay = None
         self.scene = TitleScreen(self.menu_background)
         self._update_cursor()
 
-    def start_play(self):
+    def start_play(self, from_start: bool = False):
         # タイトルから直接開始（キャラクター選択なし）。
-        # リトライ時もマップ・プレイヤー・敵・追跡壁・タイマーを丸ごと作り直す
-        self.world = World(self.stage)
+        # リトライ時もマップ・プレイヤー・敵・追跡壁・タイマーを丸ごと作り直す。
+        # チェックポイントが有効なら出現位置と追跡壁だけチェックポイントのものにする
+        if from_start:
+            self.checkpoint_ready = False
+        self.world = World(self.stage, from_checkpoint=self.checkpoint_ready)
         self.overlay = None
         self.state = PLAY
         self.input.reset()
@@ -140,13 +149,13 @@ class Game:
         if self.state == TITLE:
             action = self.scene.handle_event(event)
             if action == "start":
-                self.start_play()
+                self.start_play(from_start=True)
             elif action == "quit":
                 self.running = False
         elif self.state == PLAY:
             if event.type == pygame.KEYDOWN and event.key in config.KEY_BINDINGS["pause"]:
                 self.state = PAUSED
-                self.overlay = make_pause_screen(self.display.mode)
+                self.overlay = make_pause_screen(self.display.mode, self.checkpoint_ready)
                 self.input.reset()
                 self._update_cursor()
                 return
@@ -162,7 +171,10 @@ class Game:
             elif action == "display":
                 self.toggle_display_mode()
             elif action == "retry":
-                self.start_play()
+                # クリア後の「もう一度プレイ」は最初から（新しい挑戦）
+                self.start_play(from_start=self.state == CLEAR_SCREEN)
+            elif action == "restart":
+                self.start_play(from_start=True)
             elif action == "title":
                 self.go_title()
 
@@ -184,7 +196,9 @@ class Game:
                 self.input.clear_edges()
             if self.world.state == DEAD:
                 self.state = DEAD_SCREEN
-                self.overlay = make_death_screen(self.world)
+                if self.world.passed_checkpoint:
+                    self.checkpoint_ready = True
+                self.overlay = make_death_screen(self.world, self.checkpoint_ready)
                 self._update_cursor()
             elif self.world.state == CLEAR:
                 self.state = CLEAR_SCREEN
@@ -201,7 +215,8 @@ class Game:
                 self.overlay.update(dt)
         self.hud.update(dt)
 
-    def draw(self):
+    def render(self):
+        """内部サーフェス（960×540）に描き、ウィンドウの表示用サーフェスへ転送する。"""
         surf = self.screen
         if self.state == TITLE:
             self.scene.draw(surf)
@@ -212,17 +227,26 @@ class Game:
             if self.overlay:
                 self.overlay.draw(surf)
         self.window.blit(surf, (0, 0))
+
+    @staticmethod
+    def present():
         pygame.display.flip()
 
-    def step_frame(self, frame_time: float):
-        """1描画フレーム分の処理。固定タイムステップで物理を進める。"""
+    def draw(self):
+        self.render()
+        self.present()
+
+    def update_frame(self, frame_time: float):
+        """イベント処理と固定タイムステップの物理更新（描画以外）。"""
         window_changed = False
-        for event in pygame.event.get():
+        with self.display.pumping():   # ウィンドウ変更はこの中でウォッチが即時処理する
+            events = pygame.event.get()
+        for event in events:
             if event.type in display.WINDOW_CHANGE_EVENTS:
                 window_changed = True
             self.handle_event(event)
         if window_changed:
-            # pygame が最大化/復帰で書き換えた整数倍設定を、このフレームの描画前に選択中のモードへ戻す
+            # ウォッチが使えない環境向けの保険（冪等）。pygame が最大化/復帰で書き換えた整数倍設定を戻す
             self.display.sync()
             # リサイズ・移動のドラッグ中は OS が event.get() の中でループを止める。止まっていた時間は
             # 次フレームの clock.tick に現れるので、このフレームと次のフレームの経過時間を
@@ -235,6 +259,10 @@ class Game:
         while self.accumulator >= config.FIXED_DT and self.running:
             self.fixed_update(config.FIXED_DT)
             self.accumulator -= config.FIXED_DT
+
+    def step_frame(self, frame_time: float):
+        """1描画フレーム分の処理。固定タイムステップで物理を進める。"""
+        self.update_frame(frame_time)
         self.draw()
 
     def run(self, max_frames: int | None = None):
@@ -246,6 +274,7 @@ class Game:
             frames += 1
             if max_frames is not None and frames >= max_frames:
                 break
+        self.display.remove_watch()
         pygame.quit()
 
 

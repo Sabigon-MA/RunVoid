@@ -363,7 +363,7 @@ class GameSmokeTests(unittest.TestCase):
             self.assertEqual(game.world.elapsed, 0)
             self.assertEqual(game.world.wall.front_x, STAGE_1.wall.start_x)
             self.assertEqual(len(game.world.enemies), len(STAGE_1.enemies))
-            self.assertEqual(game.world.player.rect.topleft, (480, 382))
+            self.assertEqual(game.world.player.rect.topleft, STAGE_1.spawn)
             self.assertEqual(game.world.teleport.cooldown_remaining, 0)
         finally:
             pygame.quit()

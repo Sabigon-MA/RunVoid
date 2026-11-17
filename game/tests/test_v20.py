@@ -24,6 +24,7 @@ from stages import parse_stage  # noqa: E402
 from systems.teleport import FAIL_BLOCKED, FAIL_COOLDOWN  # noqa: E402
 from systems.targeting import find_target  # noqa: E402
 from systems.world import CLEAR, DEAD, PLAYING, World  # noqa: E402
+import stage1_bot  # noqa: E402
 
 GROUND = 422.0
 CD_FRAMES = round(config.TELEPORT["cooldown"] / DT)
@@ -531,100 +532,43 @@ class BossTests(unittest.TestCase):
 
 # ---------------------------------------------------------------------------
 class Stage1BalanceTests(unittest.TestCase):
-    """本番ステージ: v2.1 で壁は通常移動より少し遅くなり、走るだけでも逃げ切れる。
-    テレポートはクリア時間の短縮になる。
+    """本番ステージ（v2.5 C案）: 前半はテレポート任意、後半の城門2つは交換が必須。
 
-    ボットは右入力を押し続け、地上ではダッシュを使い、決められた位置でジャンプする。
+    ボットは tests/stage1_bot.py（右入力・決めた位置でのジャンプ・地上ダッシュ・実際のクリックと同じ入力経路）。
+    v2.1〜v2.4 の「走るだけでも逃げ切れる」は C案で意図的に廃止した（城門はテレポートでしか越えられない）。
     """
 
-    ROUTE = [(980, GROUND, False), (1200, GROUND, False), (1405, 300, True),
-             (2270, GROUND, False), (2400, GROUND, False), (2605, 310, True)]
+    def _gate(self, gid):
+        return next(r for r in STAGE_1.platforms if r.id == gid)
 
-    def _run(self, use_teleport, min_gain=250, first_after=0.0, max_teleports=99, target_id=None, trace=None):
-        w = World(STAGE_1, with_graphics=False)
-        inp = InputState()
-        inp.simulate_press("right")
-        used, double, hold = set(), False, 0
-        for _ in range(60 * 15):
-            p = w.player
-            if hold > 0:
-                hold -= 1
-                if hold == 0:
-                    inp.simulate_release("jump")
-            if double and p.vy >= -30 and not p.on_ground:
-                inp.simulate_release("jump")
-                inp.simulate_press("jump")
-                hold, double = 40, False
-            jumped = False
-            if p.on_ground:
-                for i, (x, surf, dbl) in enumerate(self.ROUTE):
-                    if i not in used and abs(p.rect.bottom - surf) < 1 and p.rect.right >= x:
-                        used.add(i)
-                        inp.simulate_release("jump")
-                        inp.simulate_press("jump")
-                        hold, double, jumped = 40, dbl, True
-                        break
-            near = any(i not in used and abs(p.rect.bottom - s) < 1 and x - 140 <= p.rect.right < x
-                       for i, (x, s, _) in enumerate(self.ROUTE))
-            if p.on_ground and p.dash_cooldown <= 0 and not jumped and not near:
-                inp.simulate_press("dash")
-            else:
-                inp.simulate_release("dash")
-            if (use_teleport and w.teleport.ready and w.elapsed >= first_after
-                    and w.teleport.count < max_teleports):
-                ahead = [e for e in w.enemies if w.camera.view_rect.contains(e.hurtbox)
-                         and e.x - p.rect.centerx > min_gain
-                         and (target_id is None or e.enemy_id == target_id)]
-                if ahead:
-                    aim(w, inp, max(ahead, key=lambda e: e.x))
-                    inp.simulate_press("teleport")
-            before_count = w.teleport.count
-            before_rect = p.rect.copy()
-            selected = w.camera.to_world(*inp.mouse_pos)
-            selected_enemy = find_target(w.enemies, w.camera, selected)
-            if w.update(DT, inp):
-                inp.clear_edges()
-            if trace is not None and w.teleport.count > before_count:
-                trace.append((before_rect, p.rect.copy(), selected, selected_enemy.enemy_id))
-            inp.simulate_release("teleport")
-            if w.state != PLAYING:
-                break
-        return w
+    def test_without_teleport_stops_at_first_gate(self):
+        for dash in (True, False):
+            r = stage1_bot.play(STAGE_1, policy="none", dash=dash)
+            self.assertEqual((r.state, r.world.death_cause), (DEAD, "wall"))
+            self.assertIn("GATE1", r.arrive)                       # 前半はテレポートなしで通過できる
+            self.assertLessEqual(r.world.player.rect.right, self._gate("GATE1").x + 1e-6)
 
-    def test_without_teleport_can_escape_by_running(self):
-        w = self._run(False)
-        self.assertEqual(w.state, CLEAR, f"{w.death_cause} at x={w.max_x:.0f}")
+    def test_required_swaps_only_can_escape(self):
+        for dash in (True, False):
+            r = stage1_bot.play(STAGE_1, policy="required", dash=dash)
+            self.assertEqual(r.state, CLEAR)
+            self.assertEqual([s.target for s in r.swaps], ["E03", "E04"])
 
-    def test_with_teleport_can_escape(self):
-        w = self._run(True)
-        self.assertEqual(w.state, CLEAR, f"{w.death_cause} at x={w.max_x:.0f}")
-        self.assertGreaterEqual(w.teleport.count, 2)
+    def test_each_required_swap_crosses_its_gate(self):
+        r = stage1_bot.play(STAGE_1, policy="required")
+        for swap, gid in zip(r.swaps, ("GATE1", "GATE2")):
+            gate = self._gate(gid)
+            self.assertLessEqual(swap.before.right, gate.x)
+            self.assertGreaterEqual(swap.after.left, gate.x + gate.w)
 
-    def test_single_well_timed_teleport_over_rampart(self):
-        # 城壁（B01）の手前で、城壁の向こうの敵と1回だけ交換するルート
-        trace = []
-        w = self._run(True, first_after=1.0, max_teleports=1, target_id="E03", trace=trace)
-        self.assertEqual(w.state, CLEAR, f"{w.death_cause} at x={w.max_x:.0f}")
-        self.assertEqual(w.teleport.count, 1)
-        self.assertEqual(len(trace), 1)
-        wall = next(r for r in STAGE_1.platforms if r.id == "B01")
-        before, after, selected, target_id = trace[0]
-        self.assertEqual(target_id, "E03")
-        self.assertLessEqual(before.right, wall.x)
-        self.assertGreaterEqual(after.left, wall.x + wall.w)
-        self.assertGreater(selected[0], wall.x + wall.w)
-
-    def test_two_teleports_can_escape(self):
-        w = self._run(True, first_after=1.5, max_teleports=2)
-        self.assertEqual(w.state, CLEAR)
-        self.assertEqual(w.teleport.count, 2)
-
-    def test_teleport_clears_faster_than_running(self):
-        running = self._run(False)
-        teleporting = self._run(True)
-        self.assertEqual((running.state, teleporting.state), (CLEAR, CLEAR))
-        self.assertLess(teleporting.elapsed, running.elapsed)
-
+    def test_optional_swaps_clear_faster(self):
+        base = stage1_bot.play(STAGE_1, policy="required")
+        air = stage1_bot.play(STAGE_1, policy="required", air_e02=True)
+        expert = stage1_bot.play(STAGE_1, policy="expert")
+        self.assertEqual((base.state, air.state, expert.state), (CLEAR, CLEAR, CLEAR))
+        self.assertEqual(air.swaps[0].target, "E02")
+        self.assertTrue(air.swaps[0].airborne)
+        self.assertLess(expert.world.elapsed, base.world.elapsed)
 
 if __name__ == "__main__":
     unittest.main()

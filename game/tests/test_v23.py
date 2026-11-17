@@ -4,6 +4,12 @@
     tests/fixtures/physics_trace_v22.json は v2.2（コミット 1ffc37e）のコードで記録した、ステージ1の
     自動プレイ3通りの毎ステップの状態（主人公の位置・速度・接地・HP、追跡壁、カメラX、交換回数、敵の位置）。
     v2.3 の変更はすべて見た目・表示だけなので完全一致すること（カメラの動きも変えていない）。
+    ※ v2.5 でステージ1を C案（城門2つ・テレポート必須の後半）に作り直したため、自動操作を
+      tests/stage1_bot.py（実際のクリックと同じ入力経路）に替えて再生成した。ファイル名は互換のため v22 のまま。
+      ゲームのコード（物理・テレポート・追跡壁）は v2.2 から変えていない。
+      記録の変化の原因（2026-11-17 確認）: 4通りとも地形の変更（仕様変更・C案）で全面的に変わった。そのうち
+      expert（熟練）だけはボットの修正（降り段の縁から飛び出したら空中で跳ぶ）の影響も受けている
+      （修正前のボットでは 6.0833 秒、修正後 5.8833 秒。他の3通りは修正前後で同一）。
     再生成（ゲームルールを意図的に変えたときのみ）:
         set RUNVOID_REGEN_TRACE=1 && python -m unittest tests.test_v23
 """
@@ -19,72 +25,27 @@ from test_gameplay import DT, STAGE_1, InputState  # noqa: F401  (SDL dummy 設�
 import config
 import settings as settings_mod
 from systems import display
-from systems.world import PLAYING, World
+from systems.world import World
 from ui import fonts
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 TRACE_PATH = os.path.join(HERE, "fixtures", "physics_trace_v22.json")
-GROUND = 422.0
-ROUTE = [(980, GROUND, False), (1200, GROUND, False), (1405, 300, True),
-         (2270, GROUND, False), (2400, GROUND, False), (2605, 310, True)]
 
 
-def run_trace(use_teleport: bool, target_id: str | None = None, with_graphics: bool = False):
-    """Stage1BalanceTests と同じ自動操作で 1 プレイし、毎ステップの状態を記録する。"""
-    w = World(STAGE_1, with_graphics=with_graphics)
-    inp = InputState()
-    inp.simulate_press("right")
-    used, double, hold = set(), False, 0
-    rows = []
-    for _ in range(60 * 15):
-        p = w.player
-        if hold > 0:
-            hold -= 1
-            if hold == 0:
-                inp.simulate_release("jump")
-        if double and p.vy >= -30 and not p.on_ground:
-            inp.simulate_release("jump")
-            inp.simulate_press("jump")
-            hold, double = 40, False
-        jumped = False
-        if p.on_ground:
-            for i, (x, surf, dbl) in enumerate(ROUTE):
-                if i not in used and abs(p.rect.bottom - surf) < 1 and p.rect.right >= x:
-                    used.add(i)
-                    inp.simulate_release("jump")
-                    inp.simulate_press("jump")
-                    hold, double, jumped = 40, dbl, True
-                    break
-        near = any(i not in used and abs(p.rect.bottom - s) < 1 and x - 140 <= p.rect.right < x
-                   for i, (x, s, _) in enumerate(ROUTE))
-        if p.on_ground and p.dash_cooldown <= 0 and not jumped and not near:
-            inp.simulate_press("dash")
-        else:
-            inp.simulate_release("dash")
-        if use_teleport and w.teleport.ready:
-            ahead = [e for e in w.enemies if w.camera.view_rect.contains(e.hurtbox)
-                     and e.x - p.rect.centerx > 250
-                     and (target_id is None or e.enemy_id == target_id)]
-            if ahead:
-                e = max(ahead, key=lambda e: e.x)
-                inp.mouse_pos = w.camera.to_screen(*e.hurtbox.center)
-                inp.simulate_press("teleport")
-        if w.update(DT, inp):
-            inp.clear_edges()
-        inp.simulate_release("teleport")
-        rows.append([round(v, 4) for v in (p.rect.x, p.rect.y, p.vx, p.vy, w.wall.front_x, w.camera.x)]
-                    + [int(p.on_ground), p.hp, w.teleport.count]
-                    + [[e.enemy_id, round(e.x, 4), round(e.foot_y, 4)] for e in w.enemies])
-        if w.state != PLAYING:
-            break
-    return dict(state=w.state, elapsed=round(w.elapsed, 4), rows=rows)
+def run_trace(policy: str, with_graphics: bool = False, **kw):
+    """tests/stage1_bot.py の自動操作で 1 プレイし、毎ステップの状態を記録する。"""
+    import stage1_bot
+    r = stage1_bot.play(STAGE_1, policy=policy, with_graphics=with_graphics, record=True, max_time=15.0, **kw)
+    return dict(state=r.world.state, elapsed=round(r.world.elapsed, 4), rows=r.rows)
 
 
-SCENARIOS = {"no_teleport": (False, None), "teleport": (True, None), "e03_only": (True, "E03")}
+# v2.5（C案）: テレポートなし（城門1で壁に飲まれる）/ 必須の2回だけ / E02 の空中交換＋必須 / 熟練（最遠の敵を即使用）
+SCENARIOS = {"no_teleport": dict(policy="none"), "required": dict(policy="required"),
+             "air_e02": dict(policy="required", air_e02=True), "expert": dict(policy="expert")}
 
 
 def build_traces(with_graphics: bool = False):
-    return {k: run_trace(tp, tid, with_graphics) for k, (tp, tid) in SCENARIOS.items()}
+    return {k: run_trace(with_graphics=with_graphics, **kw) for k, kw in SCENARIOS.items()}
 
 
 if os.environ.get("RUNVOID_REGEN_TRACE") == "1":   # pragma: no cover - 手動再生成用
@@ -154,31 +115,36 @@ class VisibilityTests(unittest.TestCase):
     def test_pits_are_the_gaps_in_the_floor_only(self):
         from stages.renderer import find_pits
         rects = [p.to_rect() for p in STAGE_1.platforms]
-        self.assertEqual(find_pits(rects, STAGE_1.world_width, 540), [(1040, 1150, 422), (2300, 2420, 422)])
-        # 城壁 B01/B02 は地面と接しているので穴ではない
-        self.assertNotIn(1560, [x for p in find_pits(rects, STAGE_1.world_width, 540) for x in p[:2]])
+        # v2.5（C案）: 穴は 760-870 / 1300-1520 / 2900-2980。降り段の段差（高さ16）は穴ではない
+        self.assertEqual(find_pits(rects, STAGE_1.world_width, 540),
+                         [(760, 870, 422), (1300, 1520, 422), (2900, 2980, 422)])
+        # 城門 GATE1/GATE2・段 B01・台座は地面と接しているので穴ではない
+        edges = [x for p in find_pits(rects, STAGE_1.world_width, 540) for x in p[:2]]
+        for x in (1000, 1940, 2320, 2400, 3040, 3100):
+            self.assertNotIn(x, edges)
 
     def test_pit_interior_turns_red_toward_the_bottom_and_edges_are_lighter(self):
         import pygame
         w = self._world()
-        w.camera.x = 400.0
+        w.camera.x = 120.0
         s = pygame.Surface((960, 540))
         w.terrain_renderer.draw(s, w.camera)
-        cx = 1095 - 400
+        cx = 815 - 120                                      # 穴 760-870 の中央
         top, bottom = s.get_at((cx, 430)), s.get_at((cx, 536))
         self.assertGreater(bottom.r, top.r + 40)            # 底が赤く光る
         self.assertGreater(bottom.r, bottom.g * 3)
-        ground = s.get_at((1040 - 400 - 40, 470))           # 地面の内側
-        edge = s.get_at((1040 - 400 - 2, 430))              # 穴に面した縁
+        ground = s.get_at((760 - 120 - 40, 470))            # 地面の内側
+        edge = s.get_at((760 - 120 - 2, 430))               # 穴に面した縁
         self.assertGreater(sum(edge[:3]), sum(ground[:3]) + 60)
         # 地形の当たり判定（collision.Terrain）は描画と無関係で、穴は固体ではない
-        self.assertFalse(w.terrain.point_in_solid(1095, 500))
+        self.assertFalse(w.terrain.point_in_solid(815, 500))
 
     def test_enemy_rim_and_targets_are_drawn_without_changing_hitboxes(self):
         import pygame
         from systems.targeting import pick_rect
         w = self._world()
         e = w.enemies[0]
+        w.camera.x = e.x - 480          # v2.5: 開始位置からは E01 が画面外なので、敵が画面中央に来る位置にする
         before = (e.body_rect.copy(), e.hurtbox.copy(), pick_rect(e).copy())
         s = pygame.Surface((960, 540))
         w.draw(s)
@@ -193,6 +159,7 @@ class VisibilityTests(unittest.TestCase):
         import pygame
         from systems.targeting import is_targetable
         w = self._world()
+        w.camera.x = 400.0              # v2.5: E01 が画面内、E02〜E04 が画面外になる位置
         tele, dim = tuple(config.COLORS["teleport"]), tuple(config.COLORS["teleport_dim"])
 
         def marker_color(enemy):
@@ -221,6 +188,7 @@ class VisibilityTests(unittest.TestCase):
         try:
             config.VISIBILITY.update(enemy_halo_alpha=0, enemy_rim_width=0, target_marker=False)
             w = self._world()
+            w.camera.x = 400.0          # E01 が画面内に入る位置（敵がいない画面では検査にならない）
             s = pygame.Surface((960, 540))
             w.draw(s)
             rim = tuple(config.COLORS["enemy_rim"])
