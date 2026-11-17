@@ -6,6 +6,8 @@ import random
 
 import pygame
 
+import config
+
 
 class Particle:
     __slots__ = ("x", "y", "vx", "vy", "life", "max_life", "color", "size", "gravity")
@@ -83,6 +85,9 @@ class Effects:
         self.rings: list[list] = []   # [x, y, 経過, 寿命, 最大半径, 色]
         self.afterimages: list[list] = []   # [サーフェス, x, y, 経過, 寿命]
         self.beams: list[list] = []         # [x1, y1, x2, y2, 経過, 寿命, 色]
+        self.streaks: list[list] = []       # 画面座標 [x, y, 長さ, 速度, 経過, 寿命]（v2.3）
+        self.locators: list[list] = []      # [対象, 経過, 寿命, 色]（v2.3）
+        self._streak_cache: dict[int, pygame.Surface] = {}
         self.rng = random.Random(seed)
 
     # -- テレポート演出 ----------------------------------------------------
@@ -111,6 +116,50 @@ class Effects:
                        size=2, gravity=0.0)
         self.beam(before_player.centerx, before_player.centery,
                   before_target.centerx, before_target.centery, color)
+
+    def teleport_camera_cue(self, camera_shift: float, view_w: int, view_h: int) -> None:
+        """v2.3: テレポート直後のカメラの高速移動を「移動」として見せる流線（画面座標・見た目のみ）。
+
+        camera_shift はこれからカメラが動く量（+ で右）。背景は逆向きに流れるので、線もその向きに流す。
+        カメラ自体の動き（追従・照準・敵の更新範囲）は変えない。
+        """
+        p = config.TELEPORT_FX
+        if not p["streaks"] or abs(camera_shift) < p["streak_min_shift"]:
+            return
+        rng = self.rng
+        strength = min(1.0, abs(camera_shift) / 320.0)
+        direction = -1.0 if camera_shift > 0 else 1.0
+        for _ in range(int(6 + 10 * strength)):
+            length = rng.uniform(50, 170) * (0.5 + 0.5 * strength)
+            self.streaks.append([rng.uniform(-80, view_w + 80), rng.uniform(40, view_h - 60), length,
+                                 direction * rng.uniform(900, 1700) * strength,
+                                 0.0, p["streak_life"] * rng.uniform(0.7, 1.0)])
+
+    def locator(self, entity, color, life: float | None = None) -> None:
+        """v2.3: 到着した主人公の周りで外から縮むリング（移動先へ視線を誘導する。見た目のみ）。"""
+        if config.TELEPORT_FX["locator"]:
+            self.locators.append([entity, 0.0, config.TELEPORT_FX["locator_life"] if life is None else life,
+                                  color])
+
+    def _streak_image(self, length: int) -> pygame.Surface:
+        key = max(8, int(length) // 8 * 8)
+        img = self._streak_cache.get(key)
+        if img is None:
+            img = pygame.Surface((key, 2), pygame.SRCALPHA)
+            for x in range(key):
+                k = x / (key - 1)
+                img.fill((255, 225, 245, int(150 * k * k)), (x, 0, 1, 2))
+            self._streak_cache[key] = img
+        return img
+
+    def draw_screen_cues(self, surface: pygame.Surface) -> None:
+        """背景・地形の後、キャラクターより前に描く画面座標の演出（流線）。"""
+        for x, y, length, speed, age, life in self.streaks:
+            img = self._streak_image(length)
+            if speed < 0:   # 左へ流れる線は先端（明るい側）を左にする
+                img = pygame.transform.flip(img, True, False)
+            img.set_alpha(int(255 * (1.0 - age / life)))
+            surface.blit(img, (x - img.get_width() / 2, y))
 
     def ring(self, x, y, color=(200, 130, 255), radius=18.0, life=0.15):
         """被弾時の小さな衝撃波。"""
@@ -176,6 +225,13 @@ class Effects:
         for b in self.beams:
             b[4] += dt
         self.beams = [b for b in self.beams if b[4] < b[5]]
+        for s in self.streaks:
+            s[0] += s[3] * dt
+            s[4] += dt
+        self.streaks = [s for s in self.streaks if s[4] < s[5]]
+        for loc in self.locators:
+            loc[1] += dt
+        self.locators = [loc for loc in self.locators if loc[1] < loc[2] and getattr(loc[0], "alive", True)]
 
     def draw(self, surface: pygame.Surface, camera) -> None:
         w, h = surface.get_size()
@@ -204,3 +260,11 @@ class Effects:
             sx, sy = hp.x - camera.x, hp.y - camera.y
             if -10 < sx < w + 10 and -10 < sy < h + 10:
                 pygame.draw.rect(surface, hp.color, (sx - 1, sy - 1, hp.size, hp.size))
+        for entity, age, life, color in self.locators:
+            k = age / life
+            cx, cy = entity.rect.centerx - camera.x, entity.rect.centery - camera.y
+            rad = int(70 - 46 * (1 - (1 - k) ** 2))          # 70px → 24px（減速しながら縮む）
+            width = 3 if k < 0.6 else 2
+            pygame.draw.circle(surface, color, (cx, cy), rad, width)
+            if k < 0.5:   # 内側の細い白線（到着直後だけ）
+                pygame.draw.circle(surface, (255, 235, 255), (cx, cy), max(2, rad - 4), 1)

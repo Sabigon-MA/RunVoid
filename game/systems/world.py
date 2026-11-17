@@ -10,6 +10,8 @@
 """
 from __future__ import annotations
 
+import pygame
+
 import config
 from enemies import create_enemy
 from player import create_protagonist
@@ -19,25 +21,28 @@ from systems.chasing_wall import ChasingWall
 from systems.collision import Terrain
 from systems.combat import CombatSystem
 from systems.effects import Effects, draw_outline
-from systems.targeting import find_target
+from systems.targeting import find_target, is_targetable
 from systems.teleport import TeleportSystem
 
 PLAYING, DEAD, CLEAR = "playing", "dead", "clear"
 
 
 class World:
-    def __init__(self, stage, with_graphics: bool = True):
+    def __init__(self, stage, with_graphics: bool = True, from_checkpoint: bool = False):
         self.stage = stage
         self.with_graphics = with_graphics
+        # チェックポイントから始めるか（出現位置と追跡壁の開始位置だけが変わる。それ以外は最初の状態）
+        self.from_checkpoint = from_checkpoint and getattr(stage, "checkpoint", None) is not None
+        spawn, wall = stage.start(self.from_checkpoint) if hasattr(stage, "start") else (stage.spawn, stage.wall)
         view_w, view_h = stage.resolution
         self.terrain = Terrain([r.to_rect() for r in stage.platforms],
                                [r.to_rect() for r in stage.one_way_platforms])
         self.combat = CombatSystem()
         self.effects = Effects()
         self.teleport = TeleportSystem()
-        self.player = create_protagonist(*stage.spawn)
+        self.player = create_protagonist(*spawn)
         self.enemies = [create_enemy(e) for e in stage.enemies]
-        self.wall = ChasingWall(stage.wall.start_x, stage.wall.speed, stage.wall.thickness)
+        self.wall = ChasingWall(wall.start_x, wall.speed, wall.thickness)
         self.camera = Camera(view_w, view_h, stage.world_width, view_h)
         self.camera.snap_to(self.player.rect)
         self.mouse_screen = (0.0, 0.0)
@@ -56,11 +61,22 @@ class World:
         self.background = (make_background(stage.theme, view_w, view_h, stage.background)
                            if with_graphics else None)
         self.terrain_renderer = TerrainRenderer(stage) if with_graphics else None
+        # v2.5: チェックポイントの目印が起動済みか（= このプレイでチェックポイントを越えた）。
+        # チェックポイントから始めたときは最初から起動済み（起動の演出なし）
+        self.checkpoint_lit = self.passed_checkpoint
+        if self.checkpoint_lit and self.terrain_renderer:
+            self.terrain_renderer.set_checkpoint_lit(flash=False)
 
     # ------------------------------------------------------------------
     @property
     def wall_distance(self) -> float:
         return self.wall.distance_to(self.player.rect)
+
+    @property
+    def passed_checkpoint(self) -> bool:
+        """このプレイでチェックポイントの位置を越えたか（越えてから死ぬと、次からチェックポイントで再開）。"""
+        cp = getattr(self.stage, "checkpoint", None)
+        return cp is not None and self.max_x >= cp.x
 
     @property
     def wall_on_screen(self) -> bool:
@@ -113,6 +129,11 @@ class World:
         prev_rect = player.rect.copy()
         player.update(dt, inp, self)
         self.max_x = max(self.max_x, player.rect.x)
+        if not self.checkpoint_lit and self.passed_checkpoint:
+            # 描画状態だけを変える（演出は TerrainRenderer の中で完結し、乱数・エフェクトを使わない）
+            self.checkpoint_lit = True
+            if self.terrain_renderer:
+                self.terrain_renderer.set_checkpoint_lit(flash=True)
 
         for enemy in self.enemies:
             if enemy.alive and self._active_enemy(enemy):
@@ -180,6 +201,11 @@ class World:
         before_player, before_target = before
         self.effects.teleport_arrive(before_player, before_target, self.player, target,
                                      config.COLORS["teleport"])
+        # v2.3: カメラがこれから動く量に応じた流線と、到着位置へのロケーター（描画のみ）
+        cam = self.camera
+        shift = min(max(cam.target_for(self.player.rect), 0.0), cam.max_x) - cam.x
+        self.effects.teleport_camera_cue(shift, cam.view_w, cam.view_h)
+        self.effects.locator(self.player, config.COLORS["teleport"])
         # 大きく移動しても主人公が画面外に消えないよう、カメラを速やかに追従させる
         # （画面端の margin 内へは即座に寄せ、残りは高速スムーズ追従）
         self.camera.boost()
@@ -241,15 +267,36 @@ class World:
                            (170, 20, 28), 30, 260, 0.9)
 
     # ------------------------------------------------------------------
+    def _draw_target_markers(self, surface) -> None:
+        """v2.3: テレポートで交換できる敵の頭上に小さな印を描く（判定は targeting と同じ）。
+
+        使用可能なときは明るく、クールダウン中は暗く表示する。見た目のみ。
+        """
+        cam = self.camera
+        ready = self.teleport.ready
+        col = config.COLORS["teleport"] if ready else config.COLORS["teleport_dim"]
+        for enemy in self.enemies:
+            if not is_targetable(enemy, cam):
+                continue
+            box = enemy.hurtbox
+            x = round(box.centerx - cam.x)
+            y = round(box.top - cam.y) - 9
+            pts = [(x - 5, y - 6), (x + 5, y - 6), (x, y)]
+            pygame.draw.polygon(surface, (10, 4, 12), [(px, py + 1) for px, py in pts])   # 影
+            pygame.draw.polygon(surface, col, pts)
+
     def draw(self, surface) -> None:
         cam = self.camera
         if self.background:
             self.background.draw(surface, cam.x)
         if self.terrain_renderer:
             self.terrain_renderer.draw(surface, cam)
+        self.effects.draw_screen_cues(surface)
         for enemy in self.enemies:
             if cam.is_visible(enemy.body_rect, 40):
                 enemy.draw(surface, cam)
+        if config.VISIBILITY["target_marker"] and self.state == PLAYING:
+            self._draw_target_markers(surface)
         # テレポート対象の輪郭発光（クールダウン中は弱く）
         target = self.hover_target
         if target is not None and target.alive and self.state == PLAYING:

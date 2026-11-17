@@ -12,6 +12,7 @@ import ctypes
 import json
 from pathlib import Path
 import sys
+import time
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
@@ -21,9 +22,9 @@ from main import Game
 from systems.targeting import find_target
 
 
-def run(output: Path) -> None:
+def run(output: Path, display_mode: str = "pixel_perfect", high_dpi: bool = False) -> None:
     output.mkdir(parents=True, exist_ok=True)
-    game = Game()
+    game = Game(display_mode=display_mode, high_dpi=high_dpi)
     if pygame.display.get_driver() == "dummy":
         pygame.quit()
         raise RuntimeError("Native probe requires a real SDL video driver, not dummy")
@@ -46,10 +47,12 @@ def run(output: Path) -> None:
         dpi = None
         if sys.platform == "win32":
             dpi = ctypes.windll.user32.GetDpiForWindow(pygame.display.get_wm_info()["window"])
-        return dict(command_id=command_id, live=live, dpi=dpi,
+        return dict(command_id=command_id, live=live, dpi=dpi, display_mode=game.display.mode,
+                    integer_scale=game.display.integer_scale_enabled(),
+                    high_dpi=game.settings.high_dpi,
                     window_size=pygame.display.get_window_size(),
                     surface_size=game.screen.get_size(), camera_x=w.camera.x,
-                    mouse=game.input.mouse_pos, cooldown=w.teleport.cooldown_remaining,
+                    mouse=game.input.mouse_pos, mouse_get_pos=pygame.mouse.get_pos(), cooldown=w.teleport.cooldown_remaining,
                     count=w.teleport.count, state=w.state,
                     hover=getattr(w.hover_target, "enemy_id", None),
                     enemies=[dict(id=e.enemy_id, screen_center=w.camera.to_screen(*e.center))
@@ -105,7 +108,12 @@ def run(output: Path) -> None:
             pygame.mouse.set_visible(True)
             temporary = output / "state.tmp"
             temporary.write_text(json.dumps(snapshot()), encoding="utf-8")
-            temporary.replace(output / "state.json")
+            for _ in range(50):   # 読み取り側が開いている間は Windows で置換に失敗するため再試行
+                try:
+                    temporary.replace(output / "state.json")
+                    break
+                except PermissionError:
+                    time.sleep(0.01)
     finally:
         pygame.quit()
 
@@ -113,4 +121,7 @@ def run(output: Path) -> None:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", required=True, type=Path)
-    run(parser.parse_args().output)
+    parser.add_argument("--display", choices=("pixel_perfect", "fit"), default="pixel_perfect")
+    parser.add_argument("--high-dpi", action="store_true")
+    args = parser.parse_args()
+    run(args.output, args.display, args.high_dpi)

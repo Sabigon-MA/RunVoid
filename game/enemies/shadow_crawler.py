@@ -27,6 +27,27 @@ from systems.combat import AttachedAttack
 
 EPS = 1e-6
 
+_HALO_CACHE: dict[tuple[int, int, int], pygame.Surface] = {}
+
+
+def _halo(w: int, h: int, alpha: int) -> pygame.Surface:
+    """敵の背後に置く楕円の淡い光（中心ほど濃い）。サイズごとに一度だけ作る。"""
+    key = (w, h, alpha)
+    surf = _HALO_CACHE.get(key)
+    if surf is None:
+        surf = pygame.Surface((max(2, w), max(2, h)), pygame.SRCALPHA)
+        r, g, b = config.COLORS["enemy_halo"]
+        steps = 8
+        for i in range(steps):
+            k = i / steps
+            rect = pygame.Rect(0, 0, int(w * (1 - k)), int(h * (1 - k)))
+            rect.center = (w // 2, h // 2)
+            pygame.draw.ellipse(surf, (r, g, b, int(alpha * (k + 1 / steps) ** 1.5)), rect)
+        if len(_HALO_CACHE) > 256:   # 姿勢でサイズが変わるため上限を設ける
+            _HALO_CACHE.clear()
+        _HALO_CACHE[key] = surf
+    return surf
+
 
 class CrawlerState(Enum):
     PATROL = auto()
@@ -222,7 +243,8 @@ class ShadowCrawler(Enemy):
         cx = sx + shake + lean
         bw, bh = w * stretch, (h - 4) * squash
 
-        # 脚
+        # 脚の形（縁取りと本体で同じ形を2回描く）
+        legs = []
         for i in range(4):
             lx = cx - bw / 2 + 6 + i * (bw - 12) / 3
             swing = math.sin(t * leg_speed + i * 1.7) * 4 if moving else 0
@@ -230,17 +252,32 @@ class ShadowCrawler(Enemy):
                 swing = -f * 6
             if st == CrawlerState.STAGGER:
                 # 脚がばたつき、地面から浮く
-                pygame.draw.line(surface, body_col, (lx, fy - 6),
-                                 (lx + math.sin(t * 40 + i) * 5, fy - 3), 2)
-                continue
-            pygame.draw.line(surface, body_col, (lx, fy - 6), (lx + swing - f * 3, fy), 2)
-        # 胴体
+                legs.append(((lx, fy - 6), (lx + math.sin(t * 40 + i) * 5, fy - 3)))
+            else:
+                legs.append(((lx, fy - 6), (lx + swing - f * 3, fy)))
         bob = math.sin(t * leg_speed) * 1.5 if moving else 0
         body = pygame.Rect(0, 0, int(bw), max(4, int(bh)))
         body.midbottom = (int(cx), int(fy - 2 + bob))
-        pygame.draw.ellipse(surface, body_col, body)
         head = pygame.Rect(0, 0, 16, 12)
         head.center = (int(cx + f * (bw / 2 - 4)), int(body.centery - 1))
+
+        # v2.3 視認性: 背後の淡い光と縁取り（暗い瓦礫・地面に紛れないように。描画のみ）
+        vis = config.VISIBILITY
+        if vis["enemy_halo_alpha"] > 0:
+            halo = _halo(int(bw) + 30, int(bh) + 22, vis["enemy_halo_alpha"])
+            surface.blit(halo, (cx - halo.get_width() / 2, body.centery - halo.get_height() / 2))
+        rim = vis["enemy_rim_width"]
+        if rim > 0:
+            rim_col = config.COLORS["enemy_rim"]
+            for a, b in legs:
+                pygame.draw.line(surface, rim_col, a, b, 2 + rim * 2)
+            pygame.draw.ellipse(surface, rim_col, body.inflate(rim * 2, rim * 2))
+            pygame.draw.ellipse(surface, rim_col, head.inflate(rim * 2, rim * 2))
+
+        # 脚・胴体・頭
+        for a, b in legs:
+            pygame.draw.line(surface, body_col, a, b, 2)
+        pygame.draw.ellipse(surface, body_col, body)
         pygame.draw.ellipse(surface, body_col, head)
         # 朽ちた布
         cloth_x = cx - f * 6
