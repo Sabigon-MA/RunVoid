@@ -19,7 +19,7 @@ FIXED_DT = 1.0 / 60.0
 MAX_FRAME_TIME = 0.25          # 1フレームで消化する最大経過時間（スパイク時の暴走防止）
 WINDOW_TITLE = "終焉を背に - Prototype"
 TILE_SIZE = 32
-DEFAULT_STAGE = "stage_1.json"
+DEFAULT_STAGE = "stage_1_v3.json"   # v2.5 は --stage stage_1.json で起動
 
 # ---------------------------------------------------------------------------
 # 入力（アクション名 -> キー / マウスボタン）

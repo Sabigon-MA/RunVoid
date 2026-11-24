@@ -31,7 +31,7 @@ from systems.world import CLEAR, DEAD, PLAYING, World  # noqa: E402
 DT = config.FIXED_DT
 FIXTURES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures")
 STAGE = load_stage(os.path.join(FIXTURES, "legacy_stage.json"))
-STAGE_1 = load_stage()
+STAGE_1 = load_stage("stage_1.json")   # v2.5（既定のステージは v3.0 だが、v2.5 の検証はこのファイルで固定）
 
 
 def make_world(enemies=True, stage=None) -> World:
@@ -361,9 +361,10 @@ class GameSmokeTests(unittest.TestCase):
             game.start_play()   # リトライ
             self.assertIsNot(game.world, old_world)
             self.assertEqual(game.world.elapsed, 0)
-            self.assertEqual(game.world.wall.front_x, STAGE_1.wall.start_x)
-            self.assertEqual(len(game.world.enemies), len(STAGE_1.enemies))
-            self.assertEqual(game.world.player.rect.topleft, STAGE_1.spawn)
+            default = load_stage()   # main.Game() は既定のステージ（config.DEFAULT_STAGE）で起動する
+            self.assertEqual(game.world.wall.front_x, default.wall.start_x)
+            self.assertEqual(len(game.world.enemies), len(default.enemies))
+            self.assertEqual(game.world.player.rect.topleft, default.spawn)
             self.assertEqual(game.world.teleport.cooldown_remaining, 0)
         finally:
             pygame.quit()

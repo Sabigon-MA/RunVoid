@@ -8,7 +8,7 @@
 ②により、当初の制約「新しい敵種を追加しない」は解除されました。**最終的な座標は `stages/stage_1_v3.json` が正です**（§1〜§9 は承認前の設計案で、下の「設計案からの変更点」の分だけ異なります）。
 
 ### 0.1 起動方法
-`python main.py --stage stage_1_v3.json`（既定のステージは v2.5 のまま。切り替えは承認後に `config.DEFAULT_STAGE` を変更）。
+`python main.py`（2026-11-24 の承認で `config.DEFAULT_STAGE` を `stage_1_v3.json` に切り替え。v2.5 は `--stage stage_1.json`）。
 
 ### 0.2 レーン図（`layout_check.py` の出力。`stage_1_v3.json` を直接読む）
 ```
