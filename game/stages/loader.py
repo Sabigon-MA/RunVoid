@@ -17,7 +17,7 @@ class StageFormatError(ValueError):
     pass
 
 
-PLATFORM_STYLES = ("ground", "sealed_gate")
+PLATFORM_STYLES = ("ground", "sealed_gate", "underground")
 
 
 @dataclass(frozen=True)
@@ -29,6 +29,7 @@ class RectDef:
     h: float
     # 見た目の種類（描画専用。当たり判定には関与しない）。
     # "ground": 通常の地面 / "sealed_gate": 崩落した城門＋異星の侵食（通行不能の障害物）
+    # "underground": 地下水路・地下遺構の床と壁（v3.0）
     style: str = "ground"
 
     def to_rect(self) -> pygame.FRect:
@@ -82,6 +83,12 @@ class StageData:
     background: BackgroundConfig | None = None
     # 再挑戦の開始地点。None はチェックポイントなし（従来どおり毎回最初から）
     checkpoint: CheckpointDef | None = None
+    # v3.0: カメラが縦に動ける範囲 (top, bottom)（ワールド座標）。None は縦スクロールなし（y=0 に固定）
+    camera_bounds: tuple[float, float] | None = None
+
+    @property
+    def vertical(self) -> bool:
+        return self.camera_bounds is not None
 
     def start(self, from_checkpoint: bool = False) -> tuple[tuple[float, float], WallDef]:
         """開始時の (出現位置, 追跡壁)。from_checkpoint でもチェックポイントが無ければ通常の開始。"""
@@ -102,6 +109,20 @@ def _parse_checkpoint(raw, world_width: float, goal_x: float) -> CheckpointDef |
     if cp.wall_gap <= 0:
         raise StageFormatError(f"{w}: wall_gap は正の値にしてください（{cp.wall_gap}）")
     return cp
+
+
+def _parse_camera_bounds(raw, view_h: int, kill_y: float) -> tuple[float, float] | None:
+    if raw is None:
+        return None
+    w = "camera_bounds"
+    top, bottom = float(_require(raw, "top", w)), float(_require(raw, "bottom", w))
+    if bottom - top < view_h:
+        raise StageFormatError(f"{w}: bottom − top は画面の高さ {view_h} 以上にしてください（{top}〜{bottom}）")
+    if top > 0 or bottom < view_h:
+        raise StageFormatError(f"{w}: 従来の表示範囲 0〜{view_h} を含めてください（{top}〜{bottom}）")
+    if kill_y < bottom:
+        raise StageFormatError(f"{w}: kill_y（{kill_y}）は bottom（{bottom}）以上にしてください")
+    return top, bottom
 
 
 def _require(data: dict, key: str, where: str):
@@ -166,6 +187,7 @@ def parse_stage(data: dict) -> StageData:
         kill_y=kill_y,
         background=background,
         checkpoint=_parse_checkpoint(data.get("checkpoint"), world_width, goal_x),
+        camera_bounds=_parse_camera_bounds(data.get("camera_bounds"), int(resolution[1]), kill_y),
     )
 
 

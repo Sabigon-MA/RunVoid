@@ -410,9 +410,9 @@ class ImageLayer:
             x += p
         return out
 
-    def draw(self, target: pygame.Surface, camera_x: float) -> None:
+    def draw(self, target: pygame.Surface, camera_x: float, dy: int = 0) -> None:
         for x in self.tile_positions(camera_x, target.get_width()):
-            target.blit(self.surface, (x, self.y), special_flags=self.flags)
+            target.blit(self.surface, (x, self.y + dy), special_flags=self.flags)
 
 
 class DecorationLayer:
@@ -463,9 +463,9 @@ class DecorationLayer:
                     out.append((item.sprite, x, y))
         return out
 
-    def draw(self, target: pygame.Surface, camera_x: float) -> None:
+    def draw(self, target: pygame.Surface, camera_x: float, dy: int = 0) -> None:
         for sprite, x, y in self.visible(camera_x):
-            target.blit(self.sprites[sprite], (x, y))
+            target.blit(self.sprites[sprite], (x, y + dy))
 
 
 class ParallaxImageBackground:
@@ -540,15 +540,44 @@ class ParallaxImageBackground:
     def update(self, dt: float) -> None:
         pass
 
-    def draw(self, surface: pygame.Surface, camera_x: float) -> None:
-        for layer in self.layers:
+    # v3.0 縦スクロール: 最背面（空）だけはこの割合で動かし、それ以外（遠景・中景・近景・地面の影）は
+    # 地形と同じだけ動かす（地平線と地面の位置関係を崩さないため）。空がずれて空いた上側は空の最上段の色で埋める。
+    # 地面より下（ワールドの y > 画面の高さ）は TerrainRenderer が地中・地下を描くので、ここでは描かない
+    SKY_FACTOR_Y = 0.2
+
+    def _sky_top_color(self) -> tuple[int, int, int]:
+        color = getattr(self, "_sky_color", None)
+        if color is None:
+            sky = self.layers[0].surface if self.layers else None
+            if sky is None:
+                color = (0, 0, 0)
+            else:
+                w = sky.get_width()
+                pts = [sky.get_at((int(w * k / 8), 0)) for k in range(8)]
+                color = tuple(sum(p[i] for p in pts) // len(pts) for i in range(3))
+            self._sky_color = color
+        return color
+
+    def draw(self, surface: pygame.Surface, camera_x: float, camera_y: float = 0.0) -> None:
+        dy = -int(round(camera_y))
+        sky_dy = -int(round(camera_y * self.SKY_FACTOR_Y))
+        if sky_dy > 0:
+            surface.fill(self._sky_top_color(), (0, 0, surface.get_width(), sky_dy))
+        for index, layer in enumerate(self.layers):
             if self.connector is not None and layer.id == self.config.ground_connector.before_layer:
-                surface.blit(self.connector, (0, self.config.ground_connector.shade.top))
-            layer.draw(surface, camera_x)
+                surface.blit(self.connector, (0, self.config.ground_connector.shade.top + dy))
+            ldy = sky_dy if index == 0 else dy
+            if ldy:
+                layer.draw(surface, camera_x, ldy)
+            else:
+                layer.draw(surface, camera_x)   # 縦のずれがなければ従来と同じ呼び出し
         if self.decorations:
-            self.decorations.draw(surface, camera_x)
+            if dy:
+                self.decorations.draw(surface, camera_x, dy)
+            else:
+                self.decorations.draw(surface, camera_x)
         if self.shade is not None:
-            surface.blit(self.shade, (0, self.shade_y))
+            surface.blit(self.shade, (0, self.shade_y + dy))
 
 
 _CACHE: dict = {}

@@ -43,7 +43,8 @@ class World:
         self.player = create_protagonist(*spawn)
         self.enemies = [create_enemy(e) for e in stage.enemies]
         self.wall = ChasingWall(wall.start_x, wall.speed, wall.thickness)
-        self.camera = Camera(view_w, view_h, stage.world_width, view_h)
+        bounds = getattr(stage, "camera_bounds", None)
+        self.camera = Camera(view_w, view_h, stage.world_width, view_h, bounds=bounds)
         self.camera.snap_to(self.player.rect)
         self.mouse_screen = (0.0, 0.0)
         self.mouse_world = self.player.rect.center
@@ -86,7 +87,7 @@ class World:
         """カメラから遠い敵は更新しない（処理負荷対策）。ボス・落下中の敵は常に更新。"""
         if getattr(enemy, "is_boss", False) or enemy.airborne:
             return True
-        view = self.camera.view_rect.inflate(config.ENEMY_UPDATE_MARGIN * 2, 200)
+        view = self.camera.view_rect.inflate(config.ENEMY_UPDATE_MARGIN * 2, config.ENEMY_UPDATE_MARGIN_Y * 2)
         return view.colliderect(enemy.body_rect)
 
     @property
@@ -184,7 +185,7 @@ class World:
             return True
 
         # 4. カメラ・演出
-        self.camera.follow(player.rect, dt)
+        self.camera.follow(player.rect, dt, grounded=player.on_ground)
         self.effects.update(dt)
         if self.background:
             self.background.update(dt)
@@ -209,6 +210,9 @@ class World:
         # 大きく移動しても主人公が画面外に消えないよう、カメラを速やかに追従させる
         # （画面端の margin 内へは即座に寄せ、残りは高速スムーズ追従）
         self.camera.boost()
+        if self.camera.vertical:
+            # v3.0: 交換先（空中の場合もある）を縦の基準にする
+            self.camera.anchor_y = self.player.rect.bottom
         self.camera.keep_in_view(self.player.rect)
         self.camera._clamp()
         self.hover_target = None
@@ -288,7 +292,10 @@ class World:
     def draw(self, surface) -> None:
         cam = self.camera
         if self.background:
-            self.background.draw(surface, cam.x)
+            if cam.vertical:
+                self.background.draw(surface, cam.x, cam.y)
+            else:
+                self.background.draw(surface, cam.x)
         if self.terrain_renderer:
             self.terrain_renderer.draw(surface, cam)
         self.effects.draw_screen_cues(surface)

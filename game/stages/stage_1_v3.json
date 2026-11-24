@@ -1,0 +1,104 @@
+{
+  "stage_id": 1,
+  "name": "黄昏の廃王国",
+  "version": "3.0",
+  "resolution": [960, 540],
+  "tile_size": 32,
+  "theme": "twilight_ruins",
+  "background": {
+    "type": "parallax_images",
+    "asset_dir": "assets/backgrounds/twilight_ruins/draft_v1",
+    "layers": [
+      {"id": "L0_sky", "image": "01_sky.png", "factor": 0.0, "repeat": false},
+      {"id": "L1_far_castle", "image": "02_far_castle.png", "factor": 0.15, "repeat": true,
+       "seam": {"mode": "crossfade", "width": 96}},
+      {"id": "L2_mid_invasion", "image": "03_mid_invasion.png", "factor": 0.40, "repeat": true,
+       "seam": {"mode": "crossfade", "width": 96}}
+    ],
+    "decorations": {
+      "id": "L3_near_debris",
+      "image": "04_near_debris.png",
+      "factor": 0.75,
+      "period": 3360,
+      "sprites": {
+        "ruin_left": {"src": [0, 610, 330, 331], "fade_left": 14},
+        "stones": {"src": [330, 860, 520, 81]},
+        "grass": {"src": [860, 860, 460, 81]},
+        "ruin_right": {"src": [1240, 640, 432, 301], "anchor_src": [1330, 640, 342, 301], "fade_right": 14}
+      },
+      "placements": [
+        {"sprite": "ruin_left", "x": 330, "bottom": 470},
+        {"sprite": "stones", "x": 760, "bottom": 440},
+        {"sprite": "grass", "x": 1600, "bottom": 440},
+        {"sprite": "ruin_right", "x": 1900, "bottom": 470},
+        {"sprite": "grass", "x": 2360, "bottom": 440},
+        {"sprite": "ruin_left", "x": 2700, "bottom": 470}
+      ]
+    },
+    "ground_shade": {"top": 418, "height": 40, "color": [4, 2, 4], "max_alpha": 220},
+    "ground_connector": {"before_layer": "L1_far_castle", "top": 360, "height": 58,
+                         "color": [38, 23, 29], "max_alpha": 255}
+  },
+  "camera_bounds": {"top": -180, "bottom": 880},
+  "kill_y": 944,
+  "spawn": {
+    "x": 200,
+    "y": 382
+  },
+  "wall": {
+    "start_x": -600,
+    "speed": 300,
+    "thickness": 32
+  },
+  "checkpoint": {
+    "id": "CP1",
+    "x": 1560,
+    "y": 382,
+    "wall_gap": 800
+  },
+  "platforms": [
+    {"id": "G01", "x": 0, "y": 422, "w": 760, "h": 118},
+    {"id": "S01", "x": 380, "y": 390, "w": 60, "h": 150},
+    {"id": "G02", "x": 870, "y": 422, "w": 310, "h": 118},
+    {"id": "B01", "x": 1000, "y": 302, "w": 60, "h": 238},
+    {"id": "G02s", "x": 1180, "y": 438, "w": 120, "h": 102},
+    {"id": "G03", "x": 1520, "y": 422, "w": 800, "h": 118},
+    {"id": "PED", "x": 1940, "y": 390, "w": 120, "h": 150},
+    {"id": "GATE1", "x": 2320, "y": -400, "w": 80, "h": 1400, "style": "sealed_gate"},
+    {"id": "G04", "x": 2400, "y": 422, "w": 380, "h": 118},
+    {"id": "G04s", "x": 2780, "y": 438, "w": 120, "h": 102},
+    {"id": "G05", "x": 2980, "y": 422, "w": 60, "h": 118},
+    {"id": "GATE2", "x": 3040, "y": -400, "w": 60, "h": 1400, "style": "sealed_gate"},
+    {"id": "G06", "x": 3100, "y": 422, "w": 260, "h": 118},
+
+    {"id": "DW0", "x": 720, "y": 540, "w": 40, "h": 340, "style": "underground"},
+    {"id": "D1", "x": 760, "y": 742, "w": 760, "h": 138, "style": "underground"},
+    {"id": "ST1", "x": 1330, "y": 636, "w": 120, "h": 106, "style": "underground"},
+    {"id": "ST2", "x": 1450, "y": 530, "w": 70, "h": 212, "style": "underground"},
+    {"id": "DW1", "x": 1520, "y": 540, "w": 40, "h": 340, "style": "underground"}
+  ],
+  "one_way_platforms": [
+    {"id": "R1", "x": 460, "y": 270, "w": 120, "h": 16},
+    {"id": "U1", "x": 600, "y": 182, "w": 700, "h": 16},
+    {"id": "U2", "x": 1400, "y": 140, "w": 260, "h": 16},
+    {"id": "U3", "x": 1800, "y": 160, "w": 240, "h": 16},
+    {"id": "U4", "x": 2180, "y": 182, "w": 140, "h": 16},
+    {"id": "U5", "x": 2400, "y": 222, "w": 360, "h": 16},
+    {"id": "U6", "x": 2860, "y": 222, "w": 180, "h": 16},
+    {"id": "U7", "x": 3100, "y": 222, "w": 260, "h": 16}
+  ],
+  "enemies": [
+    {"id": "E01", "type": "shadow_crawler", "x": 1120, "foot_y": 422},
+    {"id": "E02", "type": "shadow_crawler", "x": 2000, "foot_y": 390},
+    {"id": "E03", "type": "shadow_crawler", "x": 2680, "foot_y": 422},
+    {"id": "E04", "type": "shadow_crawler", "x": 3150, "foot_y": 422},
+    {"id": "EU1", "type": "shadow_crawler", "x": 900, "foot_y": 182},
+    {"id": "EU3", "type": "shadow_crawler", "x": 2600, "foot_y": 222},
+    {"id": "EU4", "type": "shadow_crawler", "x": 3240, "foot_y": 222},
+    {"id": "F1", "type": "shadow_flier", "x": 1420, "foot_y": 300},
+    {"id": "F2", "type": "shadow_flier", "x": 2110, "foot_y": 100},
+    {"id": "F3", "type": "shadow_flier", "x": 2840, "foot_y": 300}
+  ],
+  "goal_x": 3200,
+  "world_width": 3360
+}

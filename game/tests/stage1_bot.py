@@ -39,9 +39,10 @@ BRAKES = [(1075, 1200)]        # B01 を越えた後の下降中は右を離す
 GATE_TARGETS = {"GATE1": "E03", "GATE2": "E04"}
 
 
-def gates(stage) -> dict[str, tuple[float, float, str]]:
+def gates(stage, targets=None) -> dict[str, tuple[float, float, str]]:
     """{門のID: (左端x, 右端x, 向こう側の交換相手)}"""
-    return {p.id: (p.x, p.x + p.w, GATE_TARGETS[p.id]) for p in stage.platforms if p.style == "sealed_gate"}
+    targets = targets or GATE_TARGETS
+    return {p.id: (p.x, p.x + p.w, targets[p.id]) for p in stage.platforms if p.style == "sealed_gate"}
 
 
 def click(w: World, inp, enemy) -> None:
@@ -83,11 +84,16 @@ class Result:
 def play(stage, *, policy="none", dash=True, gate_delay=0.0, gate2_delay=None, air_e02=False,
          jitter=0, seed=0, max_time=25.0, with_graphics=False, record=False, wall_start=None,
          wrong_first=None, start_delay=0.0, aim_sigma=0.0, retry_delay=0.0,
-         from_checkpoint=False) -> Result:
+         from_checkpoint=False, route=None, brakes=None, gate_targets=None, rescue=True,
+         air_target=None) -> Result:
     """start_delay: 開始直後に何もしない秒数 / aim_sigma: クリック位置のずれ（正規分布の標準偏差 px、
     0 なら当たり判定の中心ちょうど）/ retry_delay: 交換が成立しなかったクリックの後、次に押すまでの秒数。
     3つとも既定値では従来どおり（物理トレースはこの既定値で記録）。
-    from_checkpoint: ステージのチェックポイントから始める（v2.5）。"""
+    from_checkpoint: ステージのチェックポイントから始める（v2.5）。
+    v3.0 用（既定値では従来どおり）:
+        route / brakes / gate_targets: 踏み切りの表・右を離す区間・城門ごとの交換相手を差し替える
+        rescue=False: 穴の縁から落ちたときの空中ジャンプをしない（地下への入口にわざと落ちる）
+        air_target=(敵ID, x0, x1): 空中で x0〜x1 にいる間にその敵が見えたら交換する（落下中の救助など）"""
     from systems.input import InputState
     from systems.targeting import find_target
     rng = random.Random(seed)
@@ -96,12 +102,13 @@ def play(stage, *, policy="none", dash=True, gate_delay=0.0, gate2_delay=None, a
     w = World(stage, with_graphics=with_graphics, from_checkpoint=from_checkpoint)
     if wall_start is not None:
         w.wall.segments[0].front_x = wall_start
-    g = gates(stage)
+    g = gates(stage, gate_targets)
     res = Result(w)
     inp = InputState()
     inp.simulate_press("right")
     p = w.player
-    route = [(x + rng.randint(-jitter, jitter), s, d) for x, s, d in ROUTE]
+    route = [(x + rng.randint(-jitter, jitter), s, d) for x, s, d in (ROUTE if route is None else route)]
+    brakes = BRAKES if brakes is None else brakes
     from stages.renderer import find_pits
     pits = [(x0, x1) for x0, x1, _ in find_pits([r.to_rect() for r in stage.platforms], stage.world_width,
                                                 stage.resolution[1])]
@@ -116,7 +123,7 @@ def play(stage, *, policy="none", dash=True, gate_delay=0.0, gate2_delay=None, a
             if w.state != PLAYING:
                 break
             continue
-        if not p.on_ground and p.vy > 0 and any(a <= p.rect.right <= b for a, b in BRAKES):
+        if not p.on_ground and p.vy > 0 and any(a <= p.rect.right <= b for a, b in brakes):
             inp.simulate_release("right")
         elif not inp.held("right"):
             inp.simulate_press("right")
@@ -130,7 +137,7 @@ def play(stage, *, policy="none", dash=True, gate_delay=0.0, gate2_delay=None, a
         jumped = False
         # 地上ダッシュのまま段の縁から飛び出し、降り段に着地しないまま穴の上に出たら空中で跳ぶ（人間なら当然やる）。
         # 通常の踏み切り（上昇中に穴へ出る）では発動しない
-        if (not p.on_ground and hold == 0 and p.vy >= 0 and p.jumps_used < p.max_jumps
+        if (rescue and not p.on_ground and hold == 0 and p.vy >= 0 and p.jumps_used < p.max_jumps
                 and any(x0 - 4 <= p.rect.right <= x0 + 24 for x0, _ in pits)):
             inp.simulate_release("jump"); inp.simulate_press("jump")
             hold, jumped = 40, True
@@ -163,6 +170,8 @@ def play(stage, *, policy="none", dash=True, gate_delay=0.0, gate2_delay=None, a
                     target = max(ahead, key=lambda e: e.x)
             if target is None and air_e02 and not p.on_ground and 1300 < p.rect.centerx < 1520:
                 target = next((e for e in vis if e.enemy_id == "E02"), None)
+            if target is None and air_target and not p.on_ground and air_target[1] < p.rect.centerx < air_target[2]:
+                target = next((e for e in vis if e.enemy_id == air_target[0]), None)
             if target is None:
                 for gid, (gl, _, tid) in g.items():
                     delay = gate2_delay if gid == "GATE2" and gate2_delay is not None else gate_delay
