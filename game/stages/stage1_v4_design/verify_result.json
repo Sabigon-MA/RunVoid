@@ -1,0 +1,1764 @@
+{
+ "links": [
+  {
+   "from": "A1S1",
+   "to": "A1G2",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A1G2",
+   "x": 619,
+   "pass": true
+  },
+  {
+   "from": "A1G2",
+   "to": "A1G3",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A1G3",
+   "x": 758,
+   "pass": true
+  },
+  {
+   "from": "A1G3",
+   "to": "A1G4",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A1G4",
+   "x": 1100,
+   "pass": true
+  },
+  {
+   "from": "A1G3",
+   "to": "A1U1",
+   "mode": "j2",
+   "expect": true,
+   "ok": true,
+   "landed": "A1U1",
+   "x": 1061,
+   "pass": true
+  },
+  {
+   "from": "A1U1",
+   "to": "A1T",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A1T",
+   "x": 1299,
+   "pass": true
+  },
+  {
+   "from": "A1G4",
+   "to": "A1T",
+   "mode": "j2",
+   "expect": true,
+   "ok": true,
+   "landed": "A1T",
+   "x": 1298,
+   "pass": true
+  },
+  {
+   "from": "A1M0",
+   "to": "A1M1",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A1M1",
+   "x": 1028,
+   "pass": true
+  },
+  {
+   "from": "A1M1",
+   "to": "A1G4",
+   "mode": "j2",
+   "expect": true,
+   "ok": true,
+   "landed": "A1G4",
+   "x": 1098,
+   "pass": true
+  },
+  {
+   "from": "A1G4",
+   "to": "A2ST1",
+   "mode": "drop",
+   "expect": true,
+   "ok": true,
+   "landed": "A2ST1",
+   "x": 1503,
+   "pass": true
+  },
+  {
+   "from": "A1T",
+   "to": "A2R1",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A2R1",
+   "x": 1523,
+   "pass": true
+  },
+  {
+   "from": "A2R1",
+   "to": "A2R2",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A2R2",
+   "x": 1782,
+   "pass": true
+  },
+  {
+   "from": "A2R2",
+   "to": "A2R3",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A2R3",
+   "x": 2042,
+   "pass": true
+  },
+  {
+   "from": "A2R3",
+   "to": "A2R4",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A2R4",
+   "x": 2299,
+   "pass": true
+  },
+  {
+   "from": "A2R4",
+   "to": "A2R5",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A2R5",
+   "x": 2579,
+   "pass": true
+  },
+  {
+   "from": "A2R5",
+   "to": "A2R6",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A2R6",
+   "x": 2861,
+   "pass": true
+  },
+  {
+   "from": "A2ST1",
+   "to": "A2P1",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A2P1",
+   "x": 1778,
+   "pass": true
+  },
+  {
+   "from": "A2P1",
+   "to": "A2R2",
+   "mode": "j2",
+   "expect": true,
+   "ok": true,
+   "landed": "A2R2",
+   "x": 1780,
+   "pass": true
+  },
+  {
+   "from": "A2ST1",
+   "to": "A2P2",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A2P2",
+   "x": 2220,
+   "pass": true
+  },
+  {
+   "from": "A2ST2",
+   "to": "A2P2",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A2P2",
+   "x": 2218,
+   "pass": true
+  },
+  {
+   "from": "A2P2",
+   "to": "A2H1",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A2H1",
+   "x": 2298,
+   "pass": true
+  },
+  {
+   "from": "A2H1",
+   "to": "A2R4",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A2R4",
+   "x": 2310,
+   "pass": true
+  },
+  {
+   "from": "A2H1",
+   "to": "A2ST2",
+   "mode": "drop",
+   "expect": true,
+   "ok": true,
+   "landed": "A2ST2",
+   "x": 2438,
+   "pass": true
+  },
+  {
+   "from": "A2ST2",
+   "to": "A3S1",
+   "mode": "j2",
+   "expect": true,
+   "ok": true,
+   "landed": "A3S1",
+   "x": 3062,
+   "pass": true
+  },
+  {
+   "from": "A2ST1",
+   "to": "A2C",
+   "mode": "drop",
+   "expect": true,
+   "ok": true,
+   "landed": "A2C",
+   "x": 2063,
+   "pass": true
+  },
+  {
+   "from": "A2C",
+   "to": "A3C1",
+   "mode": "drop",
+   "expect": true,
+   "ok": true,
+   "landed": "A3C1",
+   "x": 2943,
+   "pass": true
+  },
+  {
+   "from": "A3AQ1",
+   "to": "A3AQ2",
+   "mode": "j2",
+   "expect": true,
+   "ok": true,
+   "landed": "A3AQ2",
+   "x": 3959,
+   "pass": true
+  },
+  {
+   "from": "A3S1",
+   "to": "A3C1",
+   "mode": "drop",
+   "expect": true,
+   "ok": true,
+   "landed": "A3C1",
+   "x": 3418,
+   "pass": true
+  },
+  {
+   "from": "A3C1",
+   "to": "A3C2",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A3K1",
+   "x": 3901,
+   "pass": true
+  },
+  {
+   "from": "A3C2",
+   "to": "A3K1",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A3K1",
+   "x": 3938,
+   "pass": true
+  },
+  {
+   "from": "A3K1",
+   "to": "A3K2",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A3K2",
+   "x": 4008,
+   "pass": true
+  },
+  {
+   "from": "A3K2",
+   "to": "A3K3",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A3K3",
+   "x": 4068,
+   "pass": true
+  },
+  {
+   "from": "A3K3",
+   "to": "A3S2",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A3S2",
+   "x": 4138,
+   "pass": true
+  },
+  {
+   "from": "A4CL",
+   "to": "A4C2",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A4C2",
+   "x": 4943,
+   "pass": true
+  },
+  {
+   "from": "A4N",
+   "to": "A4C1",
+   "mode": "j2",
+   "expect": true,
+   "ok": true,
+   "landed": "A4C1",
+   "x": 4720,
+   "pass": true
+  },
+  {
+   "from": "A4C1",
+   "to": "A4C2",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A4C2",
+   "x": 4942,
+   "pass": true
+  },
+  {
+   "from": "A4C2",
+   "to": "A4L2",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A4L2",
+   "x": 5362,
+   "pass": true
+  },
+  {
+   "from": "A4N",
+   "to": "A4L1",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A4L1",
+   "x": 5198,
+   "pass": true
+  },
+  {
+   "from": "A4L1",
+   "to": "A4L2",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A4L2",
+   "x": 5378,
+   "pass": true
+  },
+  {
+   "from": "A4L2",
+   "to": "A4L3",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A4L3",
+   "x": 5538,
+   "pass": true
+  },
+  {
+   "from": "A4L3",
+   "to": "A4L4",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A4L4",
+   "x": 5362,
+   "pass": true
+  },
+  {
+   "from": "A4L4",
+   "to": "A4L5",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A4L5",
+   "x": 5518,
+   "pass": true
+  },
+  {
+   "from": "A5I1",
+   "to": "A5I2",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A5I2",
+   "x": 6143,
+   "pass": true
+  },
+  {
+   "from": "A5I2",
+   "to": "A5I3",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A5I3",
+   "x": 6483,
+   "pass": true
+  },
+  {
+   "from": "A5L0",
+   "to": "A5R1",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A5R1",
+   "x": 6059,
+   "pass": true
+  },
+  {
+   "from": "A5R1",
+   "to": "A5R2",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A5R2",
+   "x": 6361,
+   "pass": true
+  },
+  {
+   "from": "A5R2",
+   "to": "A5R3",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A5R3",
+   "x": 6599,
+   "pass": true
+  },
+  {
+   "from": "A5I1",
+   "to": "A5R1",
+   "mode": "drop",
+   "expect": true,
+   "ok": true,
+   "landed": "A5R1",
+   "x": 6059,
+   "pass": true
+  },
+  {
+   "from": "A5I2",
+   "to": "A5R2",
+   "mode": "drop",
+   "expect": true,
+   "ok": true,
+   "landed": "A5R2",
+   "x": 6359,
+   "pass": true
+  },
+  {
+   "from": "A6B1",
+   "to": "A6BF",
+   "mode": "j2",
+   "expect": true,
+   "ok": true,
+   "landed": "A6BF",
+   "x": 8099,
+   "pass": true
+  },
+  {
+   "from": "A6B1",
+   "to": "A6EC",
+   "mode": "j2d",
+   "expect": true,
+   "ok": true,
+   "landed": "A6N",
+   "x": 8388,
+   "pass": true
+  },
+  {
+   "from": "A6BF",
+   "to": "A6EC",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A6EC",
+   "x": 8442,
+   "pass": true
+  },
+  {
+   "from": "A6B1",
+   "to": "A6BF",
+   "mode": "j1",
+   "expect": false,
+   "ok": false,
+   "landed": "A6M",
+   "x": 8123,
+   "pass": true
+  },
+  {
+   "from": "A5R4",
+   "to": "A6D1",
+   "mode": "drop",
+   "expect": true,
+   "ok": true,
+   "landed": "A6D1",
+   "x": 7503,
+   "pass": true
+  },
+  {
+   "from": "A6D1",
+   "to": "A6D2",
+   "mode": "drop",
+   "expect": true,
+   "ok": true,
+   "landed": "A6D2",
+   "x": 7679,
+   "pass": true
+  },
+  {
+   "from": "A6D2",
+   "to": "A6D3",
+   "mode": "drop",
+   "expect": true,
+   "ok": true,
+   "landed": "A6D3",
+   "x": 7859,
+   "pass": true
+  },
+  {
+   "from": "A6D3",
+   "to": "A6F1",
+   "mode": "drop",
+   "expect": true,
+   "ok": true,
+   "landed": "A6F1",
+   "x": 7983,
+   "pass": true
+  },
+  {
+   "from": "A6F1",
+   "to": "A6K1",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A6K1",
+   "x": 8318,
+   "pass": true
+  },
+  {
+   "from": "A6K1",
+   "to": "A6K2",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A6K2",
+   "x": 8388,
+   "pass": true
+  },
+  {
+   "from": "A6N",
+   "to": "A6EC",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A6EC",
+   "x": 8458,
+   "pass": true
+  },
+  {
+   "from": "A7RW",
+   "to": "A7RT",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A7RT",
+   "x": 9598,
+   "pass": true
+  },
+  {
+   "from": "A7RT",
+   "to": "A7RW2",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A7RW2",
+   "x": 9759,
+   "pass": true
+  },
+  {
+   "from": "A7BY1",
+   "to": "A7BY2",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A7BY2",
+   "x": 9441,
+   "pass": true
+  },
+  {
+   "from": "A7BY2",
+   "to": "A7ST1",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A7ST1",
+   "x": 9678,
+   "pass": true
+  },
+  {
+   "from": "A7ST1",
+   "to": "A7ST2",
+   "mode": "j1",
+   "expect": true,
+   "ok": true,
+   "landed": "A7ST2",
+   "x": 9758,
+   "pass": true
+  },
+  {
+   "from": "A6K2",
+   "to": "A6M",
+   "mode": "j2",
+   "expect": false,
+   "ok": false,
+   "landed": "DEAD:fall",
+   "pass": true
+  },
+  {
+   "from": "A6K1",
+   "to": "A6M",
+   "mode": "j2",
+   "expect": false,
+   "ok": false,
+   "landed": "DEAD:fall",
+   "pass": true
+  },
+  {
+   "from": "A6M",
+   "to": "A6N",
+   "mode": "j2",
+   "expect": false,
+   "ok": false,
+   "landed": "A6K2",
+   "x": 8388,
+   "pass": true
+  },
+  {
+   "from": "A4L5",
+   "to": "A5I1",
+   "mode": "j2d",
+   "expect": false,
+   "ok": false,
+   "landed": "A4L5",
+   "x": 5588,
+   "pass": true
+  },
+  {
+   "from": "A5I3",
+   "to": "A5I4",
+   "mode": "j2d",
+   "expect": false,
+   "ok": false,
+   "landed": "A5R3",
+   "x": 6628,
+   "pass": true
+  },
+  {
+   "from": "A6EC",
+   "to": "A7RW",
+   "mode": "j2d",
+   "expect": false,
+   "ok": false,
+   "landed": "A6EC",
+   "x": 8988,
+   "pass": true
+  },
+  {
+   "from": "A7RW2",
+   "to": "A7KC",
+   "mode": "j2d",
+   "expect": false,
+   "ok": false,
+   "landed": "A7RW2",
+   "x": 9788,
+   "pass": true
+  }
+ ],
+ "swaps": [
+  {
+   "from": "A1G3",
+   "x": 860,
+   "target": "E01",
+   "to": "A1G4",
+   "required": false,
+   "pass": true,
+   "runs": [
+    {
+     "ok": true,
+     "landed": "A1G4",
+     "after": [
+      1101,
+      600
+     ],
+     "cam_y": 298
+    },
+    {
+     "ok": true,
+     "landed": "A1G4",
+     "after": [
+      1062,
+      600
+     ],
+     "cam_y": 298
+    },
+    {
+     "ok": true,
+     "landed": "A1G4",
+     "after": [
+      1058,
+      600
+     ],
+     "cam_y": 298
+    },
+    {
+     "ok": true,
+     "landed": "A1G4",
+     "after": [
+      1058,
+      600
+     ],
+     "cam_y": 298
+    }
+   ]
+  },
+  {
+   "from": "A1G4",
+   "x": 1180,
+   "target": "E02",
+   "to": "A1T",
+   "required": false,
+   "pass": true,
+   "runs": [
+    {
+     "ok": true,
+     "landed": "A1T",
+     "after": [
+      1261,
+      360
+     ],
+     "cam_y": 147
+    },
+    {
+     "ok": true,
+     "landed": "A1T",
+     "after": [
+      1259,
+      360
+     ],
+     "cam_y": 147
+    },
+    {
+     "ok": true,
+     "landed": "A1T",
+     "after": [
+      1259,
+      360
+     ],
+     "cam_y": 147
+    },
+    {
+     "ok": true,
+     "landed": "A1T",
+     "after": [
+      1259,
+      360
+     ],
+     "cam_y": 147
+    }
+   ]
+  },
+  {
+   "from": "A2ST2",
+   "x": 2200,
+   "target": "E04",
+   "to": "A2R4",
+   "required": false,
+   "pass": true,
+   "runs": [
+    {
+     "ok": true,
+     "landed": "A2R4",
+     "after": [
+      2311,
+      520
+     ],
+     "cam_y": 307
+    },
+    {
+     "ok": true,
+     "landed": "A2R4",
+     "after": [
+      2272,
+      520
+     ],
+     "cam_y": 307
+    },
+    {
+     "ok": true,
+     "landed": "A2R4",
+     "after": [
+      2259,
+      520
+     ],
+     "cam_y": 307
+    },
+    {
+     "ok": true,
+     "landed": "A2R4",
+     "after": [
+      2259,
+      520
+     ],
+     "cam_y": 307
+    }
+   ]
+  },
+  {
+   "from": "A2R4",
+   "x": 2400,
+   "target": "E05",
+   "to": "A2ST2",
+   "required": false,
+   "pass": true,
+   "runs": [
+    {
+     "ok": true,
+     "landed": "A2ST2",
+     "after": [
+      2461,
+      760
+     ],
+     "cam_y": 418
+    },
+    {
+     "ok": true,
+     "landed": "A2ST2",
+     "after": [
+      2422,
+      760
+     ],
+     "cam_y": 418
+    },
+    {
+     "ok": true,
+     "landed": "A2ST2",
+     "after": [
+      2400,
+      760
+     ],
+     "cam_y": 418
+    },
+    {
+     "ok": true,
+     "landed": "A2ST2",
+     "after": [
+      2400,
+      760
+     ],
+     "cam_y": 418
+    }
+   ]
+  },
+  {
+   "from": "A2ST2",
+   "x": 2620,
+   "target": "F01",
+   "to": "A3S1",
+   "required": false,
+   "pass": true,
+   "runs": [
+    {
+     "ok": true,
+     "landed": "A3S1",
+     "after": [
+      2839,
+      640
+     ],
+     "cam_y": 402
+    },
+    {
+     "ok": true,
+     "landed": "A3S1",
+     "after": [
+      2797,
+      640
+     ],
+     "cam_y": 402
+    },
+    {
+     "ok": true,
+     "landed": "A3S1",
+     "after": [
+      2760,
+      640
+     ],
+     "cam_y": 402
+    },
+    {
+     "ok": false,
+     "landed": "A3C1",
+     "after": [
+      2634,
+      740
+     ],
+     "cam_y": 840
+    }
+   ]
+  },
+  {
+   "from": "A3AQ1",
+   "x": 3380,
+   "target": "F02",
+   "to": "A3AQ2",
+   "required": false,
+   "pass": true,
+   "runs": [
+    {
+     "ok": true,
+     "landed": "A3AQ2",
+     "after": [
+      3699,
+      440
+     ],
+     "cam_y": 158
+    },
+    {
+     "ok": true,
+     "landed": "A3AQ2",
+     "after": [
+      3657,
+      440
+     ],
+     "cam_y": 158
+    },
+    {
+     "ok": true,
+     "landed": "A3AQ2",
+     "after": [
+      3697,
+      440
+     ],
+     "cam_y": 158
+    },
+    {
+     "ok": true,
+     "landed": "A3AQ2",
+     "after": [
+      3760,
+      440
+     ],
+     "cam_y": 158
+    }
+   ]
+  },
+  {
+   "from": "A4L2",
+   "x": 5420,
+   "target": "EA",
+   "to": "A5I1",
+   "required": true,
+   "pass": true,
+   "runs": [
+    {
+     "ok": true,
+     "landed": "A5I1",
+     "after": [
+      5761,
+      300
+     ],
+     "cam_y": 87
+    },
+    {
+     "ok": true,
+     "landed": "A5I1",
+     "after": [
+      5722,
+      300
+     ],
+     "cam_y": 87
+    },
+    {
+     "ok": true,
+     "landed": "A5I1",
+     "after": [
+      5713,
+      300
+     ],
+     "cam_y": 87
+    },
+    {
+     "ok": true,
+     "landed": "A5I1",
+     "after": [
+      5770,
+      300
+     ],
+     "cam_y": 87
+    }
+   ]
+  },
+  {
+   "from": "A4L5",
+   "x": 5560,
+   "target": "EA",
+   "to": "A5I1",
+   "required": true,
+   "pass": true,
+   "runs": [
+    {
+     "ok": true,
+     "landed": "A5I1",
+     "after": [
+      5761,
+      300
+     ],
+     "cam_y": 7
+    },
+    {
+     "ok": true,
+     "landed": "A5I1",
+     "after": [
+      5722,
+      300
+     ],
+     "cam_y": 7
+    },
+    {
+     "ok": true,
+     "landed": "A5I1",
+     "after": [
+      5699,
+      300
+     ],
+     "cam_y": 7
+    },
+    {
+     "ok": true,
+     "landed": "A5I1",
+     "after": [
+      5699,
+      300
+     ],
+     "cam_y": 7
+    }
+   ]
+  },
+  {
+   "from": "A4L1",
+   "x": 5240,
+   "target": "FB",
+   "to": "A5L0",
+   "required": true,
+   "pass": true,
+   "runs": [
+    {
+     "ok": true,
+     "landed": "A5L0",
+     "after": [
+      5769,
+      460
+     ],
+     "cam_y": 275
+    },
+    {
+     "ok": true,
+     "landed": "A5L0",
+     "after": [
+      5727,
+      460
+     ],
+     "cam_y": 275
+    },
+    {
+     "ok": true,
+     "landed": "A5L0",
+     "after": [
+      5767,
+      460
+     ],
+     "cam_y": 275
+    },
+    {
+     "ok": true,
+     "landed": "A5L0",
+     "after": [
+      5830,
+      460
+     ],
+     "cam_y": 275
+    }
+   ]
+  },
+  {
+   "from": "A5I3",
+   "x": 6540,
+   "target": "F05",
+   "to": "A5I4",
+   "required": true,
+   "pass": true,
+   "runs": [
+    {
+     "ok": true,
+     "landed": "A5I4",
+     "after": [
+      6879,
+      240
+     ],
+     "cam_y": 21
+    },
+    {
+     "ok": true,
+     "landed": "A5I4",
+     "after": [
+      6837,
+      240
+     ],
+     "cam_y": 21
+    },
+    {
+     "ok": true,
+     "landed": "A5I4",
+     "after": [
+      6877,
+      240
+     ],
+     "cam_y": 21
+    },
+    {
+     "ok": true,
+     "landed": "A5I4",
+     "after": [
+      6940,
+      240
+     ],
+     "cam_y": 21
+    }
+   ]
+  },
+  {
+   "from": "A5R3",
+   "x": 6620,
+   "target": "E13",
+   "to": "A5R4",
+   "required": true,
+   "pass": true,
+   "runs": [
+    {
+     "ok": true,
+     "landed": "A5R4",
+     "after": [
+      6811,
+      700
+     ],
+     "cam_y": 384
+    },
+    {
+     "ok": true,
+     "landed": "A5R4",
+     "after": [
+      6772,
+      700
+     ],
+     "cam_y": 384
+    },
+    {
+     "ok": true,
+     "landed": "A5R4",
+     "after": [
+      6734,
+      700
+     ],
+     "cam_y": 384
+    },
+    {
+     "ok": true,
+     "landed": "A5R4",
+     "after": [
+      6718,
+      700
+     ],
+     "cam_y": 384
+    }
+   ]
+  },
+  {
+   "from": "A6B1",
+   "x": 7640,
+   "target": "F07",
+   "to": "A6BF",
+   "required": false,
+   "pass": true,
+   "runs": [
+    {
+     "ok": true,
+     "landed": "A6BF",
+     "after": [
+      7919,
+      300
+     ],
+     "cam_y": 32
+    },
+    {
+     "ok": true,
+     "landed": "A6BF",
+     "after": [
+      7877,
+      300
+     ],
+     "cam_y": 32
+    },
+    {
+     "ok": true,
+     "landed": "A6BF",
+     "after": [
+      7835,
+      300
+     ],
+     "cam_y": 32
+    },
+    {
+     "ok": true,
+     "landed": "A6BF",
+     "after": [
+      7821,
+      300
+     ],
+     "cam_y": 32
+    }
+   ]
+  },
+  {
+   "from": "A6K2",
+   "x": 8370,
+   "target": "F08",
+   "to": "A6M",
+   "required": true,
+   "pass": true,
+   "runs": [
+    {
+     "ok": true,
+     "landed": "A6M",
+     "after": [
+      8351,
+      815
+     ],
+     "cam_y": 522
+    },
+    {
+     "ok": true,
+     "landed": "A6M",
+     "after": [
+      8366,
+      815
+     ],
+     "cam_y": 522
+    },
+    {
+     "ok": true,
+     "landed": "A6M",
+     "after": [
+      8366,
+      815
+     ],
+     "cam_y": 522
+    },
+    {
+     "ok": true,
+     "landed": "A6M",
+     "after": [
+      8366,
+      815
+     ],
+     "cam_y": 522
+    }
+   ]
+  },
+  {
+   "from": "A6M",
+   "x": 8185,
+   "target": "F09",
+   "to": "A6N",
+   "required": true,
+   "pass": true,
+   "runs": [
+    {
+     "ok": true,
+     "landed": "A6N",
+     "after": [
+      8188,
+      505
+     ],
+     "cam_y": 211
+    },
+    {
+     "ok": true,
+     "landed": "A6N",
+     "after": [
+      8188,
+      505
+     ],
+     "cam_y": 211
+    },
+    {
+     "ok": true,
+     "landed": "A6N",
+     "after": [
+      8188,
+      505
+     ],
+     "cam_y": 211
+    },
+    {
+     "ok": true,
+     "landed": "A6N",
+     "after": [
+      8188,
+      505
+     ],
+     "cam_y": 211
+    }
+   ]
+  },
+  {
+   "from": "A6EC",
+   "x": 8980,
+   "target": "E15",
+   "to": "A7RW",
+   "required": true,
+   "pass": true,
+   "runs": [
+    {
+     "ok": true,
+     "landed": "A7RW",
+     "after": [
+      9161,
+      340
+     ],
+     "cam_y": 54
+    },
+    {
+     "ok": true,
+     "landed": "A7RW",
+     "after": [
+      9122,
+      340
+     ],
+     "cam_y": 54
+    },
+    {
+     "ok": true,
+     "landed": "A7RW",
+     "after": [
+      9084,
+      340
+     ],
+     "cam_y": 54
+    },
+    {
+     "ok": true,
+     "landed": "A7RW",
+     "after": [
+      9079,
+      340
+     ],
+     "cam_y": 54
+    }
+   ]
+  },
+  {
+   "from": "A6EC",
+   "x": 8980,
+   "target": "F10",
+   "to": "A7BY1",
+   "required": true,
+   "pass": true,
+   "runs": [
+    {
+     "ok": true,
+     "landed": "A7BY1",
+     "after": [
+      9139,
+      560
+     ],
+     "cam_y": 400
+    },
+    {
+     "ok": true,
+     "landed": "A7BY1",
+     "after": [
+      9097,
+      560
+     ],
+     "cam_y": 400
+    },
+    {
+     "ok": true,
+     "landed": "A7BY1",
+     "after": [
+      9077,
+      560
+     ],
+     "cam_y": 400
+    },
+    {
+     "ok": true,
+     "landed": "A7BY1",
+     "after": [
+      9077,
+      560
+     ],
+     "cam_y": 400
+    }
+   ]
+  },
+  {
+   "from": "A7RW2",
+   "x": 9780,
+   "target": "E17",
+   "to": "A7KC",
+   "required": true,
+   "pass": true,
+   "runs": [
+    {
+     "ok": true,
+     "landed": "A7KC",
+     "after": [
+      9941,
+      560
+     ],
+     "cam_y": 218
+    },
+    {
+     "ok": true,
+     "landed": "A7KC",
+     "after": [
+      9902,
+      560
+     ],
+     "cam_y": 218
+    },
+    {
+     "ok": true,
+     "landed": "A7KC",
+     "after": [
+      9879,
+      560
+     ],
+     "cam_y": 218
+    },
+    {
+     "ok": true,
+     "landed": "A7KC",
+     "after": [
+      9879,
+      560
+     ],
+     "cam_y": 218
+    }
+   ]
+  },
+  {
+   "from": "A7ST2",
+   "x": 9780,
+   "target": "E17",
+   "to": "A7KC",
+   "required": true,
+   "pass": true,
+   "runs": [
+    {
+     "ok": true,
+     "landed": "A7KC",
+     "after": [
+      9941,
+      560
+     ],
+     "cam_y": 274
+    },
+    {
+     "ok": true,
+     "landed": "A7KC",
+     "after": [
+      9902,
+      560
+     ],
+     "cam_y": 274
+    },
+    {
+     "ok": true,
+     "landed": "A7KC",
+     "after": [
+      9879,
+      560
+     ],
+     "cam_y": 274
+    },
+    {
+     "ok": true,
+     "landed": "A7KC",
+     "after": [
+      9879,
+      560
+     ],
+     "cam_y": 274
+    }
+   ]
+  }
+ ],
+ "novis": [
+  {
+   "from": "A4N",
+   "x": 5560,
+   "target": "EA",
+   "why": "鐘楼を登らずに GATE1 を越えられない",
+   "pass": true
+  },
+  {
+   "from": "A4N",
+   "x": 5560,
+   "target": "FB",
+   "why": "同上",
+   "pass": true
+  },
+  {
+   "from": "A4C2",
+   "x": 5000,
+   "target": "EA",
+   "why": "シャンデリアから直接は交換できない（鐘楼に入る必要がある）",
+   "pass": true
+  },
+  {
+   "from": "A3S2",
+   "x": 4300,
+   "target": "F04",
+   "why": "（参考）前庭から F04 は見えない",
+   "pass": true
+  },
+  {
+   "from": "A5I3",
+   "x": 6540,
+   "target": "E13",
+   "why": "浮島からは下の筏ルートの相手が見えない（層ごとに相手が決まる）",
+   "pass": true
+  },
+  {
+   "from": "A5R3",
+   "x": 6620,
+   "target": "F05",
+   "why": "筏からは上の浮島ルートの相手が見えない",
+   "pass": true
+  },
+  {
+   "from": "A6F1",
+   "x": 8100,
+   "target": "F09",
+   "why": "断層の底から2段目の交換相手は見えない（順に登る必要がある）",
+   "pass": true
+  },
+  {
+   "from": "A6K1",
+   "x": 8300,
+   "target": "F08",
+   "why": "崖の段1からは1段目の交換相手も見えない（段2まで登る必要がある）",
+   "pass": true
+  }
+ ],
+ "enemies": [
+  {
+   "id": "E01",
+   "pass": true,
+   "info": [
+    "A1G4"
+   ]
+  },
+  {
+   "id": "E02",
+   "pass": true,
+   "info": [
+    "A1T"
+   ]
+  },
+  {
+   "id": "E03",
+   "pass": true,
+   "info": [
+    "A2ST1"
+   ]
+  },
+  {
+   "id": "E04",
+   "pass": true,
+   "info": [
+    "A2R4"
+   ]
+  },
+  {
+   "id": "E05",
+   "pass": true,
+   "info": [
+    "A2ST2"
+   ]
+  },
+  {
+   "id": "F01",
+   "pass": true,
+   "info": []
+  },
+  {
+   "id": "F02",
+   "pass": true,
+   "info": []
+  },
+  {
+   "id": "E06",
+   "pass": true,
+   "info": [
+    "A3C1"
+   ]
+  },
+  {
+   "id": "E07",
+   "pass": true,
+   "info": [
+    "A2C"
+   ]
+  },
+  {
+   "id": "E08",
+   "pass": true,
+   "info": [
+    "A4N"
+   ]
+  },
+  {
+   "id": "F04",
+   "pass": true,
+   "info": []
+  },
+  {
+   "id": "EA",
+   "pass": true,
+   "info": [
+    "A5I1"
+   ]
+  },
+  {
+   "id": "FB",
+   "pass": true,
+   "info": []
+  },
+  {
+   "id": "E11",
+   "pass": true,
+   "info": [
+    "A5I2"
+   ]
+  },
+  {
+   "id": "F06",
+   "pass": true,
+   "info": []
+  },
+  {
+   "id": "F05",
+   "pass": true,
+   "info": []
+  },
+  {
+   "id": "E13",
+   "pass": true,
+   "info": [
+    "A5R4"
+   ]
+  },
+  {
+   "id": "F07",
+   "pass": true,
+   "info": []
+  },
+  {
+   "id": "E14",
+   "pass": true,
+   "info": [
+    "A6F1"
+   ]
+  },
+  {
+   "id": "F08",
+   "pass": true,
+   "info": []
+  },
+  {
+   "id": "F09",
+   "pass": true,
+   "info": []
+  },
+  {
+   "id": "E15",
+   "pass": true,
+   "info": [
+    "A7RW"
+   ]
+  },
+  {
+   "id": "F10",
+   "pass": true,
+   "info": []
+  },
+  {
+   "id": "E16",
+   "pass": true,
+   "info": [
+    "A7BY2"
+   ]
+  },
+  {
+   "id": "E17",
+   "pass": true,
+   "info": [
+    "A7KC"
+   ]
+  }
+ ],
+ "fail_count": 0,
+ "counts": {
+  "links": 71,
+  "swaps": 18,
+  "novis": 8,
+  "enemies": 25
+ }
+}
