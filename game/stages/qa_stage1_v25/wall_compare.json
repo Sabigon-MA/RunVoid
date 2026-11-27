@@ -1,0 +1,193 @@
+{
+ "-600": {
+  "start_gap": 800.0,
+  "idle_until_wall_visible": 2.0,
+  "nodash_required": {
+   "state": "clear",
+   "t": 8.97,
+   "min_gap": 764,
+   "arrive": {
+    "GATE1": [
+     6.68,
+     889
+    ],
+    "GATE2": [
+     8.57,
+     1046
+    ]
+   },
+   "slack_gate1": 2.96
+  },
+  "nodash_max_gate1": 2.9,
+  "nodash_max_gate2": 3.4,
+  "nodash_max_gate2_after_g1_1.0": 2.6,
+  "nodash_max_gate2_after_g1_2.0": 1.8,
+  "nodash_max_start_hesitation_with_gate1_1s": 1.6,
+  "nodash_misclick_e02": {
+   "state": "clear",
+   "cause": null,
+   "swaps": [
+    "E02",
+    "E03",
+    "E04"
+   ],
+   "t": 10.83,
+   "min_gap": 286,
+   "hp": 3
+  },
+  "nodash_misclick_e02_max_gate1_delay": 0.85,
+  "nodash_jitter20_gate1s_clear": 100,
+  "dash_required": {
+   "state": "clear",
+   "t": 8.33,
+   "min_gap": 778,
+   "arrive": {
+    "GATE1": [
+     6.05,
+     1081
+    ],
+    "GATE2": [
+     7.93,
+     1236
+    ]
+   },
+   "slack_gate1": 3.6
+  },
+  "dash_max_gate1": 3.55,
+  "dash_max_gate2": 4.05,
+  "dash_max_gate2_after_g1_1.0": 3.2,
+  "dash_max_gate2_after_g1_2.0": 2.4,
+  "dash_max_start_hesitation_with_gate1_1s": 2.2,
+  "dash_misclick_e02": {
+   "state": "clear",
+   "cause": null,
+   "swaps": [
+    "E02",
+    "E03",
+    "E04"
+   ],
+   "t": 10.17,
+   "min_gap": 476,
+   "hp": 3
+  },
+  "dash_misclick_e02_max_gate1_delay": 1.25,
+  "dash_jitter20_gate1s_clear": 100,
+  "first_wall_on_screen_nodash_required": null,
+  "expert": {
+   "state": "clear",
+   "t": 5.88,
+   "swaps": [
+    "E01",
+    "E03",
+    "E04"
+   ],
+   "min_gap": 778
+  },
+  "air_e02_nodash": {
+   "state": "clear",
+   "t": 8.27,
+   "slack_gate1": 4.54
+  },
+  "no_teleport": {
+   "state": "dead",
+   "cause": "wall",
+   "max_right": 2320
+  }
+ },
+ "-450": {
+  "start_gap": 650.0,
+  "idle_until_wall_visible": 1.5,
+  "nodash_required": {
+   "state": "clear",
+   "t": 8.97,
+   "min_gap": 614,
+   "arrive": {
+    "GATE1": [
+     6.68,
+     739
+    ],
+    "GATE2": [
+     8.57,
+     896
+    ]
+   },
+   "slack_gate1": 2.46
+  },
+  "nodash_max_gate1": 2.4,
+  "nodash_max_gate2": 2.9,
+  "nodash_max_gate2_after_g1_1.0": 2.1,
+  "nodash_max_gate2_after_g1_2.0": 1.3,
+  "nodash_max_start_hesitation_with_gate1_1s": 1.1,
+  "nodash_misclick_e02": {
+   "state": "clear",
+   "cause": null,
+   "swaps": [
+    "E02",
+    "E03",
+    "E04"
+   ],
+   "t": 10.83,
+   "min_gap": 136,
+   "hp": 3
+  },
+  "nodash_misclick_e02_max_gate1_delay": 0.35,
+  "nodash_jitter20_gate1s_clear": 100,
+  "dash_required": {
+   "state": "clear",
+   "t": 8.33,
+   "min_gap": 628,
+   "arrive": {
+    "GATE1": [
+     6.05,
+     931
+    ],
+    "GATE2": [
+     7.93,
+     1086
+    ]
+   },
+   "slack_gate1": 3.1
+  },
+  "dash_max_gate1": 3.05,
+  "dash_max_gate2": 3.55,
+  "dash_max_gate2_after_g1_1.0": 2.7,
+  "dash_max_gate2_after_g1_2.0": 1.9,
+  "dash_max_start_hesitation_with_gate1_1s": 1.7,
+  "dash_misclick_e02": {
+   "state": "clear",
+   "cause": null,
+   "swaps": [
+    "E02",
+    "E03",
+    "E04"
+   ],
+   "t": 10.17,
+   "min_gap": 326,
+   "hp": 3
+  },
+  "dash_misclick_e02_max_gate1_delay": 1.0,
+  "dash_jitter20_gate1s_clear": 100,
+  "first_wall_on_screen_nodash_required": null,
+  "expert": {
+   "state": "clear",
+   "t": 5.88,
+   "swaps": [
+    "E01",
+    "E03",
+    "E04"
+   ],
+   "min_gap": 628
+  },
+  "air_e02_nodash": {
+   "state": "clear",
+   "t": 8.27,
+   "slack_gate1": 4.04
+  },
+  "no_teleport": {
+   "state": "dead",
+   "cause": "wall",
+   "max_right": 2320
+  }
+ },
+ "fails_below_max": []
+}

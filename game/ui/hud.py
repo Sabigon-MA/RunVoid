@@ -9,6 +9,9 @@ import config
 from ui.widgets import draw_panel, draw_text
 
 
+CHECKPOINT_NOTICE_SECONDS = 2.0
+
+
 def format_time(seconds: float) -> str:
     m = int(seconds // 60)
     s = seconds - m * 60
@@ -73,6 +76,9 @@ class HUD:
         else:
             col = c["ui_text"]
         draw_text(surface, f"追跡壁まで {int(dist)} px", 18, (W // 2, 16), col, anchor="midtop", bold=True)
+        # チェックポイントから始めたときは、最初の数秒だけ知らせる
+        if getattr(world, "from_checkpoint", False) and world.elapsed < CHECKPOINT_NOTICE_SECONDS:
+            draw_text(surface, "チェックポイントから再開", 16, (W // 2, 42), c["ui_warn"], anchor="midtop", bold=True)
 
         # --- 壁が画面外のとき: 左端に距離表示と警告 ---
         if not world.wall_on_screen:
